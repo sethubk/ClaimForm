@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { ApiService } from './Services/api.service';
+import { ApiService } from './Services/Api Services/api.service';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './Components/sidebar/sidebar.component';

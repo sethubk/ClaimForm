@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ExpenseApiService } from '../../../Services/expense-api.service';
+import { ExpenseApiService } from '../../../Services/Api Services/expense-api.service';
 import { Router } from '@angular/router';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
 import { ExpenseDataService } from '../../../Services/expense-data.service';
@@ -8,9 +8,9 @@ import { ClarityModule } from '@clr/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Employee } from '../../Models/claimmodels';
-import { ApiService } from '../../../Services/api.service';
+import { ApiService } from '../../../Services/Api Services/api.service';
 import { defaultEquals } from '@angular/core/primitives/signals';
-import { ClaimApiService } from '../../../Services/claim-api.service';
+import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
 interface Entry {
   date: string;
   supportingNo: string;

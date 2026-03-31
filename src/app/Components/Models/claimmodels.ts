@@ -32,3 +32,26 @@ export interface FormDataModel {
    preview?: string;
    fileName?:string
 }
+export interface EntryModel {
+  type: 'Card' | 'Cash' | 'Online' | string;
+  inrRate: number | null;
+  totalLoaded: number | null;
+  loadedDate: string;
+  currerncy: string;
+}
+
+export interface CashInfoDtos {
+  loadedDate: string;
+  type: string;
+  inrRate: string;
+  totalLoaded: string;
+}
+
+export interface TravelDetailsDtos {
+  currencyType: string;
+  travelStartDate: string;
+  travelEndDate: string;
+  totalDays: Number;
+  advanceAmount: number;
+  cardCashEntries: CashInfoDtos[];
+}

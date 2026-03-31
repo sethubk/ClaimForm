@@ -1,1 +1,167 @@
-<p>international works!</p>
+
+<h1>International Travel </h1>
+
+
+
+<div class="first">
+  <clr-select-container>
+    <label>Select Currency type</label>
+    <select clrSelect [(ngModel)]="selectedCurrency" name="currency">
+      <option value="INR">INR</option>
+      <option value="EUR">EUR</option>
+      <option value="USD">USD</option>
+    </select>
+  </clr-select-container>
+
+
+<clr-input-container>
+  <label>Travel Start Date & Time</label>
+  <input
+    clrInput
+    type="datetime-local"
+    [(ngModel)]="travelStart"
+    name="travelStart"
+    [max]="maxDate"
+    required
+    (input)="validateDate()"
+    (onmouseup)="maxDateValidator()"
+  />
+
+</clr-input-container>
+  <clr-input-container>
+    <label>Travel End Date & Time</label>
+    <input clrInput type="datetime-local" [(ngModel)]="travelEnd" name="travelEnd" [min]="travelStart" [max]="maxDate"
+      required [disabled]="!travelStart" />
+  </clr-input-container>
+
+
+
+  <div class="numberdays">
+    <clr-input-container>
+      <label>Number of Days</label>
+      <input clrInput type="number" [value]="calculateDays(travelStart, travelEnd)" readonly />
+    </clr-input-container>
+
+  </div>
+
+
+</div>
+<!-- <clr-input-container>
+    <label>Euro</label>
+    <input clrInput type="number" [(ngModel)]="Euro" />
+  </clr-input-container> -->
+<button (click)="openCurrencyModal()" id="button1" class="btn btn-primary"
+  >
+ add cash
+</button>
+
+<!-- Clarity Modal -->
+<clr-modal [(clrModalOpen)]="currencyModalOpen">
+  <h3 class="modal-title">{{ editIndex !== null ? 'Edit Entry' : 'Add Cash or Card Entry' }}</h3>
+  <div class="modal-body">
+    <form clrForm #entryForm="ngForm">
+      <clr-input-container>
+        <label class="clr-col-12 clr-col-md-4">Loaded Date</label>
+        <input class="clr-col-12 clr-col-md-8" clrInput type="date" [(ngModel)]="entry.loadedDate" name="loadedDate"
+          [max]="travelEndDateOnly" required />
+      </clr-input-container>
+
+      <clr-select-container>
+
+
+        <label class="clr-col-12 clr-col-md-4">Type</label>
+        <select class="clr-col-12 clr-col-md-8" clrSelect [(ngModel)]="entry.type" name="type" required>
+          <option value="Card">Card</option>
+          <option value="Cash">Cash</option>
+        </select>
+      </clr-select-container>
+      <clr-input-container>
+        <label class="clr-col-12 clr-col-md-4">
+          INR Rate
+          <span class="badge badge-info ml-2">for 1 {{selectedCurrency}}</span>
+        </label>
+        <input class="clr-col-12 clr-col-md-8 " clrInput type="number" [(ngModel)]="entry.inrRate" name="inrRate"
+          required />
+      </clr-input-container>
+      <clr-input-container>
+        <label class="clr-col-12 clr-col-md-4">Total Loaded</label>
+        <input class="clr-col-12 clr-col-md-8" clrInput type="number" [(ngModel)]="entry.totalLoaded" name="totalLoaded"
+          required />
+      </clr-input-container>
+
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" [disabled]="!entryForm.valid" (click)="saveEntry(entryForm)">Save</button>
+    <button class="btn btn-outline" (click)="currencyModalOpen = false">Cancel</button>
+  </div>
+</clr-modal>
+
+<!-- Card Table -->
+<div class="datagrid-row">
+  <!-- Card Table -->
+  <div class="datagrid-box">
+    <h4>Card Loaded Amount Details</h4>
+    <clr-datagrid >
+      <clr-dg-column>Currency</clr-dg-column>
+      <clr-dg-column>INR Rate</clr-dg-column>
+      <clr-dg-column>Total Loaded</clr-dg-column>
+      <clr-dg-column>Loaded Date</clr-dg-column>
+      <clr-dg-column>Total in INR</clr-dg-column>
+      <clr-dg-column>Actions</clr-dg-column>
+
+      <clr-dg-row *ngFor="let item of cardEntries ; let i = index">
+        <clr-dg-cell>{{ item.currerncy }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.inrRate }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.totalLoaded }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.loadedDate }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.totalInr }}</clr-dg-cell>
+        <clr-dg-cell>
+          <button class="crud-btn remove" (click)="editEntry(i, 'Card')"><cds-icon
+              shape="pencil"></cds-icon></button>
+          <button class="crud-btn edit" (click)="deleteEntry(i, 'Card')"> <cds-icon
+              shape="trash"></cds-icon></button>
+        </clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  </div>
+
+
+  <!-- Cash Table -->
+  <div class="datagrid-box">
+    <h4>Cash Amount Details</h4>
+    <clr-datagrid >
+      <clr-dg-column>Currency</clr-dg-column>
+      <clr-dg-column>INR Rate</clr-dg-column>
+      <clr-dg-column>Total Loaded</clr-dg-column>
+      <clr-dg-column>Loaded Date</clr-dg-column>
+      <clr-dg-column>Total in INR</clr-dg-column>
+      <clr-dg-column>Actions</clr-dg-column>
+
+      <clr-dg-row *ngFor="let item of cashEntries ; let i = index">
+        <clr-dg-cell>{{ item.currerncy }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.inrRate }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.totalLoaded }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.loadedDate }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.totalInr }}</clr-dg-cell>
+         <clr-dg-cell>
+          <button class="crud-btn remove" (click)="editEntry(i, 'Cash')"><cds-icon
+              shape="pencil"></cds-icon></button>
+          <button class="crud-btn edit" (click)="deleteEntry(i, 'Cash')"> <cds-icon
+              shape="trash"></cds-icon></button>
+        </clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  </div>
+</div>
+
+
+
+
+<div class="preview">
+  <button class="btn btn-info" (click)="backbtn()">back  </button>
+  <button class="btn btn-info" (click)="gotoreview()" [disabled]="cardEntries.length === 0 && cashEntries.length === 0">
+    Claim Page
+  </button>
+</div>
