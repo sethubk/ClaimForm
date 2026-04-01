@@ -10,11 +10,19 @@ export class InternationalApiService {
  
    constructor(private http:HttpClient) { }
  
-  travel = 'https://localhost:7283/api/InternationalTravel';
-Internatioanl = 'https://localhost:7283/api/InternationalExpense';
+  private readonly travel = 'https://localhost:7283/api/InternationalTravel';
+private readonly Internatioanl = 'https://localhost:7283/api/InternationalExpense';
 
 addTravelDetails(ClaimId: string, data: any): Observable<any> {
   return this.http.post(`${this.travel}/${ClaimId}`, data);
 }
 
-}
+
+createExpense(claimId: string, payload: any[]): Observable<any> {
+    return this.http.post(
+      `${this.Internatioanl}/bulk/${claimId}`,
+      payload
+    );
+
+
+}}

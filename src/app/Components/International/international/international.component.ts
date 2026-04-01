@@ -228,7 +228,7 @@ this.internationalApi.addTravelDetails(claimId, data).subscribe({
   error: (err) => console.error(err)
 });
 
-    this.router.navigate(['internationalcal'])
+  this.router.navigate(['/internationalcal'])
 
     console.log("cal", this.allowanceAmount)
   }

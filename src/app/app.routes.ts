@@ -4,6 +4,8 @@ import { HomepageComponent } from './Components/homepage/homepage.component';
 import { ExpenseComponent } from './Components/Expense/expense/expense.component';
 import { ExpensereviewComponent } from './Components/Expense/expensereview/expensereview.component';
 import { InternationalComponent } from './Components/International/international/international.component';
+import { InternationalCalculationalComponent } from './Components/International/international-calculational/international-calculational.component';
+import { InternationalReviewComponent } from './Components/International/international-review/international-review.component';
 //import { DashboardComponent } from './Components/dashboard/dashboard.component';
 
 export const routes: Routes = [
@@ -13,5 +15,7 @@ export const routes: Routes = [
     {path:"Expense",component:ExpenseComponent},
      {path:'expensereview',component:ExpensereviewComponent},
      //{path:'dashboard',component:DashboardComponent}
-     {path:'international',component:InternationalComponent}
+     {path:'international',component:InternationalComponent},
+     {path:'internationalreview',component:InternationalReviewComponent},
+{path:'internationalcal',component:InternationalCalculationalComponent},
 ];

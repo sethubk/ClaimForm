@@ -1,1 +1,183 @@
-<p>international-review works!</p>
+<div class="home">
+    <nav class="navbar">
+    <div class="navbar-brand">
+        <a>
+            <img src="assets/logo.png" alt="Brand Logo" class="brand-logo">
+            <h1 class="brand-title">International  reimbursement claim form</h1>
+
+        </a>
+    </div>
+
+</nav>
+<!-- <div class="personalDetails">
+<div class="clr-row" style="margin-bottom: 1rem;">
+    <div class="clr-col-2"><strong>Date of Submission:</strong></div>
+    <div class="clr-col-2">{{ personalData?.today }}</div>
+
+    <div class="clr-col-2"><strong>Expense Statement of:</strong></div>
+    <div class="clr-col-2">{{ personalData?.username }}</div>
+
+    <div class="clr-col-2"><strong>Employee Code:</strong></div>
+    <div class="clr-col-2">{{ personalData?.employeeCode }}</div>
+  </div>
+
+  <div class="clr-row" style="margin-bottom: 1rem;">
+    <div class="clr-col-2"><strong>Purpose &amp; Place:</strong></div>
+    <div class="clr-col-2">{{ personalData?.purposePlace }}</div>
+
+    <div class="clr-col-2"><strong>Company &amp; Plant:</strong></div>
+    <div class="clr-col-2">{{ personalData?.companyPlant }}</div>
+
+    <div class="clr-col-2"><strong>Cost Center:</strong></div>
+    <div class="clr-col-2">{{ personalData?.costCenter }}</div>
+  </div>
+
+  <div class="clr-row" >
+    <div class="clr-col-2"><strong>Vendor Code:</strong></div>
+    <div class="clr-col-2">{{ personalData?.vendorCode }}</div>
+
+
+    <div class="clr-col-2"></div>
+    <div class="clr-col-2"></div>
+    <div class="clr-col-2"></div>
+    <div class="clr-col-2"></div>
+  </div>
+</div> -->
+
+  <div class="info-card">
+    <div class="info-card-header">
+      <h3>Personal Details</h3>
+    </div>
+    <div class="info-card-body">
+      <div class="clr-row clr-form clr-form-horizontal">
+        <!-- Row 1 -->
+        <div class="clr-col-4">
+          <clr-input-container>
+            <label>Employee Name : </label>
+            <input clrInput type="text" [value]="personalData.username" readonly />
+          </clr-input-container>
+        </div>
+        <div class="clr-col-4">
+          <clr-input-container>
+            <label>Employee Code : </label>
+            <input clrInput type="text" [value]="personalData.employeeCode" readonly />
+          </clr-input-container>
+        </div>
+        <div class="clr-col-4">
+          <clr-input-container>
+            <label>Cost Center : </label>
+            <input clrInput type="text" [value]="personalData.costCenter" readonly />
+          </clr-input-container>
+        </div>
+ 
+        <!-- Row 2 -->
+        <div class="clr-col-4">
+          <clr-input-container>
+            <label>Company & Plant : </label>
+            <input clrInput type="text" [value]="personalData.companyPlant" readonly />
+          </clr-input-container>
+        </div>
+        <div class="clr-col-4">
+          <clr-input-container>
+            <label>Purpose & Place : </label>
+            <input clrInput type="text" [value]="personalData.purposePlace" readonly />
+          </clr-input-container>
+        </div>
+        <div class="clr-col-4">
+          <clr-input-container>
+            <label>Vendor Code : </label>
+            <input clrInput type="text" [value]="personalData.vendorCode" readonly />
+          </clr-input-container>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="dates">
+    <clr-datagrid>
+        <clr-dg-column>S.No</clr-dg-column>
+        <clr-dg-column>Date</clr-dg-column>
+        <clr-dg-column>Supporting No</clr-dg-column>
+        <clr-dg-column>Particulars</clr-dg-column>
+        <clr-dg-column>Payment Mode</clr-dg-column>
+        <clr-dg-column>Amount</clr-dg-column>
+        <clr-dg-column>Remarks</clr-dg-column>
+
+
+        <!-- Expense Entries -->
+        <clr-dg-row *ngFor="let entry of entries; let i = index">
+            <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
+            <clr-dg-cell>{{ entry.date }}</clr-dg-cell>
+            <clr-dg-cell>{{ entry.supportingNo }}</clr-dg-cell>
+            <clr-dg-cell>{{ entry.particulars }}</clr-dg-cell>
+            <clr-dg-cell>{{ entry.paymentMode }}</clr-dg-cell>
+            <clr-dg-cell>₹{{ entry.amount }}</clr-dg-cell>
+            <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
+
+       <clr-dg-row></clr-dg-row>
+        </clr-dg-row>
+            <clr-dg-row *ngFor="let total of getTotalsByPaymentMode()">
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell><strong>Total for {{ total.mode }}</strong></clr-dg-cell>
+                <clr-dg-cell><strong>₹{{ total.total }}</strong></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+            </clr-dg-row>
+
+            <!-- Grand Total Row -->
+            <clr-dg-row>
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+                <clr-dg-cell><strong>Grand Total</strong></clr-dg-cell>
+                <clr-dg-cell><strong>₹{{ totalAmounts }}</strong></clr-dg-cell>
+                <clr-dg-cell></clr-dg-cell>
+            </clr-dg-row>
+    </clr-datagrid>
+</div>
+
+
+<div class="clr-row1">
+    <div class="clr-col-12 clr-col-md-4">
+        <div class="summary-box">
+            <table class="table table-compact">
+                <tbody>
+                    <tr>
+                        <td>Total Expenses Bill</td>
+                        <td>₹{{ totalAmounts }}</td>
+                    </tr>
+                    <tr>
+                        <td>Expense Paid by Employee</td>
+                        <td>₹{{ getTotalByMode('Cash') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Expense Paid by Company</td>
+                        <td>₹{{ getTotalByMode('Card') }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Advance </td>
+                        <td>₹{{ advance }}</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td colspan="2" [ngStyle]="{
+    color: getSettlementDetails().type === 'recover' ? 'red' : 'green'
+  }">
+                            {{ getSettlementDetails().message }}: ₹{{ getSettlementDetails().amount }}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="button-group"   >
+    <button class="btn btn-info" (click)="backbtn()">back to </button>
+    <button class="btn btn-primary" (click)="printPage()">🖨️ Print</button>
+    <button class="btn btn-success" (click)="submitExpense()"> Submit</button>
+</div>
+</div>

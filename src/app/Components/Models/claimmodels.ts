@@ -55,3 +55,11 @@ export interface TravelDetailsDtos {
   advanceAmount: number;
   cardCashEntries: CashInfoDtos[];
 }
+export interface Entry {
+  date: string;
+  supportingNo: string;
+  particulars: string;
+  paymentMode: string;
+  amount: number;
+  remarks: string;
+}
