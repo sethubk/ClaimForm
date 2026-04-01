@@ -185,16 +185,7 @@ this.router.navigate(['/Homepage']).then(() => {
 
 }
 
-showClaimSummary() {
-  const summary = `
-    Type: Expense
-    Created Date: ${new Date().toLocaleDateString()}
-    Purpose & Place: ${this.personalData?.purposePlace}
-    Total Amount: ₹{this.totalAmount}
-  `;
- 
-  alert(summary);
-}
+
 backbtn(){
   this.router.navigate(['/Expense'])
 }
