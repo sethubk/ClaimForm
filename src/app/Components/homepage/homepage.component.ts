@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { FormsModule ,NgForm,FormGroup,FormControl,Validators, ReactiveFormsModule} from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { ApiService } from '../../Services/api.service';
@@ -43,7 +43,7 @@ showPersonalModal = false;
 empcode :string ='';
 dataSource:Expense[]=[
  ];
- allClaims: any[] = [];
+ allClaims: Expense[] = [];
  
 User:Employee={
   today: '',
@@ -111,26 +111,31 @@ getClaimUsingEmpCode() {
 
   });
 }
+getclaim() {
+  this.api.GetEmployeewithClaim(this.empcode).subscribe(res => {
 
-getclaim(){
-  this.api.GetEmployeewithClaim(this.empcode).subscribe(
+    this.allClaims = (res as { recentClaims: Expense[] }).recentClaims
+      .filter(c => c.status !== 'Draft' && (c.amount ?? 0) > 0);
 
-  res=>{
-  console.log("Claims",res);
- this.dataSource=(res as any).recentClaims;
- this.dataSource = this.dataSource.filter(c => c.status !== 'Draft' && c.amount!>0 );
-
- 
-this.pendingCalls--;
-    this.checkLoading();
-
-    }
-  )
+    // Use a fresh copy for the grid
+    this.dataSource = [...this.allClaims];
+  });
 }
+
+
 filterByType(type: string) {
+
+  if (!type) {
+    // Reset filter
+    this.dataSource = [...this.allClaims];
+    return;
+  }
+
   this.dataSource = this.allClaims.filter(
     c => c.type?.toLowerCase() === type.toLowerCase()
   );
+
+  console.log("Filtered:", this.dataSource);
 }
 
 selectedCategory: string | null = null;

@@ -5,7 +5,7 @@
   <div class="content-container"[ngClass]="{ 'blur': isLoading }" >
 
 
-    <!-- <clr-vertical-nav [clrVerticalNavCollapsible]="true" >
+ 
   
   <div class="content-container">
     <clr-vertical-nav [clrVerticalNavCollapsible]="true" >
@@ -16,7 +16,7 @@
         Expense
         <clr-vertical-nav-group-children *clrIfExpanded="true">
           <a clrVerticalNavLink routerLinkActive="active" (click)="goToPersonalDetails('DomesticTravels')">New Expense</a>
-          <a clrVerticalNavLink (click)="filterByType('expense')">Exlaims claim</a>
+          <a clrVerticalNavLink (click)="filterByType('Expense')">Expense claim</a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>
       <clr-vertical-nav-group routerLinkActive="active">
@@ -25,7 +25,7 @@
         International
         <clr-vertical-nav-group-children *clrIfExpanded>
           <a clrVerticalNavLink (click)="goToPersonalDetails('InternationalTravels')">New International</a>
-          <a clrVerticalNavLink (click)="filterByType('international')">International claims</a>
+          <a clrVerticalNavLink (click)="filterByType('InternationalTravels')">International claims</a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>
       <clr-vertical-nav-group routerLinkActive="active">
@@ -45,9 +45,7 @@
     <!-- right side -->
     <div class="content-area">
       <!-- <h3>Welcome! {{username}}</h3> -->
-      <div class="header1">
-        <h1>Expense reimbursement claim form </h1>
-      </div>
+     
       <h3>Welcome {{username}}!</h3>
      <div class="header1">
   <h1>Expense reimbursement claim form </h1>
