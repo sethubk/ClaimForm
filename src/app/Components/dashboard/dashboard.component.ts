@@ -7,18 +7,23 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { ChartData, ChartType } from 'chart.js';
 import { FormsModule } from '@angular/forms';
 import 'chart.js/auto';
+import { ApiService } from '../../Services/api.service';
+import { Expense } from '../homepage/homepage.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [ClarityModule,CommonModule,FormsModule,NgChartsModule],
+  imports: [ClarityModule, CommonModule, FormsModule, NgChartsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-dataSource: any[] = [];
+
+  constructor(private api: ApiService) { }
+  dataSource: any[] = [];
+  allClaims: Expense[] = [];
   filteredData: any[] = [];
   selectedExpenses: any[] = [];
-
+  Empcode: string = '';
   // KPI
   totalClaims = 0;
   totalAmount = 0;
@@ -44,105 +49,104 @@ dataSource: any[] = [];
   }
 
   loadData() {
+    debugger
     // 🔥 Replace with API
-    this.dataSource = [
-      {
-        type: 'InternationExpense',
-        date: new Date('2025-01-10'),
-        purpose: 'Client Meeting',
-        amount: 100000,
-        status: 'Approved',
-        expenses: [
-          { particulars: 'Hotel', amount: 400 },
-          { particulars: 'Travel', amount: 300 },
-          { particulars: 'Allowance', amount: 300 }
-        ]
-      },
-      {
-        type: 'EXpense',
-        date: new Date('2025-02-12'),
-        purpose: 'Team Lunch',
-        amount: 500,
-        status: 'Pending',
-          expenses: [
-          { particulars: 'Hotel', amount: 4000 },
-          { particulars: 'Travel', amount: 3000 },
-          { particulars: 'Allowance', amount: 3000 }
-        ]
-        
-      },
-          {
-        type: 'DomesticExpense',
-        date: new Date('2025-02-12'),
-        purpose: 'Team Lunch',
-        amount: 500,
-        status: 'Pending',
-          expenses: [
-          { particulars: 'Hotel', amount: 400 },
-          { particulars: 'Travel', amount: 300 },
-          { particulars: 'Allowance', amount: 300 }
-        ]
-        
-      }
-    ];
+    this.Empcode = this.api.User.employeeCode;
+  
+    this.getclaim()
+   
+    
+  }
+  
+  getclaim() {
+    this.api.GetEmployeewithClaim(this.Empcode).subscribe(res => {
 
-    this.filteredData = this.dataSource;
+      
+   this.dataSource=(res as any).recentClaims;
+ this.dataSource = this.dataSource.filter(c => c.status !== 'Draft' && c.amount!>0 );
+
+      // Use a fresh copy for the grid
+        this.filteredData = this.dataSource;
+
+        
     this.calculateKPIs();
     this.prepareCharts();
+    });
   }
-
   calculateKPIs() {
     this.totalClaims = this.filteredData.length;
     this.totalAmount = this.filteredData.reduce((a, b) => a + b.amount, 0);
     this.approvedCount = this.filteredData.filter(x => x.status === 'Approved').length;
-    this.pendingCount = this.filteredData.filter(x => x.status === 'Pending').length;
+    this.pendingCount = this.filteredData.filter(x => x.status === 'pending').length;
   }
 
-  prepareCharts() {
-    const typeMap: any = {};
-    const monthMap: any = {};
+  // prepareCharts() {
+  //   const typeMap: any = {};
+  //   const monthMap: any = {};
 
-    this.filteredData.forEach(c => {
-      // Pie
-      typeMap[c.type] = (typeMap[c.type] || 0) + c.amount;
+  //   this.filteredData.forEach(c => {
+  //     // Pie
+  //     typeMap[c.type] = (typeMap[c.type] || 0) + c.amount;
 
-      // Bar (month)
-    //   const month = new Date(c.date).toLocaleString('default', { month: 'short' });
-    //   monthMap[month] = (monthMap[month] || 0) + c.amount;
-    });
+  //     // Bar (month)
+  //     //   const month = new Date(c.date).toLocaleString('default', { month: 'short' });
+  //     //   monthMap[month] = (monthMap[month] || 0) + c.amount;
+  //   });
 
-    // PIE
-    this.pieChartData = {
-      labels: Object.keys(typeMap),
-      datasets: [
-        { data: Object.values(typeMap) }
-      ]
-    };
-    
-let grandTotal = 0;
-this.dataSource.forEach(item => {
-  const type = item.type.toLowerCase();
+  //   // PIE
+  //   this.pieChartData = {
+  //     labels: Object.keys(typeMap),
+  //     datasets: [
+  //       { data: Object.values(typeMap) }
+  //     ]
+  //   };
 
-  if (!typeMap[type]) {
-    typeMap[type] = 0;
-  }
+  //   let grandTotal = 0;
+  //   this.dataSource.forEach(item => {
+  //     const type = item.type.toLowerCase();
 
-  typeMap[type] += item.amount;
-  grandTotal += item.amount;
-});
-typeMap['total'] = grandTotal;
+  //     if (!typeMap[type]) {
+  //       typeMap[type] = 0;
+  //     }
 
-    // BAR
-    this.barChartData = {
-  labels: Object.keys(typeMap),
-  datasets: [
-    {
+  //     typeMap[type] += item.amount;
+  //     grandTotal += item.amount;
+  //   });
+  //   typeMap['total'] = grandTotal;
+
+  //   // BAR
+  //   this.barChartData = {
+  //     labels: Object.keys(typeMap),
+  //     datasets: [
+  //       {
+  //         data: Object.values(typeMap),
+  //         label: 'Expense by Type'
+  //       }
+  //     ]
+  //   };
+  // }
+prepareCharts() {
+  const typeMap: Record<string, number> = {};
+
+  this.filteredData.forEach(c => {
+    typeMap[c.type] = (typeMap[c.type] || 0) + (c.amount ?? 0);
+  });
+
+  // PIE
+  this.pieChartData = {
+    labels: Object.keys(typeMap),
+    datasets: [{ data: Object.values(typeMap) }]
+  };
+
+  // BAR
+  this.barChartData = {
+    labels: Object.keys(typeMap),
+    datasets: [{
       data: Object.values(typeMap),
       label: 'Expense by Type'
-    }
-  ]
-    };
-  }
+    }]
+  };
+}
 
   applyFilters() {
     this.filteredData = this.dataSource.filter(x =>
@@ -172,4 +176,6 @@ typeMap['total'] = grandTotal;
       'status-rejected': status === 'Rejected'
     };
   }
-  }
+
+  
+}

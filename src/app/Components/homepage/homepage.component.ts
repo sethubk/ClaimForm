@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule ,NgForm,FormGroup,FormControl,Validators, ReactiveFormsModule} from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { ApiService } from '../../Services/api.service';
@@ -34,7 +34,9 @@ export interface Personal{
   styleUrl: './homepage.component.css'
 })
 export class HomepageComponent {
-constructor(private api:ApiService,private router:Router,private ClaimApi:ClaimApiService){}
+constructor(private api:ApiService, private router:Router, private ClaimApi:ClaimApiService){
+  
+}
 username:string='';
 showPersonalModal = false;
 
