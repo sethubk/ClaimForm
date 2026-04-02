@@ -40,21 +40,21 @@ export class HomepageComponent {
 
 
 
-  empcode: string = '';
-  dataSource: Expense[] = [
-  ];
-  allClaims: any[] = [];
-
-  User: Employee = {
-    today: '',
-    username: '',
-    employeeCode: '',
-    purposePlace: '',
-    companyPlant: '',
-    costCenter: '',
-    venderCost: '',
-
-  };
+empcode :string ='';
+dataSource:Expense[]=[
+ ];
+ allClaims: Expense[] = [];
+ 
+User:Employee={
+  today: '',
+  username: '',
+  employeeCode: '',
+  purposePlace: '',
+  companyPlant: '',
+  costCenter: '',
+  venderCost: '',
+ 
+};
 
   isLoading = false;
   pendingCalls = 0;
@@ -111,29 +111,34 @@ export class HomepageComponent {
 
 
 
-  //   }});
-  // }
+  //});
+//}
+getclaim() {
+  this.api.GetEmployeewithClaim(this.empcode).subscribe(res => {
 
-  getclaim() {
-    this.api.GetEmployeewithClaim(this.empcode).subscribe(
+    this.allClaims = (res as { recentClaims: Expense[] }).recentClaims
+      .filter(c => c.status !== 'Draft' && (c.amount ?? 0) > 0);
 
-      res => {
-        console.log("Claims", res);
-        this.dataSource = (res as any).recentClaims;
-        this.dataSource = this.dataSource.filter(c => c.status !== 'Draft' && c.amount! > 0);
-        this.isLoading = false;
+    // Use a fresh copy for the grid
+    this.dataSource = [...this.allClaims];
+  });
+}
 
-        // this.pendingCalls--;
-        //     this.checkLoading();
 
-      }
-    )
+filterByType(type: string) {
+
+  if (!type) {
+    // Reset filter
+    this.dataSource = [...this.allClaims];
+    return;
   }
-  filterByType(type: string) {
-    this.dataSource = this.allClaims.filter(
-      c => c.type?.toLowerCase() === type.toLowerCase()
-    );
-  }
+
+  this.dataSource = this.allClaims.filter(
+    c => c.type?.toLowerCase() === type.toLowerCase()
+  );
+
+  console.log("Filtered:", this.dataSource);
+}
 
   selectedCategory: string | null = null;
   personalForm = new FormGroup({
