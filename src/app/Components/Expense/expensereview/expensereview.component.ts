@@ -38,7 +38,7 @@ constructor(private service:ExpenseDataService,private api:ApiService, private r
    purposePlace: '',
    companyPlant: '',
    costCenter: '',
-   venderCost: '',
+   vendorCost: '',
   
  };
  entries:Entry[]=[];
@@ -48,27 +48,7 @@ constructor(private service:ExpenseDataService,private api:ApiService, private r
     this.entries=this.service.getentries();
    
     console.log(this.entries)
-   
-   
-//  this.entries = [
-//     {
-//       date: '2025-09-01',
-//       supportingNo: 'SUP001',
-//       particulars: 'Office Supplies',
-//       paymentMode: 'Cash',
-//       amount: 1500,
-//       remarks: 'Stationery purchase'
-//     },
-//     {
-//       date: '2025-09-05',
-//       supportingNo: 'SUP002',
-//       particulars: 'Travel Reimbursement',
-//       paymentMode: 'Cash',
-//       amount: 3200,
-//       remarks: 'Client visit'
-//     }
-//   ]
-    
+
     this.calculateTotal();
   
   }

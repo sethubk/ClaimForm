@@ -14,13 +14,13 @@ export class InternationalApiService {
 private readonly Internatioanl = 'https://localhost:7283/api/InternationalExpense';
 
 addTravelDetails(ClaimId: string, data: any): Observable<any> {
-  return this.http.post(`${this.travel}/${ClaimId}`, data);
+  return this.http.post(`${this.travel}/${ClaimId}/InternationalTravel`, data);
 }
 
 
 createExpense(claimId: string, payload: any[]): Observable<any> {
     return this.http.post(
-      `${this.Internatioanl}/bulk/${claimId}`,
+      `${this.Internatioanl}/${claimId}/InternationalExpense`,
       payload
     );
 

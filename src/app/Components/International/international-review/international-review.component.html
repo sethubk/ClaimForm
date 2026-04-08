@@ -86,7 +86,7 @@
         <div class="clr-col-4">
           <clr-input-container>
             <label>Vendor Code : </label>
-            <input clrInput type="text" [value]="personalData.vendorCode" readonly />
+            <input clrInput type="text" [value]="personalData.vendorCost" readonly />
           </clr-input-container>
         </div>
       </div>
@@ -110,20 +110,12 @@
             <clr-dg-cell>{{ entry.supportingNo }}</clr-dg-cell>
             <clr-dg-cell>{{ entry.particulars }}</clr-dg-cell>
             <clr-dg-cell>{{ entry.paymentMode }}</clr-dg-cell>
-            <clr-dg-cell>₹{{ entry.amount }}</clr-dg-cell>
+            <clr-dg-cell>₹{{ entry.convertedAmount }}</clr-dg-cell>
             <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
 
        <clr-dg-row></clr-dg-row>
         </clr-dg-row>
-            <clr-dg-row *ngFor="let total of getTotalsByPaymentMode()">
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell><strong>Total for {{ total.mode }}</strong></clr-dg-cell>
-                <clr-dg-cell><strong>₹{{ total.total }}</strong></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-            </clr-dg-row>
+           
 
             <!-- Grand Total Row -->
             <clr-dg-row>
@@ -149,11 +141,11 @@
                         <td>₹{{ totalAmounts }}</td>
                     </tr>
                     <tr>
-                        <td>Expense Paid by Employee</td>
+                        <td>Expense Paid by Cash</td>
                         <td>₹{{ getTotalByMode('Cash') }}</td>
                     </tr>
                     <tr>
-                        <td>Expense Paid by Company</td>
+                        <td>Expense Paid by Card</td>
                         <td>₹{{ getTotalByMode('Card') }}</td>
                     </tr>
 

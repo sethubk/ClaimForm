@@ -28,7 +28,7 @@ personalData: Employee={
   purposePlace: '',
   companyPlant: '',
   costCenter: '',
-  venderCost: '',
+  vendorCost: '',
  
 };
  formData: FormDataModel = {

@@ -6,7 +6,7 @@ import { ClarityIcons } from '@clr/icons';
 import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Entry } from '../../Models/claimmodels';
+import { Employee, Entry } from '../../Models/claimmodels';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
 import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
 import { ApiService } from '../../../Services/Api Services/api.service';
@@ -23,12 +23,21 @@ constructor(private router:Router,private service:ExpenseDataService,
   private api:ApiService,
   private TravelService:TravelEntryService,private InternationalExpenseapi:InternationalApiService,private ClaimApi:ClaimApiService){}
 entries:any[]=[];
-personalData: any;
+ personalData: Employee={ 
+    today: '',
+   username: '',
+   employeeCode: '',
+   purposePlace: '',
+   companyPlant: '',
+   costCenter: '',
+   vendorCost: '',
+  
+ };
 advance:number=0;
   ngOnInit(): void {
  
     this.entries=this.service.getentries();
-    this.personalData = this.service.getDetails();
+ this.personalData=this.api.User;
     this.advance=this.TravelService.getAllowance()
 
     console.log(this.entries)
@@ -40,7 +49,7 @@ getTotalsByPaymentMode(): { mode: string; total: number }[] {
 
   this.entries.forEach(entry => {
     const mode = entry.paymentMode;
-    const amount = Number(entry.amount);
+    const amount = Number(entry.convertedAmount );
 
     // Only include 'Cash' or 'Card' payment modes
     if (mode === 'Cash' || mode === 'Card') {
@@ -59,15 +68,15 @@ getTotalsByPaymentMode(): { mode: string; total: number }[] {
 totalAmount: number = 0;
 
 calculateTotal() {
-  this.totalAmount = this.entries.reduce((sum, entry: Entry) => sum + entry.amount, 0);
+  this.totalAmount = this.entries.reduce((sum, entry: Entry) => sum + entry.convertedAmount, 0);
 console.log(this.totalAmount)
 
 }
 getGrandTotal(): number {
-  return this.entries.reduce((sum, entry) => sum + Number(entry.amount), 0);
+  return this.entries.reduce((sum, entry) => sum + Number(entry.convertedAmount), 0);
 }
 get totalAmounts(): number {
-  return this.entries.reduce((sum, entry) => sum + Number(entry.amount || 0), 0);
+  return this.entries.reduce((sum, entry) => sum + Number(entry.convertedAmount || 0), 0);
 
 }
 printPage() {
@@ -152,7 +161,7 @@ const claim = {
 
 
 getSettlementDetails(): { message: string, amount: number, type: 'recover' | 'pay' | 'none' } {
-  const cashPaid = this.getTotalByMode('Cash');
+  const cashPaid = this.totalAmounts;
   const difference =  cashPaid -this.advance ;
 
   if (difference < 0) {

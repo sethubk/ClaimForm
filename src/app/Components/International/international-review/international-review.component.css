@@ -74,14 +74,14 @@ margin-top: 170px;
 }
 .button-group{
 display: flex;
-justify-content:flex-end;
-gap: 20px;
-
-.btn btn-info{
-  float: left;
+justify-content:space-around;
+align-items: center;
 }
+.button-group {
+  display: flex;
+  gap: 15px; /* Space between buttons */
+  justify-content: space-between;
 }
-
 @media print {
   .button-group {
     display: none !important;

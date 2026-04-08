@@ -66,13 +66,13 @@ export class InternationalCalculationalComponent {
 
     if (existingEntries && existingEntries.length > 0) {
 
-      let allowanceEntry = existingEntries.find((x: { particulars: string; }) => x.particulars == "Allowance");
+      // let allowanceEntry = existingEntries.find((x: { particulars: string; }) => x.particulars == "Allowance");
 
-      let allowance = this.travelService.getAllowance();
+      // let allowance = this.travelService.getAllowance();
 
-      if (allowanceEntry) {
-        allowanceEntry.amount = allowance;
-      }
+      // if (allowanceEntry) {
+      //   allowanceEntry.amount = allowance;
+      // }
       this.service.setentries(existingEntries);
 
       // Load all entries (including allowance and user-added)
@@ -83,11 +83,11 @@ export class InternationalCalculationalComponent {
       const allowance = this.travelService.getAllowance();
       console.log("calculation", allowance);
 
-      this.entries = [{
-        paymentMode: 'cash',
-        particulars: 'Allowance',
-        amount: allowance || 0
-      }];
+      // this.entries = [{
+      //   paymentMode: 'cash',
+      //   particulars: 'Allowance',
+      //   amount: allowance || 0
+      // }];
 
 
     }
@@ -105,7 +105,7 @@ export class InternationalCalculationalComponent {
       supportingNo: ['', Validators.required],
       particulars: ['', Validators.required],
       paymentMode: ['', Validators.required],
-      selectedCurrency_amt: [''], // Currency dropdown
+      selectedCurrency_amt: ['', Validators.required], // Currency dropdown
       amount: ['', [Validators.required, Validators.min(1)]], // Amount input
       remarks: [''],
       screenshot: [null],
@@ -137,48 +137,42 @@ export class InternationalCalculationalComponent {
       this.expenseForm.patchValue({ screenshot: file, fileName: file.name });
     }
   }
-  addEntry() {
-    if (this.expenseForm.valid) {
-      const formValue = this.expenseForm.value;
+addEntry() {
+  if (this.expenseForm.valid) {
+    const formValue = this.expenseForm.value;
 
-      // ✅ Calculate converted amount if currency is selected
-      let convertedAmount = null;
+    let convertedAmount = 0;
+    const amount = Number(formValue.amount) || 0;
+    const currency = formValue.selectedCurrency_amt?.toUpperCase();
 
-
-      if (formValue.selectedCurrency_amt && formValue.amount) {
-
-        if (formValue.selectedCurrency_amt === 'INR') {
-          // No conversion needed for INR
-          convertedAmount = formValue.amount;
-        } else {
-          // Apply conversion for other currencies
-          convertedAmount = formValue.amount * 100;
-        }
-
-      }
-
-      const entry = {
-        ...formValue,
-        convertedAmount, // ✅ Add calculated value
-        preview: this.preview // include the image preview here
-      };
-
-      if (this.editIndex != null && this.isEdit) {
-        // Update existing entry
-        this.entries[this.editIndex] = entry;
-        this.editIndex = null;
-        this.isEdit = false;
-      } else {
-        // Add new entry
-        this.entries.push(entry);
-      }
-
-      this.formopen = false;
-
-      // Save entries using the service
-      this.service.setentries(this.entries);
+    if (currency === 'INR' || currency === 'IND') {
+      // ✅ INR: no conversion
+      convertedAmount = amount;
+    } else {
+      // ✅ Other currencies
+      convertedAmount = amount * 100;
     }
+
+    const entry = {
+      ...formValue,
+      convertedAmount,   // ✅ included for INR and others
+      preview: this.preview
+    };
+
+    if (this.editIndex != null && this.isEdit) {
+      this.entries[this.editIndex] = entry;
+      this.editIndex = null;
+      this.isEdit = false;
+    } else {
+      this.entries.push(entry);
+    }
+
+    this.formopen = false;
+    this.service.setentries(this.entries);
+
+    console.log('Current entries:', this.entries);
   }
+}
   removeentry(index: number) {
     const of = confirm("are you sure")
     if (of) {

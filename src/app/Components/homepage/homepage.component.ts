@@ -52,7 +52,7 @@ User:Employee={
   purposePlace: '',
   companyPlant: '',
   costCenter: '',
-  venderCost: '',
+  vendorCost: '',
  
 };
 

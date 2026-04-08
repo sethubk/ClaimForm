@@ -14,7 +14,7 @@ export class ExpenseApiService {
   
 createExpense(claimId: string, expense: any): Observable<any> {
   return this.http.post(
-    `${this.baseurl}/${claimId}`,
+    `${this.baseurl}/${claimId}/Expense`,
     expense
   );
 }

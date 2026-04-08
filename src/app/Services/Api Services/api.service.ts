@@ -14,7 +14,7 @@ User:Employee={
   purposePlace: '',
   companyPlant: '',
   costCenter: '',
-  venderCost: ''
+  vendorCost: ''
 }
 
   constructor(private http:HttpClient) {
@@ -25,7 +25,7 @@ this.loadUserFromSession();
 claimUrl='https://localhost:7283/api/RecentClaim';
 
   Login(data:any):Observable<any>{
-    return this.http.post(`${this.baseurl}/Login`,data)
+    return this.http.post(`${this.baseurl}`,data)
   }
 //  private currentUserSubject = new BehaviorSubject<any>(null);
 //  currentUser$ = this.currentUserSubject.asObservable();
@@ -41,7 +41,7 @@ claimUrl='https://localhost:7283/api/RecentClaim';
 
     this.User.username=User.name;
   this.User.employeeCode=User.empCode;
-  this.User.venderCost=User.venderCost;
+  this.User.vendorCost=User.vendorCost;
   this.User.costCenter=User.costCenter;
   this.User.companyPlant="Nordex"
        // convert string → object
@@ -59,13 +59,13 @@ GetEmployee(){
     const userObj = JSON.parse(user);
     this.User=userObj.res;}
 }
-GetEmployeewithClaim(Empcode:string){
+GetEmployeewithClaim(Empcode:string):Observable<any>{
 return this.http.get(`${this.baseurl}/${Empcode}`)
 }
 
 createClaim(empCode: string, dto: any): Observable<any> {
   return this.http.post(
-    `${this.claimUrl}/${empCode}`,
+    `${this.claimUrl}/${empCode}/claim`,
     dto
   );
 }

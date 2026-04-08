@@ -1,5 +1,5 @@
 export interface Employee{
-  venderCost: string;
+  vendorCost: string;
 
   
   today: string; 
@@ -18,7 +18,7 @@ export interface Claims {
   purposePlace?: string;
   totalAmount?: number | null;
   status: 'In progress' | 'Approved' | 'Rejected' | string;
-  expense?: string;
+  // expense?: string;
 }
 
 export interface FormDataModel {
@@ -62,4 +62,5 @@ export interface Entry {
   paymentMode: string;
   amount: number;
   remarks: string;
+  convertedAmount: number;
 }

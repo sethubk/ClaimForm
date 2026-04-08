@@ -100,6 +100,7 @@
         <select class="clr-col-12 clr-col-md-8" clrSelect formControlName="paymentMode">
           <option value="">Select</option>
           <option value="Cash">Cash</option>
+          <option value="Card">Card</option>
         </select>
         <clr-control-error *ngIf="expenseForm.get('paymentMode')?.hasError('required')">
           Payment Mode is required
@@ -111,8 +112,8 @@
         <label class="clr-col-12 clr-col-md-4">Select currency type</label>
         <select class="clr-col-12 clr-col-md-8" clrSelect formControlName="selectedCurrency_amt">
    
-          <option value="INR">IND</option>
-          <option value="eur">eur</option>
+          <option value="INR">INR</option>
+          <option value="Eur">eur</option>
         </select>
         <clr-control-error *ngIf="expenseForm.get('paymentMode')?.hasError('required')">
           Payment Mode is required
@@ -187,10 +188,10 @@
   <clr-dg-cell>{{ entry.amount }}</clr-dg-cell>
 
   <!-- Currency Type -->
-  <clr-dg-cell>{{ entry.selectedCurrency_amt || 'N/A' }}</clr-dg-cell>
+  <clr-dg-cell>{{ entry.selectedCurrency_amt  }}</clr-dg-cell>
 
   <!-- Converted Amount -->
-  <clr-dg-cell>{{ entry.convertedAmount ? entry.convertedAmount : '-' }}</clr-dg-cell>
+  <clr-dg-cell>{{ entry.convertedAmount   }}</clr-dg-cell>
 
       <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
       <clr-dg-cell>
