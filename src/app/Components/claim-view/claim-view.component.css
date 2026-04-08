@@ -1,0 +1,144 @@
+/* Root dashboard container */
+.dashboard-container {
+  padding: 24px;
+  background-color: #f3f4f6; /* Power BI background */
+  min-height: 100vh;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.dashboard-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #252423; /* Power BI heading */
+}
+
+.label.label-info {
+  background-color: #0078d4; /* Power BI blue */
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  margin-bottom: 20px;
+}
+.kpi-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+
+.kpi-title {
+  font-size: 12px;
+  color: #605e5c;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: #323130;
+}
+.travel-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 12px;
+  background: #faf9f8;
+  border-radius: 6px;
+  border: 1px solid #edebe9;
+}
+
+.travel-summary div {
+  font-size: 13px;
+  color: #323130;
+}
+clr-datagrid {
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #edebe9;
+}
+
+/* Header */
+clr-dg-column {
+  font-size: 13px;
+  font-weight: 600;
+  color: #323130;
+  background-color: #faf9f8;
+}
+
+/* Cells */
+clr-dg-cell {
+  font-size: 13px;
+  color: #323130;
+}
+
+/* Row hover effect */
+clr-dg-row:hover {
+  background-color: #f3f2f1;
+  cursor: pointer;
+}
+
+/* Footer */
+clr-dg-footer {
+  font-size: 12px;
+  color: #605e5c;
+  background-color: #faf9f8;
+}
+.status-approved {
+  color: #107c10;
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #ff8c00;
+  font-weight: 600;
+}
+
+.status-rejected {
+  color: #a80000;
+  font-weight: 600;
+}
+.amount {
+  font-weight: 600;
+  color: #323130;
+}
+
+.amount-positive {
+  color: #107c10;
+}
+
+.amount-negative {
+  color: #a80000;
+}
+h3, h4 {
+  font-weight: 600;
+  color: #323130;
+  margin-bottom: 10px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+.subtle-text {
+  font-size: 12px;
+  color: #605e5c;
+}

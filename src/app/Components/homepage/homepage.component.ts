@@ -10,6 +10,7 @@ import '@cds/core/progress-circle/register.js';
 
 
 export interface Expense {
+  recentClaimId: string;
   type: 'International' | 'Domestic' | '' | string;
   date?: Date | null;
   purpose?: string;
@@ -41,8 +42,7 @@ export class HomepageComponent {
 
 
 empcode :string ='';
-dataSource:Expense[]=[
- ];
+dataSource:Expense[]=[];
  allClaims: Expense[] = [];
  
 User:Employee={
@@ -121,6 +121,7 @@ getclaim() {
 
     // Use a fresh copy for the grid
     this.dataSource = [...this.allClaims];
+    console.log("Claims fetched:", this.dataSource);
   });
 }
 
@@ -216,4 +217,10 @@ filterByType(type: string) {
   godash() {
     this.router.navigate(['./dashboard'])
   }
+
+  
+goToClaimView(claimId: string) {
+  this.router.navigate(['/claim-view', claimId]);
+}
+
 }

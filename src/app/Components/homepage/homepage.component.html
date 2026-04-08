@@ -5,12 +5,12 @@
   <div class="content-container" [ngClass]="{ 'blur': isLoading }">
 
 
-    
 
- 
-  
-  <div class="content-container">
-    <!-- <clr-vertical-nav [clrVerticalNavCollapsible]="true" >
+
+
+
+    <div class="content-container">
+      <!-- <clr-vertical-nav [clrVerticalNavCollapsible]="true" >
       
       <clr-vertical-nav-group routerLinkActive="active">
         <a routerLink="#" hidden aria-hidden="true"></a>
@@ -44,19 +44,19 @@
         Dashboard
       </a>
     </clr-vertical-nav> -->
-    
-    <div class="content-area">
-      <!-- <h3>Welcome! {{username}}</h3> -->
-      <!-- <div class="header1">
+
+      <div class="content-area">
+        <!-- <h3>Welcome! {{username}}</h3> -->
+        <!-- <div class="header1">
         <h1>Expense reimbursement claim form </h1>
       </div> -->
-      <h3>Welcome {{User.username}}!</h3>
-      <div class="header1">
-        <h1>Expense reimbursement claim form </h1>
-      </div>
+        <h3>Welcome {{User.username}}!</h3>
+        <div class="header1">
+          <h1>Expense reimbursement claim form </h1>
+        </div>
 
 
-      <!-- <clr-accordion-content class="clr-row content">
+        <!-- <clr-accordion-content class="clr-row content">
         <div *ngIf="!isLoading" class="category">
           <button type="button" class="btn btn-sm btn-secondary" (click)="addCategory()">
             Add Category
@@ -64,8 +64,8 @@
         </div> -->
 
 
-      <!-- new-claim.component.html -->
-      <!-- <clr-dropdown>
+        <!-- new-claim.component.html -->
+        <!-- <clr-dropdown>
   <button clrDropdownTrigger class="btn btn-primary">
     {{ selectedCategory || 'Select Category' }}
   </button>
@@ -80,126 +80,129 @@
 
   </clr-dropdown-menu>
 </clr-dropdown> -->
-      <div class="custom-buttons">
-        <button class="custom-btn" (click)="goToPersonalDetails('Expense')">
-          New Expense Claim
-        </button>
+        <div class="custom-buttons">
+          <button class="custom-btn" (click)="goToPersonalDetails('Expense')">
+            New Expense Claim
+          </button>
 
-        <button class="custom-btn" (click)="goToPersonalDetails('InternationalTravels')">
-          New International Travels Claim
-        </button>
+          <button class="custom-btn" (click)="goToPersonalDetails('InternationalTravels')">
+            New International Travels Claim
+          </button>
 
-        <button class="custom-btn" (click)="goToPersonalDetails('DomesticTravels')">
-          New Domestic Travels Claim
-        </button>
-      </div>
-
-
-      <clr-modal [(clrModalOpen)]="showPersonalModal" [clrModalSize]="'md'">
-        <h3 class="modal-title">Personal Details</h3>
-
-        <div class="modal-body">
-          <form clrForm [formGroup]="personalForm" class="personal-card-form">
-
-            <div class="grid-two">
-              <clr-input-container>
-                <label>Date of Submission</label>
-                <input clrInput [value]="User.today" readonly />
-              </clr-input-container>
-
-              <clr-input-container>
-                <label>Expense statement of Mr/Ms</label>
-                <input clrInput [value]="User.username" readonly />
-              </clr-input-container>
-            </div>
-
-            <div class="grid-two">
-              <clr-input-container>
-                <label>Employee Code</label>
-                <input clrInput [value]="User.employeeCode" readonly />
-              </clr-input-container>
-
-              <clr-input-container>
-                <label>Purpose & Place</label>
-
-                <input clrInput formControlName="purposePlace" />
-
-                <clr-control-error *ngIf="personalForm.get('purposePlace')?.invalid 
-              && personalForm.get('purposePlace')?.touched">
-                  Purpose & Place is required
-                </clr-control-error>
-              </clr-input-container>
-            </div>
-
-            <div class="grid-two">
-              <clr-input-container>
-                <label>Company OR Plant</label>
-                <input clrInput [value]="User.companyPlant" readonly />
-              </clr-input-container>
-
-              <clr-input-container>
-                <label>Cost Center</label>
-                <input clrInput [value]="User.costCenter" readonly />
-              </clr-input-container>
-            </div>
-
-            <clr-input-container>
-              <label>Vendor Code</label>
-              <input clrInput [value]="User.vendorCost" readonly />
-            </clr-input-container>
-
-            <div class="divider"></div>
-
-            <div class="actions">
-              <button class="btn outline-danger" type="button" (click)="reset()">Reset</button>
-
-              <button class="btn btn-primary" [disabled]="personalForm.invalid" (click)="onPersonalNext()">
-                Next
-              </button>
-            </div>
-
-          </form>
+          <button class="custom-btn" (click)="goToPersonalDetails('DomesticTravels')">
+            New Domestic Travels Claim
+          </button>
         </div>
-      </clr-modal>
+
+
+        <clr-modal [(clrModalOpen)]="showPersonalModal" [clrModalSize]="'md'">
+          <h3 class="modal-title">Personal Details</h3>
+
+          <div class="modal-body">
+            <form clrForm [formGroup]="personalForm" class="personal-card-form">
+
+              <div class="grid-two">
+                <clr-input-container>
+                  <label>Date of Submission</label>
+                  <input clrInput [value]="User.today" readonly />
+                </clr-input-container>
+
+                <clr-input-container>
+                  <label>Expense statement of Mr/Ms</label>
+                  <input clrInput [value]="User.username" readonly />
+                </clr-input-container>
+              </div>
+
+              <div class="grid-two">
+                <clr-input-container>
+                  <label>Employee Code</label>
+                  <input clrInput [value]="User.employeeCode" readonly />
+                </clr-input-container>
+
+                <clr-input-container>
+                  <label>Purpose & Place</label>
+
+                  <input clrInput formControlName="purposePlace" />
+
+                  <clr-control-error *ngIf="personalForm.get('purposePlace')?.invalid 
+              && personalForm.get('purposePlace')?.touched">
+                    Purpose & Place is required
+                  </clr-control-error>
+                </clr-input-container>
+              </div>
+
+              <div class="grid-two">
+                <clr-input-container>
+                  <label>Company OR Plant</label>
+                  <input clrInput [value]="User.companyPlant" readonly />
+                </clr-input-container>
+
+                <clr-input-container>
+                  <label>Cost Center</label>
+                  <input clrInput [value]="User.costCenter" readonly />
+                </clr-input-container>
+              </div>
+
+              <clr-input-container>
+                <label>Vendor Code</label>
+                <input clrInput [value]="User.vendorCost" readonly />
+              </clr-input-container>
+
+              <div class="divider"></div>
+
+              <div class="actions">
+                <button class="btn outline-danger" type="button" (click)="reset()">Reset</button>
+
+                <button class="btn btn-primary" [disabled]="personalForm.invalid" (click)="onPersonalNext()">
+                  Next
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </clr-modal>
 
 
 
-      <div class="datagriid">
-        <clr-datagrid>
+        <div class="datagriid">
+          <clr-datagrid>
 
 
-          <clr-dg-column>Type</clr-dg-column>
-          <clr-dg-column>Created Date</clr-dg-column>
-          <clr-dg-column>Purpose & Place</clr-dg-column>
-          <clr-dg-column>Amount</clr-dg-column>
-          <clr-dg-column>Status</clr-dg-column>
+            <clr-dg-column>Type</clr-dg-column>
+            <clr-dg-column>Created Date</clr-dg-column>
+            <clr-dg-column>Purpose & Place</clr-dg-column>
+            <clr-dg-column>Amount</clr-dg-column>
+            <clr-dg-column>Status</clr-dg-column>
 
 
-          <clr-dg-row *clrDgItems="let item of dataSource">
-            <clr-dg-cell>{{ item.type }}</clr-dg-cell>
-            <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
-            <clr-dg-cell>{{ item.purpose }}</clr-dg-cell>
-            <clr-dg-cell>{{ item.amount }}</clr-dg-cell>
-            <clr-dg-cell>
-              <span [ngClass]="getStatusClass(item.status)" class="status-badge">
-                {{ item.status }}
-              </span>
-            </clr-dg-cell>
-          </clr-dg-row>
 
-          <clr-dg-footer>
-            <clr-dg-pagination #pagination [clrDgPageSize]="10">
-              <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
-                Items per page
-              </clr-dg-page-size>
-              {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-              {{ pagination.totalItems }} items
-            </clr-dg-pagination>
-          </clr-dg-footer>
+            <clr-dg-row *clrDgItems="let item of dataSource" (click)="goToClaimView(item.recentClaimId!)"
+              style="cursor:pointer">
 
-        </clr-datagrid>
+              <clr-dg-cell>{{ item.type }}</clr-dg-cell>
+              <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
+              <clr-dg-cell>{{ item.purpose }}</clr-dg-cell>
+              <clr-dg-cell>{{ item.amount }}</clr-dg-cell>
+              <clr-dg-cell>
+                <span [ngClass]="getStatusClass(item.status)" class="status-badge">
+                  {{ item.status }}
+                </span>
+              </clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>
+              <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+                  Items per page
+                </clr-dg-page-size>
+                {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+                {{ pagination.totalItems }} items
+              </clr-dg-pagination>
+            </clr-dg-footer>
+
+          </clr-datagrid>
+        </div>
+
+
       </div>
-
-
     </div>
-  </div>

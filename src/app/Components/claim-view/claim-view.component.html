@@ -1,0 +1,82 @@
+<div class="dashboard-container" *ngIf="claimDetails">
+
+  <!-- HEADER -->
+  <div class="dashboard-header">
+    <h2>Claim Dashboard</h2>
+    <span class="label label-info">{{ claimDetails.claimType }}</span>
+  </div>
+
+  <!-- ======================= -->
+  <!-- EXPENSE CLAIM UI -->
+  <!-- ======================= -->
+  <section *ngIf="isExpense()">
+
+    <h4>Expense Details</h4>
+
+    <clr-datagrid>
+      <clr-dg-column>Date</clr-dg-column>
+      <clr-dg-column>Supporting No</clr-dg-column>
+      <clr-dg-column>Particulars</clr-dg-column>
+      <clr-dg-column>Payment Mode</clr-dg-column>
+      <clr-dg-column>Amount</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let e of claimDetails.expenses">
+        <clr-dg-cell>{{ e.date  }}</clr-dg-cell>
+        <clr-dg-cell>{{ e.supportingNo }}</clr-dg-cell>
+        <clr-dg-cell>{{ e.particulars }}</clr-dg-cell>
+        <clr-dg-cell>{{ e.paymentMode }}</clr-dg-cell>
+        <clr-dg-cell>{{ e.amount  }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        Total Expenses: {{ claimDetails.expenses.length }}
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </section>
+
+  <!-- ======================= -->
+  <!-- INTERNATIONAL TRAVEL UI -->
+  <!-- ======================= -->
+  <section *ngIf="isInternational()">
+
+    <h4>Travel Summary</h4>
+
+    <div class="clr-row travel-summary">
+      <div class="clr-col-4"><b>Currency:</b> {{ claimDetails.travelDetails?.currencyType }}</div>
+      <div class="clr-col-4"><b>Start:</b> {{ claimDetails.travelDetails?.travelStartDate  }}</div>
+      <div class="clr-col-4"><b>End:</b> {{ claimDetails.travelDetails?.travelEndDate  }}</div>
+      <div class="clr-col-4"><b>Total Days:</b> {{ claimDetails.travelDetails?.totalDays }}</div>
+      <div class="clr-col-4"><b>Advance:</b> {{ claimDetails.travelDetails?.advanceAmount  }}</div>
+      <div class="clr-col-4"><b>Status:</b> {{ claimDetails.travelDetails?.reimbursementStatus }}</div>
+    </div>
+
+    <h4 style="margin-top: 20px">International Expenses</h4>
+
+    <clr-datagrid>
+      <clr-dg-column>Date</clr-dg-column>
+      <clr-dg-column>Supporting No</clr-dg-column>
+      <clr-dg-column>Particulars</clr-dg-column>
+      <clr-dg-column>Payment</clr-dg-column>
+      <clr-dg-column>Currency</clr-dg-column>
+      <clr-dg-column>Amount</clr-dg-column>
+      <clr-dg-column>Converted (INR)</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let ie of claimDetails.internationalExpenses">
+        <clr-dg-cell>{{ ie.date  }}</clr-dg-cell>
+        <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
+        <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
+        <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
+        <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
+        <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
+        <clr-dg-cell>{{ ie.convertedAmount  }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        Total International Expenses: {{ claimDetails.internationalExpenses.length }}
+      </clr-dg-footer>
+    </clr-datagrid>
+
+  </section>
+
+</div>

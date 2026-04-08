@@ -6,6 +6,7 @@ import { ExpensereviewComponent } from './Components/Expense/expensereview/expen
 import { InternationalComponent } from './Components/International/international/international.component';
 import { InternationalCalculationalComponent } from './Components/International/international-calculational/international-calculational.component';
 import { InternationalReviewComponent } from './Components/International/international-review/international-review.component';
+import { ClaimViewComponent } from './Components/claim-view/claim-view.component';
 //import { DashboardComponent } from './Components/dashboard/dashboard.component';
 
 export const routes: Routes = [
@@ -18,4 +19,5 @@ export const routes: Routes = [
      {path:'international',component:InternationalComponent},
      {path:'internationalreview',component:InternationalReviewComponent},
 {path:'internationalcal',component:InternationalCalculationalComponent},
+{path:'claim-view/:claimId',component:ClaimViewComponent},
 ];

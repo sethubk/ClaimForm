@@ -24,5 +24,7 @@ updateClaim(employeeCode:string,claimId: string, claim: any): Observable<Claims>
     claim
   );
 }
+getExpensesByClaimId(claimId: string): Observable<any> {
+  return this.http.get(`${this.baseurl}/${claimId}/claim`);}
 
 }
