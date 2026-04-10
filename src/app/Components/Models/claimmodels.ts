@@ -104,3 +104,9 @@ export interface ClaimUpdate {
   /** Total / updated claim amount */
   amount: number;
 }
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+export interface ToastMessage {
+  type: ToastType;
+  message: string;
+}

@@ -5,11 +5,12 @@ import { NavbarComponent } from './Components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './Components/sidebar/sidebar.component';
 import { ClrVerticalNavModule } from "@clr/angular";
+import { ToastComponent } from './Components/toast/toast.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, CommonModule, SidebarComponent, ClrVerticalNavModule],
+  imports: [RouterOutlet, NavbarComponent, CommonModule, SidebarComponent, ClrVerticalNavModule,ToastComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

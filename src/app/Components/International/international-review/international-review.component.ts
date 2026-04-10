@@ -10,6 +10,7 @@ import { ClaimUpdate, Employee, Entry, InternationalExpense, InternationalExpens
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
 import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
 import { ApiService } from '../../../Services/Api Services/api.service';
+import { ToasterService } from '../../../Services/toaster.service';
 
 @Component({
   selector: 'app-international-review',
@@ -21,7 +22,9 @@ import { ApiService } from '../../../Services/Api Services/api.service';
 export class InternationalReviewComponent {
 constructor(private router:Router,private service:ExpenseDataService,
   private api:ApiService,
-  private TravelService:TravelEntryService,private InternationalExpenseapi:InternationalApiService,private ClaimApi:ClaimApiService){}
+  private TravelService:TravelEntryService,
+  private toastService: ToasterService,
+  private InternationalExpenseapi:InternationalApiService,private ClaimApi:ClaimApiService){}
 entries:InternationalExpense[]=[];
  personalData: Employee={ 
     today: '',
@@ -102,7 +105,7 @@ debugger
   }
 
   const payload = (this.entries ?? []).map((e: InternationalExpenseUI) => ({
-    date: e.date ? new Date(e.date).toISOString() : new Date().toISOString(),
+    date: e.date ,
     supportingNo: e.supportingNo ?? "",
     particulars: e.particulars ?? "",
     paymentMode: e.paymentMode ?? "",
@@ -144,12 +147,13 @@ const claim:ClaimUpdate = {
     next: res => {
       console.log("Claim updated", res);
       this.loading = false;
-
+      this.toastService.success('Expense submitted and claim updated successfully');
       this.router.navigate(['/Homepage']).then(() => {
         setTimeout(() => window.location.reload(), 50);
       });
     },
     error: err => {
+      this.toastService.error('Failed to submit expense. Please contact support.');
       console.error("Update claim error", err);
       this.loading = false;
     }

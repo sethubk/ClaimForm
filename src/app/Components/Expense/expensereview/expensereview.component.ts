@@ -11,6 +11,8 @@ import { Employee } from '../../Models/claimmodels';
 import { ApiService } from '../../../Services/Api Services/api.service';
 import { defaultEquals } from '@angular/core/primitives/signals';
 import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
+import { ToasterService } from '../../../Services/toaster.service';
+import { devOnlyGuardedExpression } from '@angular/compiler';
 interface Entry {
   date: string;
   supportingNo: string;
@@ -27,7 +29,7 @@ interface Entry {
   styleUrl: './expensereview.component.css'
 })
 export class ExpensereviewComponent {
-constructor(private service:ExpenseDataService,private api:ApiService, private router:Router,
+constructor(private service:ExpenseDataService,private api:ApiService, private router:Router,private toastService: ToasterService,
   private TravelService:TravelEntryService,private ExpenseApi:ExpenseApiService,private ClaimApi:ClaimApiService){
 
  }
@@ -117,6 +119,7 @@ printPage() {
 // }
 loading = false;
 submitExpense(){
+  debugger
   this.loading = true;
 const claimId = localStorage.getItem('lastClaimId');
 if (!claimId) {
@@ -126,7 +129,7 @@ if (!claimId) {
 
 const payload = (this.entries ?? []).map((e: any) => ({
   amount: Number(e.amount),
-  date: e.date ? new Date(e.date).toISOString() : new Date().toISOString(),
+  date: e.date ,
   supportingNo: e.supportingNo ?? "",
   particulars: e.particulars ?? "",
   paymentMode: e.paymentMode ?? "",
@@ -136,10 +139,14 @@ const payload = (this.entries ?? []).map((e: any) => ({
 }));
 
 this.ExpenseApi.createExpense(claimId, payload).subscribe({
-  next: res => console.log('Expense created', res),
+  next: res => {console.log('Expense created', res);
+this.toastService.success('Expense submitted successfully');
+
+  },
   error: err => {
     console.error('Expense ERROR:', err);
     // check server message here:
+    this.toastService.error('Failed to submit expense. Please try again.');
     // console.error('Server says:', err.error);
   }
 });
@@ -151,16 +158,28 @@ const claim={
 }
 
 this.ClaimApi.updateClaim(this.api.User.employeeCode,claimId,claim).subscribe({
-        next: (res2) => console.log("Claim updated", res2),
-        error: (err2) => console.error("Update claim error", err2)
+       next: res => {
+      console.log("Claim updated", res);
+      this.loading = false;
+      this.toastService.success('Expense and claim submitted  successfully');
+     
+setTimeout(() => {
+      this.router.navigate(['/Homepage']);
+    }, 1200);
+
+    },
+        error: (err2) => {
+          console.error("Update claim error", err2);
+          this.toastService.error('Failed to update claim. Please contact support.');
+        }
          
       });
 this.loading = false;
 
 
-this.router.navigate(['/Homepage']).then(() => {
-  setTimeout(() => window.location.reload(), 50);
-});
+// this.router.navigate(['/Homepage']).then(() => {
+//   setTimeout(() => window.location.reload(), 50);
+// });
 
 }
 

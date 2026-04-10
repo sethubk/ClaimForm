@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Employee } from '../Models/claimmodels';
 import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import '@cds/core/progress-circle/register.js';
+import { ToasterService } from '../../Services/toaster.service';
 
 
 export interface Claims {
@@ -35,26 +36,27 @@ export interface Personal {
   styleUrl: './homepage.component.css'
 })
 export class HomepageComponent {
-  constructor(private api: ApiService, private router: Router, private ClaimApi: ClaimApiService) { }
+  constructor(private api: ApiService, private toastService: ToasterService,
+    private router: Router, private ClaimApi: ClaimApiService) { }
   username: string = '';
   showPersonalModal = false;
 
 
 
-empcode :string ='';
-dataSource:Claims[]=[];
- allClaims: Claims[] = [];
- 
-User:Employee={
-  today: '',
-  username: '',
-  employeeCode: '',
-  purposePlace: '',
-  companyPlant: '',
-  costCenter: '',
-  vendorCost: '',
- 
-};
+  empcode: string = '';
+  dataSource: Claims[] = [];
+  allClaims: Claims[] = [];
+
+  User: Employee = {
+    today: '',
+    username: '',
+    employeeCode: '',
+    purposePlace: '',
+    companyPlant: '',
+    costCenter: '',
+    vendorCost: '',
+
+  };
 
   isLoading = false;
   pendingCalls = 0;
@@ -69,8 +71,9 @@ User:Employee={
 
 
     this.User = this.api.User;
+     this.empcode = this.api.User.employeeCode;
     this.User.today = today
-    this.empcode = this.User.employeeCode;
+   
     // this.pendingCalls = 2;
     // this.getClaimUsingEmpCode();
 
@@ -93,51 +96,53 @@ User:Employee={
 
 
 
-getclaim(): void {
-  this.ClaimApi.getClaimByEmpCode(this.empcode)
-    .subscribe({
-      next: (res: Claims[]) => {
-        console.log('Claims fetched:', res);
+  getclaim(): void {
+    this.ClaimApi.getClaimByEmpCode(this.empcode)
+      .subscribe({
+        next: (res: Claims[]) => {
+          console.log('Claims fetched:', res);
 
-        this.allClaims = res.filter(
-          c => c.status !== 'Draft' && (c.amount ?? 0) > 0
-        );
+          this.allClaims = res.filter(
+            c => c.status !== 'Draft' && (c.amount ?? 0) > 0
+          );
 
-        this.dataSource = [...this.allClaims];
-      },
-      error: (err) => {
-        console.error('Error fetching claims:', err);
-      }
-    });
-}
-
-// getclaim() {
-//   this.api.GetEmployeewithClaim(this.empcode).subscribe(res => {
-// console.log("Claimswith fetched:", res);
-//     this.allClaims = (res as { recentClaims: Claims[] }).recentClaims
-//       .filter(c => c.status !== 'Draft' && (c.amount ?? 0) > 0);
-
-//     // Use a fresh copy for the grid
-//     this.dataSource = [...this.allClaims];
-//     console.log("Claims fetched:", this.dataSource);
-//   });
-// }
-
-
-filterByType(type: string) {
-
-  if (!type) {
-    // Reset filter
-    this.dataSource = [...this.allClaims];
-    return;
+          this.dataSource = [...this.allClaims];
+           this.toastService.success('Claim fetched successfully');
+        },
+        error: (err) => {
+          console.error('Error fetching claims:', err);
+         
+        }
+      });
   }
 
-  this.dataSource = this.allClaims.filter(
-    c => c.type?.toLowerCase() === type.toLowerCase()
-  );
+  // getclaim() {
+  //   this.api.GetEmployeewithClaim(this.empcode).subscribe(res => {
+  // console.log("Claimswith fetched:", res);
+  //     this.allClaims = (res as { recentClaims: Claims[] }).recentClaims
+  //       .filter(c => c.status !== 'Draft' && (c.amount ?? 0) > 0);
 
-  console.log("Filtered:", this.dataSource);
-}
+  //     // Use a fresh copy for the grid
+  //     this.dataSource = [...this.allClaims];
+  //     console.log("Claims fetched:", this.dataSource);
+  //   });
+  // }
+
+
+  filterByType(type: string) {
+
+    if (!type) {
+      // Reset filter
+      this.dataSource = [...this.allClaims];
+      return;
+    }
+
+    this.dataSource = this.allClaims.filter(
+      c => c.type?.toLowerCase() === type.toLowerCase()
+    );
+
+    console.log("Filtered:", this.dataSource);
+  }
 
   selectedCategory: string | null = null;
   personalForm = new FormGroup({
@@ -182,13 +187,25 @@ filterByType(type: string) {
         this.router.navigate(['/domestic, claimId'])
       }
       debugger
-      this.api.createClaim(this.empcode, dto).subscribe(
-        res => {
-          console.log("claim created ", res);
+      this.api.createClaim(this.empcode, dto).subscribe({
+        next: (res) => {
+          console.log('Claim created', res);
+
           const claimId = res.recentClaimId;
-          localStorage.setItem('lastClaimId', claimId)
-        })
-      console.log("Formsubmitted", this.User)
+          localStorage.setItem('lastClaimId', claimId);
+
+          // ✅ SUCCESS TOAST
+         
+        },
+        error: (err) => {
+          console.error('Error creating claim', err);
+
+          // ✅ ERROR TOAST
+         
+        }
+      });
+
+      console.log('Form submitted', this.User);
 
     }
 
@@ -216,9 +233,9 @@ filterByType(type: string) {
     this.router.navigate(['./dashboard'])
   }
 
-  
-goToClaimView(claimId: string) {
-  this.router.navigate(['/claim-view', claimId]);
-}
+
+  goToClaimView(claimId: string) {
+    this.router.navigate(['/claim-view', claimId]);
+  }
 
 }
