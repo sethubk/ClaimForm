@@ -36,6 +36,7 @@ ngOnInit() {
 }
 getClaimExpenses() {
   this.ClaimApi.getExpensesByClaimId(this.claimId).subscribe(res => {
+    console.log("Claim details fetched:", res);
     this.claimDetails = res;
   });
 }

@@ -6,7 +6,7 @@ import { ClarityIcons } from '@clr/icons';
 import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Employee, Entry } from '../../Models/claimmodels';
+import { ClaimUpdate, Employee, Entry, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
 import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
 import { ApiService } from '../../../Services/Api Services/api.service';
@@ -22,7 +22,7 @@ export class InternationalReviewComponent {
 constructor(private router:Router,private service:ExpenseDataService,
   private api:ApiService,
   private TravelService:TravelEntryService,private InternationalExpenseapi:InternationalApiService,private ClaimApi:ClaimApiService){}
-entries:any[]=[];
+entries:InternationalExpense[]=[];
  personalData: Employee={ 
     today: '',
    username: '',
@@ -101,7 +101,7 @@ debugger
     return;
   }
 
-  const payload = (this.entries ?? []).map((e: any) => ({
+  const payload = (this.entries ?? []).map((e: InternationalExpenseUI) => ({
     date: e.date ? new Date(e.date).toISOString() : new Date().toISOString(),
     supportingNo: e.supportingNo ?? "",
     particulars: e.particulars ?? "",
@@ -131,7 +131,7 @@ const totalConvertedAmount = payload.reduce(
   (sum, item) => sum + (item.convertedAmount || 0),
   0
 );
-const claim = {
+const claim:ClaimUpdate = {
     status: "pending",
     amount: totalConvertedAmount
   };

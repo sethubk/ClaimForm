@@ -12,13 +12,15 @@ export interface Employee{
   
 }
 
+
 export interface Claims {
+  recentClaimId: string;
   type: 'International' | 'Domestic' | '' | string;
-  createdDate?: Date | null;
-  purposePlace?: string;
-  totalAmount?: number | null;
+  date?: Date | null;
+  purpose?: string;
+  amount?: number | null;
   status: 'In progress' | 'Approved' | 'Rejected' | string;
-  // expense?: string;
+  expense?: string;
 }
 
 export interface FormDataModel {
@@ -63,4 +65,42 @@ export interface Entry {
   amount: number;
   remarks: string;
   convertedAmount: number;
+}
+
+
+
+export interface InternationalExpenseUI {
+  date?: Date | string;
+  supportingNo?: string;
+  particulars?: string;
+  paymentMode?: string;
+
+  // UI-only fields
+  selectedCurrency_amt?: string;
+  amount?: string | number;
+  convertedAmount?: string | number;
+  remarks?: string;
+
+  fileName?: string;
+  file?: File;
+}
+export interface InternationalExpense {
+  date: string;
+  supportingNo: string;
+  particulars: string;
+  paymentMode: string;
+  currencyType: string;
+  amount: number;
+  convertedAmount: number;
+  remarks: string;
+  screenshot: string;
+}
+
+
+export interface ClaimUpdate {
+  /** Claim status (Pending, Approved, Rejected, etc.) */
+  status: string;
+
+  /** Total / updated claim amount */
+  amount: number;
 }

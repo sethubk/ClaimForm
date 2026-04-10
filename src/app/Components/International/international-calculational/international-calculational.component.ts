@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormDataModel } from '../../Models/claimmodels';
+import { FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
 import { Router } from '@angular/router';
@@ -28,7 +28,7 @@ export class InternationalCalculationalComponent {
 
   isFutureDate: boolean = false;
   formopen: boolean = false;
-  entries: any[] = [];
+  entries: InternationalExpenseUI[] = [];
   index1: number = this.entries.length
   editIndex: number | null = null;
   editType: 'Card' | 'Cash' | null = null;

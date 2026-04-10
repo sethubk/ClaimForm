@@ -9,7 +9,7 @@ import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import '@cds/core/progress-circle/register.js';
 
 
-export interface Expense {
+export interface Claims {
   recentClaimId: string;
   type: 'International' | 'Domestic' | '' | string;
   date?: Date | null;
@@ -42,8 +42,8 @@ export class HomepageComponent {
 
 
 empcode :string ='';
-dataSource:Expense[]=[];
- allClaims: Expense[] = [];
+dataSource:Claims[]=[];
+ allClaims: Claims[] = [];
  
 User:Employee={
   today: '',
@@ -93,37 +93,35 @@ User:Employee={
 
 
 
-  // getClaimUsingEmpCode() {
-  //     // or this.empCode from form
+getclaim(): void {
+  this.ClaimApi.getClaimByEmpCode(this.empcode)
+    .subscribe({
+      next: (res: Claims[]) => {
+        console.log('Claims fetched:', res);
 
-  //   this.ClaimApi.getClaimByEmpCode(this.empcode).subscribe({
-  //     next: (res) => {
-  //       console.log("Claim by Code:", res);
+        this.allClaims = res.filter(
+          c => c.status !== 'Draft' && (c.amount ?? 0) > 0
+        );
 
-  //     },
-  //     error: (err) => {
-  //       console.error("Error fetching claim:", err);
-  //     },
-
-  // complete: () => {
-  //       this.checkLoading() 
-
-
-
-
-  //});
-//}
-getclaim() {
-  this.api.GetEmployeewithClaim(this.empcode).subscribe(res => {
-
-    this.allClaims = (res as { recentClaims: Expense[] }).recentClaims
-      .filter(c => c.status !== 'Draft' && (c.amount ?? 0) > 0);
-
-    // Use a fresh copy for the grid
-    this.dataSource = [...this.allClaims];
-    console.log("Claims fetched:", this.dataSource);
-  });
+        this.dataSource = [...this.allClaims];
+      },
+      error: (err) => {
+        console.error('Error fetching claims:', err);
+      }
+    });
 }
+
+// getclaim() {
+//   this.api.GetEmployeewithClaim(this.empcode).subscribe(res => {
+// console.log("Claimswith fetched:", res);
+//     this.allClaims = (res as { recentClaims: Claims[] }).recentClaims
+//       .filter(c => c.status !== 'Draft' && (c.amount ?? 0) > 0);
+
+//     // Use a fresh copy for the grid
+//     this.dataSource = [...this.allClaims];
+//     console.log("Claims fetched:", this.dataSource);
+//   });
+// }
 
 
 filterByType(type: string) {

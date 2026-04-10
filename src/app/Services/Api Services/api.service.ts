@@ -59,9 +59,9 @@ GetEmployee(){
     const userObj = JSON.parse(user);
     this.User=userObj.res;}
 }
-GetEmployeewithClaim(Empcode:string):Observable<any>{
-return this.http.get(`${this.baseurl}/${Empcode}`)
-}
+// GetEmployeewithClaim(Empcode:string):Observable<any>{
+// return this.http.get(`${this.baseurl}/${Empcode}`)
+// }
 
 createClaim(empCode: string, dto: any): Observable<any> {
   return this.http.post(
