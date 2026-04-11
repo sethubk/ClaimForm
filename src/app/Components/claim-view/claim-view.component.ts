@@ -10,9 +10,10 @@ export interface ClaimDetailsResponse {
   travelType?: string | null;
   travelDetails?: any;
   expenses: any[];
+  cardCashEntries: any[];
   internationalExpenses: any[];
 }
-``
+
 @Component({
   selector: 'app-claim-view',
   standalone: true,

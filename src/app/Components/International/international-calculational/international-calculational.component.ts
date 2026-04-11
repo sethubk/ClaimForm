@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
+import { Employee, FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
 import { Router } from '@angular/router';
@@ -18,7 +18,16 @@ import { ApiService } from '../../../Services/Api Services/api.service';
 })
 export class InternationalCalculationalComponent {
   isEdit: boolean = false;
-  personalData: any;
+  personalData: Employee={ 
+     today: '',
+    username: '',
+    employeeCode: '',
+    purposePlace: '',
+    companyPlant: '',
+    costCenter: '',
+    vendorCost: '',
+   
+  };
   constructor(private fb: FormBuilder, private api: ApiService, private travelService: TravelEntryService, private router: Router, private service: ExpenseDataService) { }
   maxDate: string = '';
 

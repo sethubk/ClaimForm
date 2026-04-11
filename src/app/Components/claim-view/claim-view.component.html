@@ -12,8 +12,8 @@
   <section *ngIf="isExpense()">
 
     <h4>Expense Details</h4>
-
-    <clr-datagrid>
+<div class="datagriid">
+<clr-datagrid>
       <clr-dg-column>Date</clr-dg-column>
       <clr-dg-column>Supporting No</clr-dg-column>
       <clr-dg-column>Particulars</clr-dg-column>
@@ -32,6 +32,8 @@
         Total Expenses: {{ claimDetails.expenses.length }}
       </clr-dg-footer>
     </clr-datagrid>
+</div>
+    
 
   </section>
 
@@ -42,18 +44,69 @@
 
     <h4>Travel Summary</h4>
 
-    <div class="clr-row travel-summary">
-      <div class="clr-col-4"><b>Currency:</b> {{ claimDetails.travelDetails?.currencyType }}</div>
-      <div class="clr-col-4"><b>Start:</b> {{ claimDetails.travelDetails?.travelStartDate  }}</div>
-      <div class="clr-col-4"><b>End:</b> {{ claimDetails.travelDetails?.travelEndDate  }}</div>
-      <div class="clr-col-4"><b>Total Days:</b> {{ claimDetails.travelDetails?.totalDays }}</div>
-      <div class="clr-col-4"><b>Advance:</b> {{ claimDetails.travelDetails?.advanceAmount  }}</div>
-      <div class="clr-col-4"><b>Status:</b> {{ claimDetails.travelDetails?.reimbursementStatus }}</div>
-    </div>
+   <clr-accordion>
+
+  <clr-accordion-panel [clrAccordionPanelOpen]="true">
+
+    <clr-accordion-title>
+      <strong>Travel Details</strong>
+    </clr-accordion-title>
+
+    <clr-accordion-content>
+
+      <!-- ROW 1 -->
+      <div class="clr-row" style="margin-bottom: 1rem;">
+
+        <div class="clr-col-2"><strong>Currency:</strong></div>
+        <div class="clr-col-2">{{ claimDetails.travelDetails?.currencyType }}</div>
+
+        <div class="clr-col-2"><strong>Start Date:</strong></div>
+        <div class="clr-col-2">{{ claimDetails.travelDetails?.travelStartDate }}</div>
+
+        <div class="clr-col-2"><strong>End Date:</strong></div>
+        <div class="clr-col-2">{{ claimDetails.travelDetails?.travelEndDate }}</div>
+
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="clr-row" style="margin-bottom: 1rem;">
+
+        <div class="clr-col-2"><strong>Total Days:</strong></div>
+        <div class="clr-col-2">{{ claimDetails.travelDetails?.totalDays }}</div>
+
+        <div class="clr-col-2"><strong>Advance Amount:</strong></div>
+        <div class="clr-col-2">₹ {{ claimDetails.travelDetails?.advanceAmount }}</div>
+
+        <div class="clr-col-2"><strong>Status:</strong></div>
+        <div class="clr-col-2">
+          <span class="status-badge">
+            {{ claimDetails.travelDetails?.reimbursementStatus }}
+          </span>
+        </div>
+
+      </div>
+
+      <!-- OPTIONAL EMPTY ROW (alignment like your pattern) -->
+      <div class="clr-row">
+
+        <div class="clr-col-2"></div>
+        <div class="clr-col-2"></div>
+        <div class="clr-col-2"></div>
+        <div class="clr-col-2"></div>
+        <div class="clr-col-2"></div>
+        <div class="clr-col-2"></div>
+
+      </div>
+
+    </clr-accordion-content>
+
+  </clr-accordion-panel>
+
+</clr-accordion>
 
     <h4 style="margin-top: 20px">International Expenses</h4>
-
-    <clr-datagrid>
+<div class="datagriid">
+   <clr-datagrid>
       <clr-dg-column>Date</clr-dg-column>
       <clr-dg-column>Supporting No</clr-dg-column>
       <clr-dg-column>Particulars</clr-dg-column>
@@ -76,6 +129,10 @@
         Total International Expenses: {{ claimDetails.internationalExpenses.length }}
       </clr-dg-footer>
     </clr-datagrid>
+</div>
+   
+
+    
 
   </section>
 

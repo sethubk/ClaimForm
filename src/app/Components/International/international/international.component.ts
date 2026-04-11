@@ -218,9 +218,9 @@ const data = {
 
   cardCashEntries: this.travelService.cardCashEntries.map(x => ({
     loadedDate: String(x.loadedDate),
-    type: String(x.type),
+    PaymentType: String(x.type),
     inrRate: String(x.inrRate),
-    totalLoaded: String(x.totalLoaded)
+    TotalLoadedAmount: String(x.totalLoaded)
   }))
 };
 this.internationalApi.addTravelDetails(claimId, data).subscribe({

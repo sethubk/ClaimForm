@@ -17,25 +17,22 @@ private entries:any=[];
     return this.cashEntries;
   }
 
-// getavg() : number{
-//   let InrRate = 0;
-//   let totalInr = 0;
-//   let avg = 0;
-//   this.cardEntries.forEach(x=>{
-//    InrRate +=  x['totalLoaded'];
-//    totalInr += x['totalInr'];
+getAvg(): number {
+  let total = 0;
+  let count = 0;
 
-//   })
+  this.cardEntries.forEach(x => {
+    total += x.totalLoaded;
+    count++;
+  });
 
-//   this.cashEntries.forEach(x=>{
-//    InrRate +=  x['totalLoaded'];
-//    totalInr += x['inrRate'];
+  this.cashEntries.forEach(x => {
+    total += x.totalLoaded;
+    count++;
+  });
 
-//   })
-//   avg = totalInr/InrRate
-
-//   return avg ;
-// }
+  return count ? total / count : 0;
+}
 
  cardCashEntries: any[] = [];
 
