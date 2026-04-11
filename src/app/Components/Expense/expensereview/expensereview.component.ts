@@ -162,7 +162,10 @@ this.ClaimApi.updateClaim(this.api.User.employeeCode,claimId,claim).subscribe({
       console.log("Claim updated", res);
       this.loading = false;
       this.toastService.success('Expense and claim submitted  successfully');
-     
+     this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
+  next: res => console.log('Email sent', res),
+  error: err => console.error('Email ERROR:', err)
+});
 setTimeout(() => {
       this.router.navigate(['/Homepage']);
     }, 1200);

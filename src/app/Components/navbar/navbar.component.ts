@@ -34,7 +34,7 @@ console.log("userdasdas",userObj)
   }
   
 goHome() {
-  this.router.navigate(['/HomePage']);
+  this.router.navigate(['/Homepage']);
 }
 
 

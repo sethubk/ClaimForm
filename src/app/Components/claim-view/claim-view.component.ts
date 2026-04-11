@@ -4,6 +4,9 @@ import { ApiService } from '../../Services/Api Services/api.service';
 import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
+import { Claims } from '../homepage/homepage.component';
+import { ClaimStatusDto } from '../Models/claimmodels';
+import { ToasterService } from '../../Services/toaster.service';
 export interface ClaimDetailsResponse {
   recentClaimId: string;
   claimType: string;
@@ -12,6 +15,7 @@ export interface ClaimDetailsResponse {
   expenses: any[];
   cardCashEntries: any[];
   internationalExpenses: any[];
+  claimStatus: string;
 }
 
 @Component({
@@ -26,11 +30,13 @@ export class ClaimViewComponent {
 constructor(
   private route: ActivatedRoute,
   private api: ApiService,
-  private ClaimApi: ClaimApiService
+  private ClaimApi: ClaimApiService,
+  private toastService: ToasterService
 ) {}
 claimDetails!: ClaimDetailsResponse;
-
+Claims:Claims[]=[];
 claimId!: string;
+
 ngOnInit() {
   this.claimId = this.route.snapshot.paramMap.get('claimId')!;
   this.getClaimExpenses();
@@ -39,6 +45,7 @@ getClaimExpenses() {
   this.ClaimApi.getExpensesByClaimId(this.claimId).subscribe(res => {
     console.log("Claim details fetched:", res);
     this.claimDetails = res;
+    
   });
 }
   
@@ -49,6 +56,38 @@ isExpense(): boolean {
 isInternational(): boolean {
   return this.claimDetails?.claimType === 'InternationalTravels';
 }
+isWithdrawModalOpen = false;
 
+// Open modal
+confirmWithdraw() {
+  this.isWithdrawModalOpen = true;
+}
+
+// Call backend
+withdrawClaim() {
+  const claimId = this.claimId
+  const payload: ClaimStatusDto = {
+    ClaimStatus: 'Withdrawn'
+  };
+  this.ClaimApi.updateClaimStatus(claimId,payload).subscribe({
+    next: (res) => {
+      console.log('Withdraw successful');
+
+      // Update UI status immediately
+     this.claimDetails.claimStatus = 'Withdrawn';
+      
+
+      this.isWithdrawModalOpen = false;
+
+      // Optional: show toast
+      this.toastService.success('Claim withdrawn successfully');
+      
+    },
+    error: (err) => {
+      console.error(err);
+      this.toastService.error('Failed to withdraw claim');
+    }
+  });
+}
 
 }

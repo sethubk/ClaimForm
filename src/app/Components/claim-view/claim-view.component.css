@@ -70,3 +70,18 @@ canvas {
   padding: 4px 8px;
   border-radius: 5px;
 }
+
+.datagriid {
+  height: 300px;
+  overflow-y: auto;
+  display: block;
+  margin-top: 20px;
+
+  
+}
+clr-datagrid{
+  overflow-y: auto;
+  height:250px;
+ overflow-x: auto;
+
+}

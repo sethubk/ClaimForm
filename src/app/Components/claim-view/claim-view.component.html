@@ -5,13 +5,40 @@
     <h2>Claim Dashboard</h2>
     <span class="label label-info">{{ claimDetails.claimType }}</span>
   </div>
+<div class="action-bar">
+ <button 
+  class="btn btn-danger"
+  [disabled]="claimDetails.claimStatus === 'Withdrawn' || claimDetails.claimStatus === 'Approved'"
+  (click)="confirmWithdraw()">
 
+  Withdraw Claim
+</button>
+</div>
+
+<clr-modal [(clrModalOpen)]="isWithdrawModalOpen">
+  <h3 class="modal-title">Confirm Withdraw</h3>
+
+  <div class="modal-body">
+    Are you sure you want to withdraw this claim?
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-outline" (click)="isWithdrawModalOpen = false">
+      Cancel
+    </button>
+
+    <button class="btn btn-danger" (click)="withdrawClaim()">
+      Yes, Withdraw
+    </button>
+  </div>
+</clr-modal>
   <!-- ======================= -->
   <!-- EXPENSE CLAIM UI -->
   <!-- ======================= -->
   <section *ngIf="isExpense()">
 
     <h4>Expense Details</h4>
+    <div class="datagriid">
 <div class="datagriid">
 <clr-datagrid>
       <clr-dg-column>Date</clr-dg-column>
@@ -28,12 +55,29 @@
         <clr-dg-cell>{{ e.amount  }}</clr-dg-cell>
       </clr-dg-row>
 
-      <clr-dg-footer>
-        Total Expenses: {{ claimDetails.expenses.length }}
-      </clr-dg-footer>
-    </clr-datagrid>
-</div>
+    <!-- ROW -->
     
+
+    <!-- FOOTER WITH PAGINATION -->
+    <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+
+        <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+          Items per page
+        </clr-dg-page-size>
+
+        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+        {{ pagination.totalItems }} items
+
+      </clr-dg-pagination>
+    </clr-dg-footer>
+
+  </clr-datagrid>
+
+</div>
+    </div>
+
+
 
   </section>
 
@@ -126,8 +170,17 @@
       </clr-dg-row>
 
       <clr-dg-footer>
-        Total International Expenses: {{ claimDetails.internationalExpenses.length }}
-      </clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10">
+
+        <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+          Items per page
+        </clr-dg-page-size>
+
+        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+        {{ pagination.totalItems }} items
+
+      </clr-dg-pagination>
+    </clr-dg-footer>
     </clr-datagrid>
 </div>
    

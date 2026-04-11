@@ -110,3 +110,8 @@ export interface ToastMessage {
   type: ToastType;
   message: string;
 }
+
+
+export interface ClaimStatusDto {
+  ClaimStatus: 'Pending' | 'Approved' | 'Rejected' | 'Withdrawn';
+}

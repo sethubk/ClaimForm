@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Employee } from '../../Components/Models/claimmodels';
@@ -23,7 +23,7 @@ this.loadUserFromSession();
    }
   baseurl='https://localhost:7283/api/Employee';
 claimUrl='https://localhost:7283/api/RecentClaim';
-
+ Mailurl='https://localhost:7283/api/Mail';
   Login(data:any):Observable<any>{
     return this.http.post(`${this.baseurl}`,data)
   }
@@ -70,5 +70,11 @@ createClaim(empCode: string, dto: any): Observable<any> {
   );
 }
 
+sendmail(empCode:string,claimId:string):Observable<any>{
+     const params = new HttpParams()
+      .set('Empcode', empCode)
+      .set('ClaimId', claimId);
+ return this.http.post(`${this.Mailurl}`, null, { params });
 
-}
+
+}}

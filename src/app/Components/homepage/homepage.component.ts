@@ -128,11 +128,14 @@ export class HomepageComponent {
   //   });
   // }
 
+resetFilters() {
 
+  this.dataSource = [...this.allClaims];
+}
   filterByType(type: string) {
 
     if (!type) {
-      // Reset filter
+       
       this.dataSource = [...this.allClaims];
       return;
     }
@@ -220,6 +223,9 @@ export class HomepageComponent {
         return 'badge badge-warning';
       case 'Rejected':
         return 'badge badge-danger';
+
+       case 'Withdrawn':
+        return 'badge badge-secondary';
       default:
         return 'badge badge-info';
     }

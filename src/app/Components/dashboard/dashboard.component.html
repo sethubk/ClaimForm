@@ -1,0 +1,93 @@
+<div class="dashboard">
+
+  <!-- KPI CARDS -->
+  <div class="kpi-container">
+    <div class="card">Total Claims: {{ totalClaims }}</div>
+    <div class="card">Total Amount: ₹{{ totalAmount }}</div>
+    <div class="card">Approved: {{ approvedCount }}</div>
+    <div class="card">Pending: {{ pendingCount }}</div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <select [(ngModel)]="selectedType" (change)="applyFilters()">
+      <option value="">All Types</option>
+      <option *ngFor="let t of pieChartData.labels">{{ t }}</option>
+    </select>
+
+   <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+  <option value="">All Status</option>
+  <option value="Approved">Approved</option>
+  <option value="pending">Pending</option>
+  <option value="Withdrawn">Withdrawn</option>
+  <option value="Rejected">Rejected</option>
+</select>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts">
+
+    <!-- PIE -->
+    <div class="chart-box">
+      <canvas
+        baseChart
+        [data]="pieChartData"
+        [type]="'pie'"
+        (chartClick)="onPieClick($event)">
+      </canvas>
+    </div>
+
+    <!-- BAR -->
+    <div class="chart-box">
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [type]="'bar'">
+      </canvas>
+    </div>
+
+  </div>
+
+  <!-- DATA GRID -->
+  <div class="datagriid">
+    <clr-datagrid>
+
+      <clr-dg-column>Type</clr-dg-column>
+      <clr-dg-column>Date</clr-dg-column>
+      <clr-dg-column>Purpose</clr-dg-column>
+      <clr-dg-column>Amount</clr-dg-column>
+      <clr-dg-column>Status</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let item of filteredData">
+        <clr-dg-cell>{{ item.type }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.date | date }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.purpose }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.amount }}</clr-dg-cell>
+        <clr-dg-cell>
+          <span [ngClass]="getStatusClass(item.status)">
+            {{ item.status }}
+          </span>
+        </clr-dg-cell>
+      </clr-dg-row>
+
+    </clr-datagrid>
+  </div>
+
+  <!-- EXPENSE BREAKDOWN -->
+  <div *ngIf="selectedExpenses.length">
+    <h3>Expense Breakdown</h3>
+
+    <table class="expense-table">
+      <tr>
+        <th>Particular</th>
+        <th>Amount</th>
+      </tr>
+
+      <tr *ngFor="let exp of selectedExpenses">
+        <td>{{ exp.particulars }}</td>
+        <td>{{ exp.amount }}</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
