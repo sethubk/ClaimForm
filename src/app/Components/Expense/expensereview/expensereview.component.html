@@ -9,24 +9,9 @@
   </div>
 
 </nav>
-<!-- 
-<div class="clr-row">
-  <div class="clr-col-8">
-    <div class="personaldetails">
-      <div *ngIf="personalData" class="personaldata">
-        <div class="data-row"><strong>Date of Submission:</strong><span>{{ personalData.today }}</span></div>
-        <div class="data-row"><strong>Expense Statement of:</strong><span>{{ personalData.username }}</span></div>
-        <div class="data-row"><strong>Employee Code:</strong><span>{{ personalData.employeeCode }}</span></div>
-        <div class="data-row"><strong>Purpose & Place:</strong><span>{{ personalData.purposePlace }}</span></div>
-        <div class="data-row"><strong>Company & Plant:</strong><span>{{ personalData.companyPlant }}</span></div>
-        <div class="data-row"><strong>Cost Center:</strong><span>{{ personalData.costCenter }}</span></div>
-        <div class="data-row"><strong>Vendor Code:</strong><span>{{ personalData.vendorCode }}</span></div>
-      </div>
-    </div>
-  </div>
-</div> -->
-<!-- personal details -->
-  <div class="info-card">
+
+<div #printSection id="print-section">
+<div class="info-card">
     <div class="info-card-header">
       <h3>Personal Details</h3>
     </div>
@@ -137,12 +122,16 @@
     </div>
   </div>
 </div>
+</div>
+
+  
 <div class="footer">
 <div class="button-group" >
       <button class="btn btn-info" (click)="backbtn()">back </button>
 
   <button class="btn btn-primary" (click)="printPage()">Print</button>
-  <button class="btn btn-success" (click)="submitExpense()">Submit</button>
+  <button class="btn btn-success" (click)="submitExpense()"
+    [disabled]="loading">Submit</button>
   
 </div>
 </div>

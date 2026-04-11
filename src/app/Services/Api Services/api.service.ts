@@ -70,11 +70,20 @@ createClaim(empCode: string, dto: any): Observable<any> {
   );
 }
 
-sendmail(empCode:string,claimId:string):Observable<any>{
-     const params = new HttpParams()
-      .set('Empcode', empCode)
-      .set('ClaimId', claimId);
- return this.http.post(`${this.Mailurl}`, null, { params });
+// sendmail(empCode:string,claimId:string):Observable<any>{
+//      const params = new HttpParams()
+//       .set('Empcode', empCode)
+//       .set('ClaimId', claimId);
+//  return this.http.post(`${this.Mailurl}`, null, { params });
 
 
-}}
+// }
+  sendmail(empCode: string, claimId: string, imageBase64: string): Observable<any> {
+    return this.http.post(this.Mailurl, {
+      empcode: empCode,
+      claimId: claimId,
+      imageBase64: imageBase64
+    });
+  }
+}
+

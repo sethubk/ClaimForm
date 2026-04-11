@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ExpenseApiService } from '../../../Services/Api Services/expense-api.service';
 import { Router } from '@angular/router';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
@@ -13,6 +13,7 @@ import { defaultEquals } from '@angular/core/primitives/signals';
 import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
 import { ToasterService } from '../../../Services/toaster.service';
 import { devOnlyGuardedExpression } from '@angular/compiler';
+import html2canvas from 'html2canvas';
 interface Entry {
   date: string;
   supportingNo: string;
@@ -33,6 +34,7 @@ constructor(private service:ExpenseDataService,private api:ApiService, private r
   private TravelService:TravelEntryService,private ExpenseApi:ExpenseApiService,private ClaimApi:ClaimApiService){
 
  }
+ @ViewChild('printSection') printSection!: ElementRef;
  personalData: Employee={ 
     today: '',
    username: '',
@@ -43,6 +45,7 @@ constructor(private service:ExpenseDataService,private api:ApiService, private r
    vendorCost: '',
   
  };
+ 
  entries:Entry[]=[];
  
   ngOnInit(): void {
@@ -137,7 +140,7 @@ const payload = (this.entries ?? []).map((e: any) => ({
   fileName: e.fileName ?? "",        // remove if not in DTO
   screenshot: e.fileName ?? ""     // send "" or make DTO string?
 }));
-
+ 
 this.ExpenseApi.createExpense(claimId, payload).subscribe({
   next: res => {console.log('Expense created', res);
 this.toastService.success('Expense submitted successfully');
@@ -162,10 +165,45 @@ this.ClaimApi.updateClaim(this.api.User.employeeCode,claimId,claim).subscribe({
       console.log("Claim updated", res);
       this.loading = false;
       this.toastService.success('Expense and claim submitted  successfully');
-     this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-  next: res => console.log('Email sent', res),
-  error: err => console.error('Email ERROR:', err)
-});
+     //expense sent, now send mail
+
+// small delay to apply CSS
+
+
+    const element = this.printSection.nativeElement;
+
+    if (!element) {
+      console.error('❌ Element not found');
+      return;
+    }
+
+    this.loading = true;
+
+    // 🔥 Small delay (important)
+    setTimeout(() => {
+
+      html2canvas(element, { scale: 2 }).then(canvas => {
+
+        const imageBase64 = canvas.toDataURL('image/png');
+
+        // 🔥 API CALL
+        this.api.sendmail(this.api.User.employeeCode, claimId, imageBase64)
+          .subscribe({
+            next: (res) => {
+              console.log('✅ Email sent', res);
+              this.loading = false;
+            },
+            error: (err) => {
+              console.error('❌ Email error', err);
+              this.loading = false;
+            }
+          });
+
+      });
+
+    }, 300);
+  
+
 setTimeout(() => {
       this.router.navigate(['/Homepage']);
     }, 1200);
