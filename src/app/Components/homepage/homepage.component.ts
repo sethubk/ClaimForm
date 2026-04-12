@@ -63,7 +63,7 @@ export class HomepageComponent {
 
 
   ngOnInit() {
-    debugger
+   
     this.isLoading = true;
 
     const now = new Date();
@@ -189,7 +189,7 @@ resetFilters() {
       if (this.selectedCategory === 'DomesticTravels') {
         this.router.navigate(['/domestic, claimId'])
       }
-      debugger
+     
       this.api.createClaim(this.empcode, dto).subscribe({
         next: (res) => {
           console.log('Claim created', res);
@@ -238,7 +238,13 @@ resetFilters() {
   godash() {
     this.router.navigate(['./dashboard'])
   }
+isadmin():boolean{
 
+  return this.api.isAdmin();
+}
+  goadmin(){
+    this.router.navigate(['/reimbursement'])
+  }
 
   goToClaimView(claimId: string) {
     this.router.navigate(['/claim-view', claimId]);

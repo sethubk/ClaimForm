@@ -33,6 +33,18 @@ claimUrl='https://localhost:7283/api/RecentClaim';
 //  setUser(user: any) {
 //    this.currentUserSubject.next(user);
 //  }
+isAdmin(): boolean {
+  
+ 
+    const user = localStorage.getItem('role') ;
+    if (user) {
+      const userObj = JSON.parse(user);
+  if( userObj === 'Admin'){
+    return true;}
+   // Check if user is admin
+    }
+    return false; // No user info, not admin
+  }
  loadUserFromSession() {
    const user = sessionStorage.getItem('User');
    if (user) {
@@ -75,6 +87,11 @@ sendmail(empCode:string,claimId:string):Observable<any>{
       .set('Empcode', empCode)
       .set('ClaimId', claimId);
  return this.http.post(`${this.Mailurl}`, null, { params });
-
-
-}}
+}
+AdminAction(empCode:string,claimId:string):Observable<any>{
+  const params = new HttpParams()
+      .set('Empcode', empCode)
+      .set('ClaimId', claimId);
+  return this.http.post(`${this.Mailurl}/AdminAction`, null, { params });
+}
+}

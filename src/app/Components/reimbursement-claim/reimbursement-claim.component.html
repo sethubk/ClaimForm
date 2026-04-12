@@ -1,0 +1,307 @@
+<div class="dashboard-container" *ngIf="claimDetails">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+        <h2>Claim Dashboard</h2>
+        <span class="label label-info">{{ claimDetails.claimType }}</span>
+    </div>
+    <div class="action-bar">
+
+        <div class="select-container">
+            <select [(ngModel)]="selectedAction" class="custom-select">
+                <option value="" disabled selected>Select Action</option>
+                <option value="Approved">✔ Approve</option>
+                <option value="Rejected">✖ Reject</option>
+            </select>
+        
+
+        <button [ngClass]="getButtonClass()" [disabled]="!selectedAction" class="action-btn"
+            [disabled]="claimDetails.claimStatus === 'Withdrawn' || claimDetails.claimStatus === 'Approved'"
+            (click)="confirmWithdraw()">
+
+            {{ selectedAction || 'Submit' }}
+        </button>
+        </div>
+    </div>
+
+
+
+    <clr-modal [(clrModalOpen)]="isWithdrawModalOpen">
+        <h3 class="modal-title">Confirm Withdraw</h3>
+
+        <div class="modal-body">
+            Are you sure you want to {{ selectedAction.toLowerCase() }} this claim?
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline" (click)="isWithdrawModalOpen = false">
+                Cancel
+            </button>
+
+            <button class="btn btn-primary" (click)="withdrawClaim()" [ngClass]="getButtonClass()">
+                Yes, {{ selectedAction }}
+            </button>
+        </div>
+    </clr-modal>
+    <!-- ======================= -->
+    <!-- EXPENSE CLAIM UI -->
+    <!-- ======================= -->
+    <section *ngIf="isExpense()">
+
+        <h4>Expense Details</h4>
+        <div class="datagriid">
+            <div class="datagriid">
+                <clr-datagrid>
+                    <clr-dg-column>Date</clr-dg-column>
+                    <clr-dg-column>Supporting No</clr-dg-column>
+                    <clr-dg-column>Particulars</clr-dg-column>
+                    <clr-dg-column>Payment Mode</clr-dg-column>
+                    <clr-dg-column>Amount</clr-dg-column>
+
+                    <clr-dg-row *clrDgItems="let e of claimDetails.expenses">
+                        <clr-dg-cell>{{ e.date }}</clr-dg-cell>
+                        <clr-dg-cell>{{ e.supportingNo }}</clr-dg-cell>
+                        <clr-dg-cell>{{ e.particulars }}</clr-dg-cell>
+                        <clr-dg-cell>{{ e.paymentMode }}</clr-dg-cell>
+                        <clr-dg-cell>{{ e.amount }}</clr-dg-cell>
+                    </clr-dg-row>
+
+                    <!-- ROW -->
+
+
+                    <!-- FOOTER WITH PAGINATION -->
+                    <clr-dg-footer>
+                        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+
+                            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+                                Items per page
+                            </clr-dg-page-size>
+
+                            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+                            {{ pagination.totalItems }} items
+
+                        </clr-dg-pagination>
+                    </clr-dg-footer>
+
+                </clr-datagrid>
+
+            </div>
+        </div>
+
+
+
+    </section>
+
+    <!-- ======================= -->
+    <!-- INTERNATIONAL TRAVEL UI -->
+    <!-- ======================= -->
+    <section *ngIf="isInternational()">
+
+        <h4>Travel Summary</h4>
+
+        <clr-accordion>
+
+            <clr-accordion-panel [clrAccordionPanelOpen]="true">
+
+                <clr-accordion-title>
+                    <strong>Travel Details</strong>
+                </clr-accordion-title>
+
+                <clr-accordion-content>
+
+                    <!-- ROW 1 -->
+                    <div class="clr-row" style="margin-bottom: 1rem;">
+
+                        <div class="clr-col-2"><strong>Currency:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.currencyType }}</div>
+
+                        <div class="clr-col-2"><strong>Start Date:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.travelStartDate }}</div>
+
+                        <div class="clr-col-2"><strong>End Date:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.travelEndDate }}</div>
+
+                    </div>
+
+                    <!-- ROW 2 -->
+                    <div class="clr-row" style="margin-bottom: 1rem;">
+
+                        <div class="clr-col-2"><strong>Total Days:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.totalDays }}</div>
+
+                        <div class="clr-col-2"><strong>Advance Amount:</strong></div>
+                        <div class="clr-col-2">₹ {{ claimDetails.travelDetails?.advanceAmount }}</div>
+
+                        <div class="clr-col-2"><strong>Status:</strong></div>
+                        <div class="clr-col-2">
+                            <span class="status-badge">
+                                {{ claimDetails.travelDetails?.reimbursementStatus }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <!-- OPTIONAL EMPTY ROW (alignment like your pattern) -->
+                    <div class="clr-row">
+
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+
+                    </div>
+
+                </clr-accordion-content>
+
+            </clr-accordion-panel>
+
+        </clr-accordion>
+
+        <h4 style="margin-top: 20px">International Expenses</h4>
+        <div class="datagriid">
+            <clr-datagrid>
+                <clr-dg-column>Date</clr-dg-column>
+                <clr-dg-column>Supporting No</clr-dg-column>
+                <clr-dg-column>Particulars</clr-dg-column>
+                <clr-dg-column>Payment</clr-dg-column>
+                <clr-dg-column>Currency</clr-dg-column>
+                <clr-dg-column>Amount</clr-dg-column>
+                <clr-dg-column>Converted (INR)</clr-dg-column>
+
+                <clr-dg-row *clrDgItems="let ie of claimDetails.internationalExpenses">
+                    <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
+                </clr-dg-row>
+
+                <clr-dg-footer>
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+
+                        <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+                            Items per page
+                        </clr-dg-page-size>
+
+                        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+                        {{ pagination.totalItems }} items
+
+                    </clr-dg-pagination>
+                </clr-dg-footer>
+            </clr-datagrid>
+        </div>
+
+
+
+
+    </section>
+    <section *ngIf="isDomestic()">
+
+        <h4>Travel Summary</h4>
+
+        <clr-accordion>
+
+            <clr-accordion-panel [clrAccordionPanelOpen]="true">
+
+                <clr-accordion-title>
+                    <strong>Travel Details</strong>
+                </clr-accordion-title>
+
+                <clr-accordion-content>
+
+                    <!-- ROW 1 -->
+                    <div class="clr-row" style="margin-bottom: 1rem;">
+
+                        <div class="clr-col-2"><strong>Currency:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.currencyType }}</div>
+
+                        <div class="clr-col-2"><strong>Start Date:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.travelStartDate }}</div>
+
+                        <div class="clr-col-2"><strong>End Date:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.travelEndDate }}</div>
+
+                    </div>
+
+                    <!-- ROW 2 -->
+                    <div class="clr-row" style="margin-bottom: 1rem;">
+
+                        <div class="clr-col-2"><strong>Total Days:</strong></div>
+                        <div class="clr-col-2">{{ claimDetails.travelDetails?.totalDays }}</div>
+
+                        <div class="clr-col-2"><strong>Advance Amount:</strong></div>
+                        <div class="clr-col-2">₹ {{ claimDetails.travelDetails?.advanceAmount }}</div>
+
+                        <div class="clr-col-2"><strong>Status:</strong></div>
+                        <div class="clr-col-2">
+                            <span class="status-badge">
+                                {{ claimDetails.travelDetails?.reimbursementStatus }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <!-- OPTIONAL EMPTY ROW (alignment like your pattern) -->
+                    <div class="clr-row">
+
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+                        <div class="clr-col-2"></div>
+
+                    </div>
+
+                </clr-accordion-content>
+
+            </clr-accordion-panel>
+
+        </clr-accordion>
+
+        <h4 style="margin-top: 20px">International Expenses</h4>
+        <div class="datagriid">
+            <clr-datagrid>
+                <clr-dg-column>Date</clr-dg-column>
+                <clr-dg-column>Supporting No</clr-dg-column>
+                <clr-dg-column>Particulars</clr-dg-column>
+                <clr-dg-column>Payment</clr-dg-column>
+                <clr-dg-column>Currency</clr-dg-column>
+                <clr-dg-column>Amount</clr-dg-column>
+                <clr-dg-column>Converted (INR)</clr-dg-column>
+
+                <clr-dg-row *clrDgItems="let ie of claimDetails.domesticExpenses">
+                    <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
+                    <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
+                </clr-dg-row>
+
+                <clr-dg-footer>
+                    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+
+                        <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+                            Items per page
+                        </clr-dg-page-size>
+
+                        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+                        {{ pagination.totalItems }} items
+
+                    </clr-dg-pagination>
+                </clr-dg-footer>
+            </clr-datagrid>
+        </div>
+
+
+
+
+    </section>
+
+</div>

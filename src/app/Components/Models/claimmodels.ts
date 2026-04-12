@@ -11,7 +11,17 @@ export interface Employee{
 
   
 }
-
+export interface ClaimDetailsResponse {
+  recentClaimId: string;
+  claimType: string;
+  travelType?: string | null;
+  travelDetails?: any;
+  expenses: any[];
+  cardCashEntries: any[];
+  internationalExpenses: any[];
+  domesticExpenses: any[];
+  claimStatus: string;
+}
 
 export interface Claims {
   recentClaimId: string;
@@ -113,5 +123,16 @@ export interface ToastMessage {
 
 
 export interface ClaimStatusDto {
-  ClaimStatus: 'Pending' | 'Approved' | 'Rejected' | 'Withdrawn';
+  ClaimStatus: string;
+}
+
+export interface ClaimWithEmployeeDetails {
+  recentClaimId: string;
+  type: 'International' | 'Domestic' | '' | string;
+  date?: Date | null;
+  purpose?: string;
+  amount?: number | null;
+  status: 'In progress' | 'Approved' | 'Rejected' | string;
+ name: string;
+ empCode: string;
 }

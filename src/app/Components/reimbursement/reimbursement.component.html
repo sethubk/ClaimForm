@@ -1,0 +1,38 @@
+
+<div class="datagriid">
+          <clr-datagrid>
+
+            <clr-dg-column>Empcode</clr-dg-column>
+            <clr-dg-column>EmployeeName</clr-dg-column>
+            <clr-dg-column>Type</clr-dg-column>
+            <clr-dg-column>Created Date</clr-dg-column>
+            <clr-dg-column>Purpose & Place</clr-dg-column>
+            <clr-dg-column>Amount</clr-dg-column>
+           
+
+
+
+            <clr-dg-row *clrDgItems="let item of Claims" (click)="goToClaimView(item.recentClaimId!)"
+              style="cursor:pointer">
+              <clr-dg-cell>{{item.empCode}}</clr-dg-cell>
+              <clr-dg-cell>{{item.name}}</clr-dg-cell>
+              
+              <clr-dg-cell>{{ item.type }}</clr-dg-cell>
+              <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
+              <clr-dg-cell>{{ item.purpose }}</clr-dg-cell>
+              <clr-dg-cell>{{ item.amount }}</clr-dg-cell>
+             
+            </clr-dg-row>
+
+            <clr-dg-footer>
+              <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+                  Items per page
+                </clr-dg-page-size>
+                {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+                {{ pagination.totalItems }} items
+              </clr-dg-pagination>
+            </clr-dg-footer>
+
+          </clr-datagrid>
+        </div>

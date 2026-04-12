@@ -43,6 +43,10 @@
        
         Dashboard
       </a>
+
+       <a clrVerticalNavLink  *ngIf="isadmin()" (click)="goadmin()" routerLinkActive="active">
+       ReimburseMentStatus
+      </a>
     </clr-vertical-nav> 
 
       <div class="content-area">

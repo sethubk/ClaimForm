@@ -54,7 +54,8 @@ export class LoginPageComponent {
         } else {
           sessionStorage.setItem('User', JSON.stringify({ res }));
         }
-
+     localStorage.setItem('role',JSON.stringify( res.role ));
+     console.log('User role:', res.role); // Store user role for admin check
         this.router.navigate(['/Homepage']);
       },
       error: (err) => {

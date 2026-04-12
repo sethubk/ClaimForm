@@ -1,0 +1,15 @@
+.datagriid {
+  height: 500px;
+  overflow-y: auto;
+  display: block;
+  margin-top: 100px;
+  padding: 30px;
+
+  
+}
+clr-datagrid{
+  overflow-y: auto;
+  height:400px;
+ overflow-x: auto;
+
+}

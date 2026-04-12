@@ -1,22 +1,24 @@
 import { Component } from '@angular/core';
+import { ClaimDetailsResponse, Claims, ClaimStatusDto } from '../Models/claimmodels';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../Services/Api Services/api.service';
 import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
+import { ToasterService } from '../../Services/toaster.service';
+import { ClarityIcons } from '@clr/icons';
 import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
-import { Claims } from '../homepage/homepage.component';
-import { ClaimDetailsResponse, ClaimStatusDto } from '../Models/claimmodels';
-import { ToasterService } from '../../Services/toaster.service';
-
+import { FormsModule } from '@angular/forms';
+import { thinClientIconName } from '@cds/core/icon';
 
 @Component({
-  selector: 'app-claim-view',
+  selector: 'app-reimbursement-claim',
   standalone: true,
-  imports: [ClarityModule,CommonModule],
-  templateUrl: './claim-view.component.html',
-  styleUrl: './claim-view.component.css'
+  imports: [ClarityModule,CommonModule,FormsModule],
+  templateUrl: './reimbursement-claim.component.html',
+  styleUrl: './reimbursement-claim.component.css'
 })
-export class ClaimViewComponent {
+export class ReimbursementClaimComponent {
+
 
 constructor(
   private route: ActivatedRoute,
@@ -58,20 +60,30 @@ confirmWithdraw() {
   this.isWithdrawModalOpen = true;
 }
 
-// Call backend
+
+//Call backend
 withdrawClaim() {
+  
   const claimId = this.claimId
+
   const payload: ClaimStatusDto = {
-    ClaimStatus: 'Withdrawn'
+    ClaimStatus:this.selectedAction
   };
+  
   this.ClaimApi.updateClaimStatus(claimId,payload).subscribe({
     next: (res) => {
       console.log('Withdraw successful');
 
       // Update UI status immediately
-     this.claimDetails.claimStatus = 'Withdrawn';
+     this.claimDetails.claimStatus = this.selectedAction;
       
-
+this.api.AdminAction(this.api.User.employeeCode,claimId).subscribe({
+   next: (res) => {
+    console.log('Admin action email sent successfully')},
+   error: (err) => {
+    console.error('Failed to send admin action email', err);
+   }
+});
       this.isWithdrawModalOpen = false;
 
       // Optional: show toast
@@ -84,5 +96,17 @@ withdrawClaim() {
     }
   });
 }
+
+
+selectedAction: string = '';
+
+getButtonClass() {
+  if (this.selectedAction === 'Approved') {
+    return 'approved-btn';
+  } else if (this.selectedAction === 'Rejected') {
+    return 'rejected-btn';
+  } else {
+    return 'default-btn';
+  }}
 
 }
