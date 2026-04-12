@@ -18,9 +18,9 @@ addTravelDetails(ClaimId: string, data: any): Observable<any> {
 }
 
 
-createExpense(claimId: string, payload: any[]): Observable<any> {
+createExpense(ClaimId: string, payload: any[]): Observable<any> {
     return this.http.post(
-      `${this.Internatioanl}/${claimId}/InternationalExpense`,
+      `${this.Internatioanl}/${ClaimId}/InternationalExpense`,
       payload
     );
 

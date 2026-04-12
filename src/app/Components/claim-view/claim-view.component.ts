@@ -15,6 +15,7 @@ export interface ClaimDetailsResponse {
   expenses: any[];
   cardCashEntries: any[];
   internationalExpenses: any[];
+  domesticExpenses: any[];
   claimStatus: string;
 }
 
@@ -55,6 +56,10 @@ isExpense(): boolean {
 
 isInternational(): boolean {
   return this.claimDetails?.claimType === 'InternationalTravels';
+}
+
+isDomestic(): boolean {
+  return this.claimDetails?.claimType === 'DomesticTravels';
 }
 isWithdrawModalOpen = false;
 
