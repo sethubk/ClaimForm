@@ -35,32 +35,40 @@ export class LoginPageComponent {
     sessionStorage.clear();
     localStorage.clear();
   }
-
+loading: boolean = false;
   onLogin() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
-
+      this.errorMessage='';
+ this.loading = true;
     const loginData = {
       Email: this.loginForm.value.empcode,
       password: this.loginForm.value.password
     };
 
     this.authService.Login(loginData).subscribe({
+      
       next: (res: any) => {
+        this.loading = false;
         if (this.loginForm.value.rememberMe) {
           localStorage.setItem('token', res);
         } else {
           sessionStorage.setItem('User', JSON.stringify({ res }));
         }
      localStorage.setItem('role',JSON.stringify( res.role ));
+     this.authService.User.employeeCode=res.empCode;
      console.log('User role:', res.role); // Store user role for admin check
         this.router.navigate(['/Homepage']);
       },
       error: (err) => {
         this.errorMessage = err.error || 'Invalid Login';
+        this.loading = false;
       }
+      
     });
+      
+    
   }
 }

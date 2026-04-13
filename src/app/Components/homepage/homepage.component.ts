@@ -8,6 +8,7 @@ import { Employee } from '../Models/claimmodels';
 import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import '@cds/core/progress-circle/register.js';
 import { ToasterService } from '../../Services/toaster.service';
+import { ExpenseDataService } from '../../Services/expense-data.service';
 
 
 export interface Claims {
@@ -37,7 +38,8 @@ export interface Personal {
 })
 export class HomepageComponent {
   constructor(private api: ApiService, private toastService: ToasterService,
-    private router: Router, private ClaimApi: ClaimApiService) { }
+    private router: Router, private ClaimApi: ClaimApiService,
+    private expenseDataService: ExpenseDataService) { }
   username: string = '';
   showPersonalModal = false;
 
@@ -80,7 +82,7 @@ export class HomepageComponent {
     // this.getEmployees();
     this.getclaim();
     // this.getFetchclaims();
-
+this.expenseDataService.Clearentries();
     this.isLoading = false
 
   }
