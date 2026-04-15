@@ -27,12 +27,7 @@ claimUrl='https://localhost:7283/api/RecentClaim';
   Login(data:any):Observable<any>{
     return this.http.post(`${this.baseurl}`,data)
   }
-//  private currentUserSubject = new BehaviorSubject<any>(null);
-//  currentUser$ = this.currentUserSubject.asObservable();
 
-//  setUser(user: any) {
-//    this.currentUserSubject.next(user);
-//  }
 isAdmin(): boolean {
   
  
@@ -61,9 +56,7 @@ console.log("USers from session ",userObj)
   console.log("USers",this.User);
    }
  }
-//  getCurrentUser() {
-//    return this.currentUserSubject.value;
-//  }
+
  
 GetEmployee(){
   const user=sessionStorage.getItem('Employee');
@@ -71,9 +64,7 @@ GetEmployee(){
     const userObj = JSON.parse(user);
     this.User=userObj.res;}
 }
-// GetEmployeewithClaim(Empcode:string):Observable<any>{
-// return this.http.get(`${this.baseurl}/${Empcode}`)
-// }
+
 
 createClaim(empCode: string, dto: any): Observable<any> {
   return this.http.post(

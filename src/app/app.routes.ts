@@ -11,6 +11,9 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ReimbursementComponent } from './Components/reimbursement/reimbursement.component';
 import { AdminGuard } from '../AdminGrand';
 import { ReimbursementClaimComponent } from './Components/reimbursement-claim/reimbursement-claim.component';
+import { DomesticComponent } from './Components/Domestic/domestic/domestic.component';
+import { DomesticCalculationComponent } from './Components/Domestic/domestic-calculation/domestic-calculation.component';
+import { DomesticReviewComponent } from './Components/Domestic/domestic-review/domestic-review.component';
 
 export const routes: Routes = [
 
@@ -26,5 +29,8 @@ export const routes: Routes = [
 
 {path:'reimbursement',component:ReimbursementComponent,canActivate: [AdminGuard]
 } ,
-{path:'reimbursement/:claimId',component:ReimbursementClaimComponent,canActivate: [AdminGuard]}  
+{path:'reimbursement/:claimId',component:ReimbursementClaimComponent,canActivate: [AdminGuard]},
+{path:'domestic',component:DomesticComponent},
+{path:'domesticexpense',component:DomesticCalculationComponent},
+{path:'domesticreview',component:DomesticReviewComponent}
 ];

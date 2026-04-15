@@ -66,57 +66,7 @@ printPage() {
 }
 
 
-// submitExpense() {
-//   const expenseData = {
-//     type: 'Expense',
-//     createdDate: new Date().toISOString(),
-//     purposePlace: this.personalData?.purposePlace || '',
-//     totalAmount: '₹'+this.totalAmount,
-//     entries: this.entries,
-//     status:'Pending'
-//   };
-//   localStorage.setItem('expenseSummary', JSON.stringify(expenseData));
-//   this.service.setExpense(expenseData);
-//   alert('Expense saved locally!');
 
-
-// this.router.navigate(['']);
-// }
-// submitExpense() {
-  
-// const raw = this.entries as any[];   // your UI array
-
-// const payload = raw.map(e => ({
-//   amount: Number(e.amount ?? 0),
-//   // send ISO or YYYY-MM-DD; both bind, ISO is safest:
-//   date: e.date ? new Date(e.date).toISOString() : new Date().toISOString(),
-//   particulars: e.particulars ?? '',
-//   paymentMode: e.paymentMode ?? '',
-//   remarks: e.remarks ?? '',
-//   supportingNo: e.supportingNo ?? '',
-//   fileName: e.fileName ?? '',                   // keep only if backend DTO has it
-//   screenshot: e.screenshot ?? null              // null accepted if DTO is string?
-// }));
-
-// const claimId=localStorage.getItem("lastClaimId");
-// debugger
-// console.log("submited",this.entries)
-// if (!claimId) {
-//   console.error("No claimId found in localStorage");
-//   return;
-// }
-
-//   this.ExpenseApi.createExpense(claimId,payload).subscribe({
-//     next:(res)=>
-//     console.log("Expense created",res),
-//     error:(res)=> console.log("Expenase failed ")
-// }
-//   )
-//    const claim={
-//       Status:"pending",
-//       Amount:this.totalAmount
-//    }
-// }
 loading = false;
 submitExpense(){
   debugger
@@ -162,10 +112,10 @@ this.ClaimApi.updateClaim(this.api.User.employeeCode,claimId,claim).subscribe({
       console.log("Claim updated", res);
       this.loading = false;
       this.toastService.success('Expense and claim submitted  successfully');
-  //    this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-  // next: res => console.log('Email sent', res),
-  // error: err => console.error('Email ERROR:', err)
-// });
+     this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
+  next: res => console.log('Email sent', res),
+  error: err => console.error('Email ERROR:', err)
+});
 setTimeout(() => {
       this.router.navigate(['/Homepage']);
     }, 1200);
@@ -180,9 +130,6 @@ setTimeout(() => {
 this.loading = false;
 
 
-// this.router.navigate(['/Homepage']).then(() => {
-//   setTimeout(() => window.location.reload(), 50);
-// });
 
 }
 

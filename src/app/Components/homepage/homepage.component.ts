@@ -76,12 +76,7 @@ export class HomepageComponent {
      this.empcode = this.api.User.employeeCode;
     this.User.today = today
    
-    // this.pendingCalls = 2;
-    // this.getClaimUsingEmpCode();
-
-    // this.getEmployees();
     this.getclaim();
-    // this.getFetchclaims();
 this.expenseDataService.Clearentries();
     this.isLoading = false
 
@@ -109,7 +104,7 @@ this.expenseDataService.Clearentries();
           );
 
           this.dataSource = [...this.allClaims];
-           this.toastService.success('Claim fetched successfully');
+          
         },
         error: (err) => {
           console.error('Error fetching claims:', err);
@@ -118,17 +113,6 @@ this.expenseDataService.Clearentries();
       });
   }
 
-  // getclaim() {
-  //   this.api.GetEmployeewithClaim(this.empcode).subscribe(res => {
-  // console.log("Claimswith fetched:", res);
-  //     this.allClaims = (res as { recentClaims: Claims[] }).recentClaims
-  //       .filter(c => c.status !== 'Draft' && (c.amount ?? 0) > 0);
-
-  //     // Use a fresh copy for the grid
-  //     this.dataSource = [...this.allClaims];
-  //     console.log("Claims fetched:", this.dataSource);
-  //   });
-  // }
 
 resetFilters() {
 
@@ -189,7 +173,7 @@ resetFilters() {
         this.router.navigate(['/international'])
       }
       if (this.selectedCategory === 'DomesticTravels') {
-        this.router.navigate(['/domestic, claimId'])
+        this.router.navigate(['/domestic'])
       }
      
       this.api.createClaim(this.empcode, dto).subscribe({

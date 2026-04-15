@@ -1,0 +1,314 @@
+
+ .datagrid-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+ 
+}
+.FULL{
+
+
+}
+.header1{
+  h1{
+    text-align: center;
+  }
+}
+.datagrid-box {
+  flex: 1;
+  min-width: 400px;
+}
+
+.model{
+  margin-top: 0;
+  padding: 0;
+}
+/* Remove top space before modal title */
+clr-modal .modal-body {
+  padding-top: 0 !important;
+}
+
+/* Optional: Reduce padding around modal content */
+clr-modal .modal-body {
+
+}
+
+/* Style the modal title */
+clr-modal .modal-title {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Optional: Style the modal header */
+clr-modal .modal-title h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.modal-title{
+  margin: 0;
+    text-align: center;
+}
+.personal-card-form{
+    overflow: hidden;
+}
+.modal-body {
+  
+ 
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+
+
+
+
+
+
+clr-input-container label::after,
+clr-select-container label::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}
+
+ 
+clr-input-container label.Screenshot::after {
+  content: "";
+}
+
+
+clr-input-container label ,clr-select-container label {
+
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  padding: auto;
+  
+  
+}
+
+#fill_international{
+    float: right;
+    display: block;
+    
+  }
+  
+clr-input-container input,clr-select-container select option {
+  
+  
+
+}
+.remarks-box textarea {
+  width: 300px;
+  border-radius: 8px;
+  padding: 8px 8px;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+/* 
+.amount1  {
+    display: grid;
+  border-radius: 10px;
+
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  width: 100%;
+  position: relative;
+    white-space: nowrap;
+
+input[type="file"] {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+  */
+
+
+.preview {
+  margin-top: 10px;
+  width: 70px;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+
+/* .divider {
+  height: 1px;
+  background: #eee;
+  margin: 1px 0;
+  margin-top: 10px;
+} */
+
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+.Screenshot{
+margin-top: 20px;
+padding: 10px;
+}
+
+.actions button{
+  width: 100%;
+  max-width: 200px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  
+
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 6px 18px rgba(45, 55, 230, 0.18);
+  cursor: pointer;
+}
+
+.submit-btn[disabled] {
+  opacity: 0.7;
+  cursor: default;
+}
+
+
+.btn-outline-danger {
+  background-color: transparent;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+.crud-btn {
+  padding: 4px 8px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.crud-btn.remove {
+  background-color: #dc3545; /* red */
+  color: white;
+}
+
+.crud-btn.remove:hover {
+  background-color: #c82333;
+}
+
+.crud-btn.edit {
+  background-color: #007bff; /* blue */
+  color: white;
+}
+
+.crud-btn.edit:hover {
+  background-color: #0056b3;
+}
+
+.personal-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+}
+
+.personal-info-row p {
+  flex: 1 1 calc(33.333% - 1rem);
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.preview1{
+display: flex;
+justify-content: space-between;
+  margin: 20px;
+}
+.thumb {
+  width: 70px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.datagriid {
+  height: 350px;
+  overflow-y: auto;
+  display: block;
+  
+}
+.datagriid{
+  display: inline-block;
+  width: 100%;
+  
+}
+
+clr-datagrid{
+ 
+   height:350px;
+  overflow-y: auto;
+ 
+ 
+ 
+} 
+ 
+clr-input-container label.Screenshot::after {
+  content: "";
+}
+.amount12{
+position: relative;
+display: flex;
+  text-align: left;
+  margin: 0px;
+   text-decoration: none;
+   list-style:none;  border: none;
+  box-shadow: none;
+  outline: none;
+
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+  left: 0%;
+}
+.amount12 label{
+
+
+}
+.amount12 input{
+
+ margin-left: 80px;
+ 
+ 
+  font-size: 14px;
+
+  
+ 
+}

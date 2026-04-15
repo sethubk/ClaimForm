@@ -85,3 +85,6 @@ clr-datagrid{
  overflow-x: auto;
 
 }
+.action-bar{
+float: right;
+}

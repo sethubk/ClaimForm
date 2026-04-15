@@ -58,7 +58,15 @@ loading: boolean = false;
           sessionStorage.setItem('User', JSON.stringify({ res }));
         }
      localStorage.setItem('role',JSON.stringify( res.role ));
-     this.authService.User.employeeCode=res.empCode;
+   this.authService.User = {
+  today: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+  username: res.name ?? '',
+  employeeCode: res.empCode ?? '',
+  purposePlace: res.purposePlace ?? '',
+  companyPlant:"Nordex",
+  costCenter: res.costCenter ?? '',
+  vendorCost: res.vendorCost ?? ''
+};
      console.log('User role:', res.role); // Store user role for admin check
         this.router.navigate(['/Homepage']);
       },

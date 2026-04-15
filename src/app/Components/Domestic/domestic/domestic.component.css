@@ -1,0 +1,304 @@
+.modal-title {
+  text-align: center;
+}
+h1{
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+
+}
+  .first{
+display: flex;
+justify-content: space-around;
+  }
+
+  .datagrid-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+ 
+}
+
+.datagrid-box {
+  flex: 1;
+  min-width: 400px;
+}
+
+.modal-title{
+    text-align: center;
+}
+.personal-card-form{
+    overflow: hidden;
+}
+.modal-body {
+  
+ 
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+
+.grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+
+
+clr-input-container ,clr-select-container{
+
+}
+
+
+
+clr-input-container label::after,
+clr-select-container label::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}
+
+
+clr-input-container,clr-select-container label {
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+
+clr-input-container input {
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  margin: 0;
+  
+  box-sizing: border-box; 
+  width: 100%;
+   outline: none; 
+}
+.remarks-box textarea {
+  width: 400px;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box;
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.amount1  {
+    display: grid;
+  border-radius: 10px;
+
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  width: 100%;
+  position: relative;
+ 
+}
+
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 10px 0;
+  margin-top: 10px;
+}
+
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.submit-btn {
+  width: 100%;
+  max-width: 200px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #3f51ff, #2b35d9);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 6px 18px rgba(45, 55, 230, 0.18);
+  cursor: pointer;
+}
+
+.submit-btn[disabled] {
+  opacity: 0.7;
+  cursor: default;
+}
+
+
+.btn-outline-danger {
+  background-color: transparent;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+.crud-btn {
+  padding: 4px 8px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.crud-btn.remove {
+  background-color: #dc3545; /* red */
+  color: white;
+}
+
+.crud-btn.remove:hover {
+  background-color: #c82333;
+}
+
+.crud-btn.edit {
+  background-color: #007bff; /* blue */
+  color: white;
+}
+
+.crud-btn.edit:hover {
+  background-color: #0056b3;
+}
+
+.personaldata {
+  display: grid;
+  grid-template-columns:  1fr 1fr 1fr 1fr ;
+  gap: 8px; /* spacing between each <p> */
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+   /* optional: control width */
+  margin: 0 auto; /* center the block */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.personaldata p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.personaldata strong {
+  color: #333;
+  min-width: 160px;
+  display: inline-block;
+}
+
+/* General Page Layout */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* Container Styling */
+.first {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+/* Section Titles */
+h4 {
+  margin-top: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Modal Styling */
+clr-modal .modal-body {
+  background-color: #f9fbfc;
+  padding: 20px;
+  border-radius: 6px;
+}
+#button1{
+  margin-left: 20px;
+}
+clr-modal .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Form Grid Layout */
+.grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0;
+}
+
+
+/* Button Styling */
+
+
+
+/* Datagrid Styling */
+.datagrid-box {
+  margin-top: 20px;
+ 
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 6px;
+   
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+clr-datagrid{
+  overflow-y: auto;
+  height:250px;
+  
+
+}
+/* Preview Button */
+.preview{
+  display: flex;
+justify-content:space-between;
+  margin: 20px;
+}
+clr-dg-row  clr-dg-cell{
+  width: 300px;
+  text-align: center;
+}

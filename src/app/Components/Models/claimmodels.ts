@@ -136,3 +136,26 @@ export interface ClaimWithEmployeeDetails {
  name: string;
  empCode: string;
 }
+
+export interface DomesticExpense {
+  /** Date in YYYY-MM-DD format (no time) */
+  date: string;
+
+  /** Invoice / receipt reference number */
+  supportingNo: string;
+
+  /** Expense description */
+  particulars: string;
+
+  /** Payment mode (Cash, Card, Online, etc.) */
+  paymentMode: string;
+
+  /** Expense amount */
+  amount: number;
+
+  /** Additional remarks */
+  remarks: string;
+  fileName?: string;
+  /** Receipt / screenshot file name or URL */
+  screenshot: string;
+}

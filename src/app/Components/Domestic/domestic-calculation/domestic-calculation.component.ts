@@ -9,14 +9,14 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../Services/Api Services/api.service';
 
 @Component({
-  selector: 'app-international-calculational',
+  selector: 'app-domestic-calculation',
   standalone: true,
   imports: [ClarityModule, FormsModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './international-calculational.component.html',
-  styleUrl: './international-calculational.component.css'
+  templateUrl: './domestic-calculation.component.html',
+  styleUrl: './domestic-calculation.component.css'
 })
-export class InternationalCalculationalComponent {
-  isEdit: boolean = false;
+export class DomesticCalculationComponent {
+isEdit: boolean = false;
   personalData: Employee={ 
      today: '',
     username: '',
@@ -98,7 +98,6 @@ export class InternationalCalculationalComponent {
       supportingNo: ['', Validators.required],
       particulars: ['', Validators.required],
       paymentMode: ['', Validators.required],
-      selectedCurrency_amt: ['', Validators.required], // Currency dropdown
       amount: ['', [Validators.required, Validators.min(1)]], // Amount input
       remarks: [''],
       screenshot: [null],
@@ -134,21 +133,11 @@ addEntry() {
   if (this.expenseForm.valid) {
     const formValue = this.expenseForm.value;
 
-    let convertedAmount = 0;
-    const amount = Number(formValue.amount) || 0;
-    const currency = formValue.selectedCurrency_amt?.toUpperCase();
-
-    if (currency === 'INR' || currency === 'IND') {
-      //  INR: no conversion
-      convertedAmount = amount;
-    } else {
-      //  Other currencies
-      convertedAmount = amount * 100;
-    }
+   
 
     const entry = {
       ...formValue,
-      convertedAmount,   //  included for INR and others
+        //  included for INR and others
       preview: this.preview
     };
 
@@ -173,9 +162,6 @@ addEntry() {
     }
 
   }
-
-
-
 
   //open clarity model
   openmodel() {
@@ -207,20 +193,19 @@ addEntry() {
     this.formopen = true;
     this.isEdit = true;
 
-    // ✅ Patch form with entry values
     this.expenseForm.patchValue({
       date: entry.date,
       supportingNo: entry.supportingNo,
       particulars: entry.particulars,
       paymentMode: entry.paymentMode,
-      selectedCurrency_amt: entry.selectedCurrency_amt,
+     
       amount: entry.amount,
       remarks: entry.remarks,
       screenshot: entry.screenshot,
       fileName: entry.fileName
     });
 
-    // ✅ Recalculate converted amount for UI if needed
+    //  Recalculate converted amount for UI if needed
 
 
     console.log("Editing entry:", this.formData);
@@ -228,7 +213,7 @@ addEntry() {
   closeModal() {
     this.formopen = false;
 
-    // ✅ Reset all form controls to their initial state
+    //  Reset all form controls to their initial state
     this.expenseForm.reset({
       date: '',
       supportingNo: '',
@@ -240,16 +225,16 @@ addEntry() {
       fileName: ''
     });
 
-    // ✅ Clear additional properties
+    //  Clear additional properties
 
     this.preview = null; // If you have image preview
     this.isEdit = false;
     this.editIndex = null;
   }
   gotoreview() {
-    this.router.navigate(['/internationalreview'])
+    this.router.navigate(['/domesticreview'])
   }
   backbtn() {
-    this.router.navigate(['international'])
+    this.router.navigate(['/domestic'])
   }
 }

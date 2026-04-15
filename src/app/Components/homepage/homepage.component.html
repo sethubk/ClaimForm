@@ -3,87 +3,53 @@
     <clr-spinner clrLarge>Loading...</clr-spinner>
   </div>
   <div class="content-container" [ngClass]="{ 'blur': isLoading }">
-
-
-
-
-
-
     <div class="content-container">
-       <clr-vertical-nav [clrVerticalNavCollapsible]="true"  >
-      <a clrVerticalNavLink (click)="resetFilters()">All Claims</a>
-      <clr-vertical-nav-group routerLinkActive="active">
-        <a routerLink="#" hidden aria-hidden="true"></a>
+      <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+        <a clrVerticalNavLink (click)="resetFilters()">All Claims</a>
+        <clr-vertical-nav-group routerLinkActive="active">
+          <a routerLink="#" hidden aria-hidden="true"></a>
 
-        Expense
-        <clr-vertical-nav-group-children *clrIfExpanded="true">
-          <a clrVerticalNavLink routerLinkActive="active" (click)="goToPersonalDetails('DomesticTravels')">New Expense</a>
-          <a clrVerticalNavLink (click)="filterByType('Expense')">Expense claim</a>
-        </clr-vertical-nav-group-children>
-      </clr-vertical-nav-group>
-      <clr-vertical-nav-group routerLinkActive="active">
-        <a routerLink="#" hidden aria-hidden="true"></a>
-      
-        International
-        <clr-vertical-nav-group-children *clrIfExpanded>
-          <a clrVerticalNavLink (click)="goToPersonalDetails('InternationalTravels')">New International</a>
-          <a clrVerticalNavLink (click)="filterByType('InternationalTravels')">International claims</a>
-        </clr-vertical-nav-group-children>
-      </clr-vertical-nav-group>
-      <clr-vertical-nav-group routerLinkActive="active">
-        <a routerLink="#" hidden aria-hidden="true"></a>
-       
-        Domestic
-        <clr-vertical-nav-group-children *clrIfExpanded>
-          <a clrVerticalNavLink (click)="goToPersonalDetails('DomesticTravels')">New Domestic</a>
-          <a clrVerticalNavLink (click)="filterByType('DomesticTravels')">Domestic Claims</a>
-        </clr-vertical-nav-group-children>
-      </clr-vertical-nav-group>
-      <a clrVerticalNavLink  routerLink="/dashboard" (click)="godash()" routerLinkActive="active">
-       
-        Dashboard
-      </a>
+          Expense
+          <clr-vertical-nav-group-children *clrIfExpanded="true">
+            <a clrVerticalNavLink routerLinkActive="active" (click)="goToPersonalDetails('DomesticTravels')">New
+              Expense</a>
+            <a clrVerticalNavLink (click)="filterByType('Expense')">Expense claim</a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group routerLinkActive="active">
+          <a routerLink="#" hidden aria-hidden="true"></a>
 
-       <a clrVerticalNavLink  *ngIf="isadmin()" (click)="goadmin()" routerLinkActive="active">
-       ReimburseMentStatus
-      </a>
-    </clr-vertical-nav> 
+          International
+          <clr-vertical-nav-group-children *clrIfExpanded>
+            <a clrVerticalNavLink (click)="goToPersonalDetails('InternationalTravels')">New International</a>
+            <a clrVerticalNavLink (click)="filterByType('InternationalTravels')">International claims</a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <clr-vertical-nav-group routerLinkActive="active">
+          <a routerLink="#" hidden aria-hidden="true"></a>
+
+          Domestic
+          <clr-vertical-nav-group-children *clrIfExpanded>
+            <a clrVerticalNavLink (click)="goToPersonalDetails('DomesticTravels')">New Domestic</a>
+            <a clrVerticalNavLink (click)="filterByType('DomesticTravels')">Domestic Claims</a>
+          </clr-vertical-nav-group-children>
+        </clr-vertical-nav-group>
+        <a clrVerticalNavLink routerLink="/dashboard" (click)="godash()" routerLinkActive="active">
+
+          Dashboard
+        </a>
+
+        <a clrVerticalNavLink *ngIf="isadmin()" (click)="goadmin()" routerLinkActive="active">
+          ReimburseMentStatus
+        </a>
+      </clr-vertical-nav>
 
       <div class="content-area">
-        <!-- <h3>Welcome! {{username}}</h3> -->
-        <!-- <div class="header1">
-        <h1>Expense reimbursement claim form </h1>
-      </div> -->
+       
         <h3>Welcome {{User.username}}!</h3>
         <div class="header1">
           <h1>Expense reimbursement claim form </h1>
         </div>
-
-
-        <!-- <clr-accordion-content class="clr-row content">
-        <div *ngIf="!isLoading" class="category">
-          <button type="button" class="btn btn-sm btn-secondary" (click)="addCategory()">
-            Add Category
-          </button>
-        </div> -->
-
-
-        <!-- new-claim.component.html -->
-        <!-- <clr-dropdown>
-  <button clrDropdownTrigger class="btn btn-primary">
-    {{ selectedCategory || 'Select Category' }}
-  </button>
-  <clr-dropdown-menu *clrIfOpen>
-    <button clrDropdownItem (click)="goToPersonalDetails('Expense')">Expense</button>
-    <button clrDropdownItem (click)="goToPersonalDetails('InternationalTravels')">International Travels</button>
-
-    <button clrDropdownItem (click)="goToPersonalDetails('DomesticTravels')">
-      Domestic Travels
-    </button>
-
-
-  </clr-dropdown-menu>
-</clr-dropdown> -->
         <div class="custom-buttons">
           <button class="custom-btn" (click)="goToPersonalDetails('Expense')">
             New Expense Claim

@@ -1,0 +1,137 @@
+*{
+    margin: 0%;
+    padding: 0
+}
+.home{
+  padding: 30px;
+  font-size: small;
+}
+.brand-logo {
+  height: 40px;
+  margin-right: 30px;
+  width: 250px;
+
+}
+
+
+.brand-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: 180px;
+  
+}
+.personaldetails {
+  max-width: 500px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.personaldata {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.data-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 10px;
+  word-wrap: break-word;
+}
+
+.data-row strong {
+  font-weight: bold;
+}
+
+
+.button-group{
+margin-top: 170px;
+
+}
+
+.clr-row1{
+  float: right;
+}
+.summary-box {
+  width: 300px;
+ 
+  padding: 16px;
+ 
+  
+
+  overflow-y: auto;
+}
+
+.green-text {
+  color: green;
+  font-weight: bold;
+}
+
+.highlight td {
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+.button-group{
+display: flex;
+justify-content:space-around;
+align-items: center;
+}
+.button-group {
+  display: flex;
+  gap: 15px; /* Space between buttons */
+  justify-content: space-between;
+}
+@media print {
+  .button-group {
+    display: none !important;
+  }
+  .brand-title{
+  flex: auto;
+  margin-left: 50px;
+}
+}
+
+.personalDetails{
+  margin: 10px 15px 20px 20px;
+  padding: 10px;}
+
+  .info-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px auto;
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+ 
+ 
+.info-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+ 
+.info-card-header {
+  background-color: #3782a8;
+  padding: 12px 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+ 
+.info-card-header h3 {
+  color: #e5eaec;
+  margin: 0;
+  font-size: 18px;
+}
+ 
+.info-card-body {
+  padding: 8px 16px;
+  color: #333;
+  background-color: #fafafa;
+  font-weight: bold;
+}
+clr-input-container label {
+ margin-top: 3.8px;
+ 
+}

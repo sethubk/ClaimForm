@@ -1,23 +1,21 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
-
-import { Router } from '@angular/router';
-import { ClarityModule } from '@clr/angular';
-import { EntryModel, FormDataModel, TravelDetailsDtos } from '../../Models/claimmodels';
+import { EntryModel, FormDataModel } from '../../Models/claimmodels';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
+import { Router } from '@angular/router';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
+import { CommonModule } from '@angular/common';
+import { ClarityModule, ClrInputModule } from "@clr/angular";
 
 @Component({
-  selector: 'app-international',
+  selector: 'app-domestic',
   standalone: true,
-  imports: [ClarityModule,FormsModule,CommonModule],
-  templateUrl: './international.component.html',
-  styleUrl: './international.component.css'
+  imports: [CommonModule, FormsModule,ClarityModule],
+  templateUrl: './domestic.component.html',
+  styleUrl: './domestic.component.css'
 })
-export class InternationalComponent {
-  constructor(private fb: FormBuilder,private travelService: TravelEntryService, private router: Router,private internationalApi:InternationalApiService) { }
+export class DomesticComponent {
+ constructor(private fb: FormBuilder,private travelService: TravelEntryService, private router: Router,private internationalApi:InternationalApiService) { }
 
  travelStart: string = '';
   travelEnd: string = '';
@@ -34,7 +32,7 @@ export class InternationalComponent {
 
   entry: EntryModel = {
     type: 'Card',
-    inrRate: null,
+    inrRate: 1,
     totalLoaded: null,
     loadedDate: '',
     currerncy: ''
@@ -108,7 +106,7 @@ get cashEntries() {
   openCurrencyModal() {
     this.entry = {
       type: 'Card',
-      inrRate: null,
+      inrRate: 1,
       totalLoaded: null,
       loadedDate: '',
       currerncy: this.selectedCurrency
@@ -185,10 +183,6 @@ deleteEntry(filteredIndex: number, type: 'Card' | 'Cash') {
   allowanceAmount: number = 0;
 
   calculateAllowance() {
-
-
-
-
     this.allowanceAmount = this.travelService.setAllowance(this.totalEntries);
 
     return this.allowanceAmount;
@@ -223,7 +217,7 @@ this.internationalApi.addTravelDetails(claimId, data).subscribe({
   error: (err) => console.error(err)
 });
 
-  this.router.navigate(['/internationalcal'])
+  this.router.navigate(['/domesticexpense'])
 
     console.log("cal", this.allowanceAmount)
   }
@@ -231,4 +225,5 @@ this.internationalApi.addTravelDetails(claimId, data).subscribe({
   backbtn() {
     this.router.navigate([''])
   }
+
 }

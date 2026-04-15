@@ -259,18 +259,18 @@
       <clr-dg-column>Supporting No</clr-dg-column>
       <clr-dg-column>Particulars</clr-dg-column>
       <clr-dg-column>Payment</clr-dg-column>
-      <clr-dg-column>Currency</clr-dg-column>
+     
       <clr-dg-column>Amount</clr-dg-column>
-      <clr-dg-column>Converted (INR)</clr-dg-column>
+      
 
       <clr-dg-row *clrDgItems="let ie of claimDetails.domesticExpenses">
         <clr-dg-cell>{{ ie.date  }}</clr-dg-cell>
         <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
         <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
         <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
-        <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
+        
         <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
-        <clr-dg-cell>{{ ie.convertedAmount  }}</clr-dg-cell>
+      
       </clr-dg-row>
 
       <clr-dg-footer>

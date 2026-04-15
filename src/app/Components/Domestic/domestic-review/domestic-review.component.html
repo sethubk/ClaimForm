@@ -3,7 +3,7 @@
     <div class="navbar-brand">
         <a>
             <img src="assets/logo.png" alt="Brand Logo" class="brand-logo">
-            <h1 class="brand-title">International  reimbursement claim form</h1>
+            <h1 class="brand-title">Domestic  reimbursement claim form</h1>
 
         </a>
     </div>
@@ -108,12 +108,9 @@
                     </tr>
                     <tr>
                         <td>Expense Paid by Cash</td>
-                        <td>₹{{ getTotalByMode('Cash') }}</td>
+                        <td>₹{{totalAmounts }}</td>
                     </tr>
-                    <tr>
-                        <td>Expense Paid by Card</td>
-                        <td>₹{{ getTotalByMode('Card') }}</td>
-                    </tr>
+                  
 
                     <tr>
                         <td>Advance </td>
