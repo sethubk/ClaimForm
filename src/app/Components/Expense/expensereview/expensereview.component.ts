@@ -119,37 +119,49 @@ printPage() {
 // }
 loading = false;
 submitExpense(){
-  debugger
-  this.loading = true;
-const claimId = localStorage.getItem('lastClaimId');
-if (!claimId) {
-  console.error('No Claim ID found. Create claim first.');
-  return;
+ this.loading = true;
+
+  const claimId = localStorage.getItem('lastClaimId');
+
+  if (!claimId) {
+    console.error('No Claim ID found. Create claim first.');
+    return;
+  }
+
+  const formData = new FormData();
+console.log("Entries:", this.entries);
+  (this.entries ?? []).forEach((e: any, index: number) => {
+
+formData.append(`entries[${index}].amount`, String(e.amount ?? 0));
+formData.append(`entries[${index}].date`, e.date.toISOString().split('T')[0]);
+formData.append(`entries[${index}].supportingNo`, e.supportingNo ?? '');
+formData.append(`entries[${index}].particulars`, e.particulars ?? '');
+formData.append(`entries[${index}].paymentMode`, e.paymentMode ?? '');
+formData.append(`entries[${index}].Remarks`, e.remarks ?? '');
+formData.append(`entries[${index}].fileName`, e.fileName ?? '');
+
+if (e.file) {
+  formData.append(`entries[${index}].screenshot`, e.file, e.fileName ?? 'file');
 }
 
-const payload = (this.entries ?? []).map((e: any) => ({
-  amount: Number(e.amount),
-  date: e.date ,
-  supportingNo: e.supportingNo ?? "",
-  particulars: e.particulars ?? "",
-  paymentMode: e.paymentMode ?? "",
-  remarks: e.remarks ?? "",
-  fileName: e.fileName ?? "",        // remove if not in DTO
-  screenshot: e.fileName ?? ""     // send "" or make DTO string?
-}));
+  });
+ 
+  console.log("FormData entries:",formData);
+formData.forEach((value, key) => {
+  console.log(key, value);
 
-this.ExpenseApi.createExpense(claimId, payload).subscribe({
-  next: res => {console.log('Expense created', res);
-this.toastService.success('Expense submitted successfully');
-
-  },
-  error: err => {
-    console.error('Expense ERROR:', err);
-    // check server message here:
-    this.toastService.error('Failed to submit expense. Please try again.');
-    // console.error('Server says:', err.error);
-  }
 });
+console.log("Is FormData:", formData instanceof FormData);
+  
+this.ExpenseApi.createExpense(claimId, formData).subscribe({
+  next: (res) => {
+    console.log('Expense created', res);  
+  },
+  error: (err) => {
+    console.error('Expense creation failed', err);
+    this.toastService.error('Failed to submit expense. Please try again.');
+    this.loading = false;
+  } });
 
 const claim={
       status:"pending",
@@ -157,26 +169,26 @@ const claim={
    
 }
 
-this.ClaimApi.updateClaim(this.api.User.employeeCode,claimId,claim).subscribe({
-       next: res => {
-      console.log("Claim updated", res);
-      this.loading = false;
-      this.toastService.success('Expense and claim submitted  successfully');
-  //    this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-  // next: res => console.log('Email sent', res),
-  // error: err => console.error('Email ERROR:', err)
-// });
-setTimeout(() => {
-      this.router.navigate(['/Homepage']);
-    }, 1200);
+// this.ClaimApi.updateClaim(this.api.User.employeeCode,claimId,claim).subscribe({
+//        next: res => {
+//       console.log("Claim updated", res);
+//       this.loading = false;
+//       this.toastService.success('Expense and claim submitted  successfully');
+//   //    this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
+//   // next: res => console.log('Email sent', res),
+//   // error: err => console.error('Email ERROR:', err)
+// // });
+// setTimeout(() => {
+//       this.router.navigate(['/Homepage']);
+//     }, 1200);
 
-    },
-        error: (err2) => {
-          console.error("Update claim error", err2);
-          this.toastService.error('Failed to update claim. Please contact support.');
-        }
+//     },
+//         error: (err2) => {
+//           console.error("Update claim error", err2);
+//           this.toastService.error('Failed to update claim. Please contact support.');
+//         }
          
-      });
+//       });
 this.loading = false;
 
 

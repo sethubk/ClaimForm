@@ -105,6 +105,7 @@ formopen: boolean = false;
       ? { maxDate: true }
       : null;
   }
+  SelectedImg:File | null = null;
   onFileChange(event: any) 
   {
     debugger
@@ -112,6 +113,7 @@ formopen: boolean = false;
     if (file) {
       this.expenseForm.patchValue({ screenshot: file, 
         fileName:file.name });
+       this.SelectedImg=file
     }
   }
   addEntry() {
@@ -120,7 +122,9 @@ formopen: boolean = false;
     if (this.expenseForm.valid) {
       const entry = {
         ...this.expenseForm.value,
-        preview: this.preview // include the image preview here
+        preview: this.preview ,
+      file: this.SelectedImg 
+        // include the image preview here
       };
 
       if (this.editIndex != null && this.isEdit) {

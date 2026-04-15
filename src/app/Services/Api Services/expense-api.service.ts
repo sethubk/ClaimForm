@@ -12,7 +12,7 @@ export class ExpenseApiService {
   baseurl='https://localhost:7283/api/Expense';
 
   
-createExpense(claimId: string, expense: any): Observable<any> {
+createExpense(claimId: string, expense: FormData): Observable<any> {
   return this.http.post(
     `${this.baseurl}/${claimId}/Expense`,
     expense
