@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Claims, ClaimStatusDto, ClaimUpdate, ClaimWithEmployeeDetails } from '../../Components/Models/claimmodels';
+import { ClaimDetailsResponse, Claims, ClaimStatusDto, ClaimUpdate, ClaimWithEmployeeDetails } from '../../Components/Models/claimmodels';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +29,8 @@ updateClaim(employeeCode:string,claimId: string, claim: ClaimUpdate): Observable
 updateClaimStatus(claimId: string, status: ClaimStatusDto):Observable<Claims> {
   return this.http.put<Claims>(`${this.baseurl}/${claimId}/claimstatus`, status);
 }
-getExpensesByClaimId(claimId: string): Observable<any> {
-  return this.http.get(`${this.baseurl}/${claimId}/claim`);}
+getExpensesByClaimId(claimId: string): Observable<ClaimDetailsResponse> {
+  return this.http.get<ClaimDetailsResponse>(`${this.baseurl}/${claimId}/claim`);}
 
 
 
