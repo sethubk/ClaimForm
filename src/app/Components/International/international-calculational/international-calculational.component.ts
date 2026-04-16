@@ -8,6 +8,7 @@ import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../Services/Api Services/api.service';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
+import { loadCommerceIconSet } from '@cds/core/icon';
 
 @Component({
   selector: 'app-international-calculational',
@@ -61,9 +62,10 @@ export class InternationalCalculationalComponent {
   claimId!: string;
   internationalExpense: InternationalExpense[] = [];
   ngOnInit() {
- this.claimId=this.urlroute.snapshot.paramMap.get('claimId')!;
+    debugger
+ this.claimId=localStorage.getItem('lastClaimId') || '';
     this.from1()
-   if(!this.claimId){
+   if(this.claimId){
     this.getInternationalExpenses();
    }
     this.selectedCurrency_amt = this.travelService.getselectedcurrencyType()
@@ -102,6 +104,7 @@ getInternationalExpenses() {
   this.internationalApi.getInternationalExpensesByClaimId(this.claimId).subscribe({
     next: (res) => {
       console.log('International expenses:', res)
+      this.service.setentries(res);
     },
     error: (err) => console.error('Error fetching international expenses:', err)
   }); 

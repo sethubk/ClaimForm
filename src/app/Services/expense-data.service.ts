@@ -13,8 +13,8 @@ export class ExpenseDataService {
   
 private details: any = {};
 private entries:any=[];
-private expense:any=[];
-
+private expense:Expense[]=[];
+  
 
 
   setDetails(data: any) {
@@ -29,9 +29,13 @@ this.entries=entries
 }
 getentries(){
   return this.entries
+  return this.expense
 }
-setExpense(data: Expense)  {
- this.expense.push(data);
+setExpense(data: Expense[])  {
+  for(let i=0;i<data.length;i++){
+    this.expense.push(data[i])
+  }
+ 
 }
 getExpense(){
   return this.expense

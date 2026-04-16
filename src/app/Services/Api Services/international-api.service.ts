@@ -27,5 +27,5 @@ createExpense(ClaimId: string, payload: any[]): Observable<any> {
     );
   }
 getInternationalExpensesByClaimId(ClaimId: string): Observable<any> {
-  return this.http.get(`${this.Internatioanl}/${ClaimId}/InternationalExpense`);
+  return this.http.get(`${this.Internatioanl}/${ClaimId}/International`);
 }}

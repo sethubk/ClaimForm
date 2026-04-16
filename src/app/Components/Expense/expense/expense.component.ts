@@ -75,12 +75,12 @@ if(this.Expenseid){
  getExpenseDetails(){
   this.ExpanseApi.getExpensesByClaimId(this.Expenseid).subscribe({
 
-    next: (res:Expense) => {
-      this.Expense.push(res);
+    next: (res:Expense[]) => {
+      this.Expense=res;
       console.log('expense details2:', this.Expense);
       console.log('expense details:', res);
       this.Service.setExpense(res);
-      this.entries.push(res);
+      this.entries = res;
       this.Service.setentries(this.entries);
       // this.entries = res.map((expense: Expense) => ({
       //   date: expense.date,
@@ -93,7 +93,7 @@ if(this.Expenseid){
       //   fileName: expense.fileName
       // }));
       // this.Service.setentries(this.entries);
-      this.Expense.push(res);
+      this.Expense=res;
     },
     
     error: (err) => {
