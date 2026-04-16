@@ -100,7 +100,7 @@ this.expenseDataService.Clearentries();
           console.log('Claims fetched:', res);
 
           this.allClaims = res.filter(
-            c => c.status !== 'Draft' && (c.amount ?? 0) > 0
+            c => c.status !== 'Draft' 
           );
 
           this.dataSource = [...this.allClaims];
@@ -112,6 +112,10 @@ this.expenseDataService.Clearentries();
         }
       });
   }
+
+getRoundedAmount(amount?: number | null): number {
+  return Math.round(Math.abs(amount ?? 0));
+}
 
 
 resetFilters() {
@@ -217,6 +221,27 @@ resetFilters() {
     }
   }
 
+ getReimbursement(amount: number): {
+  label: string;
+  cssClass: 'pay' | 'recover' | 'settled';
+} {
+  if (amount < 0) {
+    return {
+      label: 'Recoverable',
+      cssClass: 'recover'
+    };
+  } else if (amount > 0) {
+    return {
+      label: 'Payable',
+      cssClass: 'pay'
+    };
+  } else {
+    return {
+      label: 'Settled',
+      cssClass: 'settled'
+    };
+  }
+}
   reset() {
     this.User.purposePlace = ''
   }

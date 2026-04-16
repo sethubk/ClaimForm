@@ -36,13 +36,14 @@ entries:InternationalExpense[]=[];
    vendorCost: '',
   
  };
+selectedCurrency: string = '';
 advance:number=0;
   ngOnInit(): void {
  
     this.entries=this.service.getentries();
  this.personalData=this.api.User;
     this.advance=this.TravelService.getAllowance()
-
+this.selectedCurrency = this.TravelService.selectedCurrency
     console.log(this.entries)
    
 }
@@ -96,7 +97,7 @@ getTotalByMode(mode: string): number {
 loading = false;
 submitExpense() {
   this.loading = true;
-debugger
+
   const claimId = localStorage.getItem('lastClaimId');
   if (!claimId) {
     console.error('No Claim ID found. Create claim first.');
@@ -129,16 +130,17 @@ this.InternationalExpenseapi.createExpense(claimId, payload).subscribe({
       this.loading = false;
     }
   });
-
+setInterval(() => {
+}, 1000);
 const totalConvertedAmount = payload.reduce(
   (sum, item) => sum + (item.convertedAmount || 0),
   0
 );
 const claim:ClaimUpdate = {
     status: "pending",
-    amount: totalConvertedAmount
+    amount: this.getSettlementDetails().amount
   };
-
+debugger
   this.ClaimApi.updateClaim(
     this.api.User.employeeCode,
     claimId,
@@ -173,9 +175,9 @@ getSettlementDetails(): { message: string, amount: number, type: 'recover' | 'pa
   const difference =  cashPaid -this.advance ;
 
   if (difference < 0) {
-    return { message: 'Amount Recover from Employee', amount: Math.abs(difference), type: 'recover' };
+    return { message: 'Amount Recover from Employee', amount: difference, type: 'recover' };
   } else if (difference > 0) {
-    return { message: 'Amount Payable to Employee', amount: Math.abs(difference), type: 'pay' };
+    return { message: 'Amount Payable to Employee', amount: difference, type: 'pay' };
   } else {
     return { message: '', amount: 0, type: 'none' };
   }

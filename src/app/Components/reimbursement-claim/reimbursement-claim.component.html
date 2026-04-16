@@ -27,7 +27,7 @@
 
 
     <clr-modal [(clrModalOpen)]="isWithdrawModalOpen">
-        <h3 class="modal-title">Confirm Withdraw</h3>
+        <h3 class="modal-title">Confirm {{ selectedAction.toLowerCase() }}</h3>
 
         <div class="modal-body">
             Are you sure you want to {{ selectedAction.toLowerCase() }} this claim?

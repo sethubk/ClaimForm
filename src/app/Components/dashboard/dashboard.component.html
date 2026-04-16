@@ -57,6 +57,7 @@
       <clr-dg-column>Purpose</clr-dg-column>
       <clr-dg-column>Amount</clr-dg-column>
       <clr-dg-column>Status</clr-dg-column>
+      <clr-dg-column>Reimbursement</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let item of filteredData">
         <clr-dg-cell>{{ item.type }}</clr-dg-cell>
@@ -68,6 +69,17 @@
             {{ item.status }}
           </span>
         </clr-dg-cell>
+          <clr-dg-cell>
+  <span
+    class="status-text"
+    [ngClass]="(item?.amount ?? 0) < 0 ? 'recoverable' : 'payable'">
+    
+    {{ (item?.amount ?? 0) < 0
+        ? 'Amount Recover from Employee'
+        : 'Amount Payable to Employee' }}
+
+  </span>
+</clr-dg-cell>
       </clr-dg-row>
 
     </clr-datagrid>

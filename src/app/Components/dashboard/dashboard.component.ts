@@ -83,7 +83,7 @@ export class DashboardComponent {
           console.log('Claims fetched:', res);
 
           this.allClaims = res.filter(
-            c => c.status !== 'Draft' && (c.amount ?? 0) > 0
+            c => c.status !== 'Draft'
           );
           
           this.dataSource = [...this.allClaims];

@@ -223,7 +223,7 @@ this.internationalApi.addTravelDetails(claimId, data).subscribe({
   }
 
   backbtn() {
-    this.router.navigate([''])
+    this.router.navigate(['/Homepage'])
   }
 
 }

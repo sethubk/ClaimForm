@@ -135,3 +135,26 @@ clr-input-container label {
  margin-top: 3.8px;
  
 }
+.button-group {
+  display: flex;
+  gap: 700px; /* Space between buttons */
+  justify-content: space-evenly;
+}
+  .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f8f9fa; /* Light background */
+  padding: 10px 20px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.button-group {
+  display: flex;
+  gap: 700px; /* Space between buttons */
+  justify-content: space-evenly;
+}

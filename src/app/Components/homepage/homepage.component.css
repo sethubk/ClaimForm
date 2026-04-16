@@ -217,3 +217,14 @@ clr-datagrid{
 } */
 
 
+.status-text {
+  font-weight: 600;
+}
+
+.payable {
+  color: green;
+}
+
+.recoverable {
+  color: red;
+}

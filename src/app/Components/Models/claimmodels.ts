@@ -20,7 +20,9 @@ export interface ClaimDetailsResponse {
   cardCashEntries: any[];
   internationalExpenses: any[];
   domesticExpenses: any[];
-  claimStatus: string;
+  claimStatus?: string;
+  empcode: string;
+  totalAmount?: number;
 }
 
 export interface Claims {

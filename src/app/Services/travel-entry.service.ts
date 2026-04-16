@@ -16,7 +16,7 @@ private entries:any=[];
   getCashEntries() {
     return this.cashEntries;
   }
-
+selectedCurrency: string = '';
 getAvg(): number {
   let total = 0;
   let count = 0;

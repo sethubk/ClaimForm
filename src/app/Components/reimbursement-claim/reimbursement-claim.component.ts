@@ -77,7 +77,7 @@ export class ReimbursementClaimComponent {
         // Update UI status immediately
         this.claimDetails.claimStatus = this.selectedAction;
 
-        this.api.AdminAction(this.api.User.employeeCode, claimId).subscribe({
+        this.api.AdminAction(this.claimDetails.empcode, claimId).subscribe({
           next: (res) => {
             console.log('Admin action email sent successfully')
           },

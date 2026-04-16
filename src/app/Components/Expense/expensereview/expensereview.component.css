@@ -103,9 +103,7 @@ align-items: center;
     display: none !important;
   }
   
- .navbar {
-    display: none !important;
-  }
+
 
 
 }
@@ -128,11 +126,7 @@ align-items: center;
   z-index: 1000;
 }
 
-.button-group {
-  display: flex;
-  gap: 15px; /* Space between buttons */
-  justify-content: space-between;
-}
+
 .info-card {
   background-color: #ffffff;
   border-radius: 10px;
@@ -181,4 +175,9 @@ align-items: center;
 clr-input-container label {
  margin-top: 3.8px;
  
+}
+.button-group {
+  display: flex;
+  gap: 700px; /* Space between buttons */
+  justify-content: space-evenly;
 }

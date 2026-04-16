@@ -135,7 +135,7 @@ export class DomesticReviewComponent {
     );
     const claim: ClaimUpdate = {
       status: "pending",
-      amount: totalConvertedAmount
+      amount: this.getSettlementDetails().amount
     };
 
     this.ClaimApi.updateClaim(
@@ -172,9 +172,9 @@ export class DomesticReviewComponent {
     const difference = cashPaid - this.advance;
 
     if (difference < 0) {
-      return { message: 'Amount Recover from Employee', amount: Math.abs(difference), type: 'recover' };
+      return { message: 'Amount Recover from Employee', amount:difference, type: 'recover' };
     } else if (difference > 0) {
-      return { message: 'Amount Payable to Employee', amount: Math.abs(difference), type: 'pay' };
+      return { message: 'Amount Payable to Employee', amount: difference, type: 'pay' };
     } else {
       return { message: '', amount: 0, type: 'none' };
     }

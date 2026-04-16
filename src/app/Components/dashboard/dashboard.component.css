@@ -61,3 +61,15 @@ canvas {
 .status-badge.approved { background: green; color: white; }
 .status-badge.pending { background: orange; color: white; }
 .status-badge.rejected { background: red; color: white; }
+
+.status-text {
+  font-weight: 600;
+}
+
+.payable {
+  color: green;
+}
+
+.recoverable {
+  color: red;
+}

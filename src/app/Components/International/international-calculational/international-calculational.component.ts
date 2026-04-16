@@ -167,7 +167,7 @@ addEntry() {
   }
 }
   removeentry(index: number) {
-    const of = confirm("are you sure")
+    const of = confirm("are you sure you want to delete this Expense?")
     if (of) {
       this.entries.splice(index, 1)
     }

@@ -59,41 +59,42 @@
     </div>
   </div>
 <div class="dates">
-    <clr-datagrid>
-        <clr-dg-column>S.No</clr-dg-column>
-        <clr-dg-column>Date</clr-dg-column>
-        <clr-dg-column>Supporting No</clr-dg-column>
-        <clr-dg-column>Particulars</clr-dg-column>
-        <clr-dg-column>Payment Mode</clr-dg-column>
-        <clr-dg-column>Amount</clr-dg-column>
-        <clr-dg-column>Remarks</clr-dg-column>
+     <clr-datagrid>
+    <clr-dg-column>Sno</clr-dg-column>
+    <clr-dg-column>Date</clr-dg-column>
+    <clr-dg-column>Supporting No</clr-dg-column>
+    <clr-dg-column>Particulars</clr-dg-column>
+    <clr-dg-column>Payment Mode</clr-dg-column>
+    <clr-dg-column>Expense Amount</clr-dg-column>
+    
+<clr-dg-column>Expense Currency</clr-dg-column>
 
+<clr-dg-column>Converted Expense  Amount</clr-dg-column>
+<clr-dg-column>Remarks</clr-dg-column>
+    
+    
 
-        <!-- Expense Entries -->
-        <clr-dg-row *ngFor="let entry of entries; let i = index">
-            <clr-dg-cell>{{ i + 1 }}</clr-dg-cell>
-            <clr-dg-cell>{{ entry.date }}</clr-dg-cell>
-            <clr-dg-cell>{{ entry.supportingNo }}</clr-dg-cell>
-            <clr-dg-cell>{{ entry.particulars }}</clr-dg-cell>
-            <clr-dg-cell>{{ entry.paymentMode }}</clr-dg-cell>
-            <clr-dg-cell>₹{{ entry.amount }}</clr-dg-cell>
-            <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
+    <clr-dg-row *clrDgItems="let entry of entries let i = index">
+      <clr-dg-cell>{{ i+1}}</clr-dg-cell>
+      <clr-dg-cell>{{ entry.date }}</clr-dg-cell>
+      <clr-dg-cell>{{ entry.supportingNo }}</clr-dg-cell>
+      <clr-dg-cell>{{ entry.particulars }}</clr-dg-cell>
+      <clr-dg-cell>{{ entry.paymentMode }}</clr-dg-cell>
+     
+  <!-- Original Amount -->
+  <clr-dg-cell>{{ entry.amount }}</clr-dg-cell>
 
-       <clr-dg-row></clr-dg-row>
-        </clr-dg-row>
-           
+  <!-- Currency Type -->
+  <clr-dg-cell>{{ this.selectedCurrency }}</clr-dg-cell>
 
-            <!-- Grand Total Row -->
-            <clr-dg-row>
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-                <clr-dg-cell><strong>Grand Total</strong></clr-dg-cell>
-                <clr-dg-cell><strong>₹{{ totalAmounts }}</strong></clr-dg-cell>
-                <clr-dg-cell></clr-dg-cell>
-            </clr-dg-row>
-    </clr-datagrid>
+  <!-- Converted Amount -->
+  <clr-dg-cell>{{ entry.convertedAmount   }}</clr-dg-cell>
+
+      <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
+     
+    </clr-dg-row>
+    
+  </clr-datagrid>
 </div>
 
 
@@ -132,10 +133,12 @@
         </div>
     </div>
 </div>
-
+<div class="footer">
 <div class="button-group"   >
     <button class="btn btn-info" (click)="backbtn()">back to </button>
     <button class="btn btn-primary" (click)="printPage()">🖨️ Print</button>
     <button class="btn btn-success" (click)="submitExpense()"> Submit</button>
 </div>
+</div>
+
 </div>

@@ -13,7 +13,15 @@
   justify-content: space-between;
   align-items: center;
 }
+.payable-text {
+  color: green;
+  font-weight: 600;
+}
 
+.recoverable-text {
+  color: red;
+  font-weight: 600;
+}
 /* KPI CARDS */
 .kpi-container {
   display: grid;
@@ -87,4 +95,13 @@ clr-datagrid{
 }
 .action-bar{
 float: right;
+}
+
+.clr-row1{
+ display: flex;
+ margin-top: auto;
+  justify-content: flex-end;
+table {
+  
+}
 }

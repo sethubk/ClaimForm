@@ -142,7 +142,7 @@ formopen: boolean = false;
 
   }
   removeentry(index: number) {
-    const of = confirm("are you sure")
+    const of = confirm("are you sure you want to delete this Expense")
     if (of) {
       this.entries.splice(index, 1)
     }
@@ -157,6 +157,7 @@ formopen: boolean = false;
 
     this.expenseForm.reset()
     this.expenseForm.patchValue({ fileName: '' });
+    this.expenseForm.patchValue({screenshot: null });
 
     this.isEdit = false;
 
@@ -224,6 +225,6 @@ formopen: boolean = false;
     this.router.navigate(['expensereview'])
   }
   backbtn() {
-    this.router.navigate([''])
+    this.router.navigate(['/Homepage'])
   }
 }

@@ -57,7 +57,7 @@ export class InternationalComponent {
 
     this.travelStart = this.travelService.getTravelStart();
     this.travelEnd = this.travelService.getTravelEnd();
-
+this.selectedCurrency = this.travelService.getselectedcurrencyType();
     const today = new Date();
     this.maxDate = today.toISOString().slice(0, 16); // 'yyyy-MM-ddTHH:mm'
 
@@ -113,6 +113,7 @@ get cashEntries() {
       loadedDate: '',
       currerncy: this.selectedCurrency
     };
+    this.travelService.selectedCurrency = this.selectedCurrency;
     this.editIndex = null;
     this.editType = null;
     this.currencyModalOpen = true;
@@ -157,7 +158,7 @@ get cashEntries() {
 
 deleteEntry(filteredIndex: number, type: 'Card' | 'Cash') {
   const all = this.travelService.getAllEntries();
-
+const of = confirm("are you sure you want to delete this Expense?")
   const actualIndex = all.findIndex((x, i) =>
     x.type === type &&
     (
@@ -229,6 +230,6 @@ this.internationalApi.addTravelDetails(claimId, data).subscribe({
   }
 
   backbtn() {
-    this.router.navigate([''])
+    this.router.navigate(['/Homepage'])
   }
 }
