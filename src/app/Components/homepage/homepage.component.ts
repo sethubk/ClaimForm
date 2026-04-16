@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, NgForm, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NgForm, FormGroup, FormControl, Validators, ReactiveFormsModule, RequiredValidator } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { ApiService } from '../../Services/Api Services/api.service';
 import { Router } from '@angular/router';
@@ -242,8 +242,11 @@ resetFilters() {
     };
   }
 }
-  reset() {
-    this.User.purposePlace = ''
+  resetPersonalForm(){
+    this.personalForm.controls.purposePlace.setValue('');
+    this.personalForm.controls.purposePlace.removeValidators(Validators.required);
+    this.personalForm.controls.purposePlace.updateValueAndValidity();
+    this.showPersonalModal = false;
   }
 
   godash() {

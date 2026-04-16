@@ -31,7 +31,9 @@ export class InternationalComponent {
   selectedCurrency: string = '';
   currencyModalOpen: boolean = false;
   formopen: boolean = false;
-
+showDeleteModal = false;
+pendingIndex: number | null = null;
+pendingType: 'Card' | 'Cash' | null = null;
   entry: EntryModel = {
     type: 'Card',
     inrRate: null,
@@ -155,10 +157,31 @@ get cashEntries() {
   this.editIndex = actualIndex;
   this.currencyModalOpen = true;
 }
+askDeleteConfirmation(index: number, type: 'Card' | 'Cash') {
+  this.pendingIndex = index;
+  this.pendingType = type;
+  this.showDeleteModal = true;
+}
+confirmDelete() {
+  if (this.pendingIndex !== null && this.pendingType !== null) {
+    this.deleteEntry(this.pendingIndex, this.pendingType);
+  }
+  this.closeDeleteModal();
+}
+
+closeDeleteModal() {
+  this.showDeleteModal = false;
+  this.pendingIndex = null;
+  this.pendingType = null;
+}
 
 deleteEntry(filteredIndex: number, type: 'Card' | 'Cash') {
+  if (!confirm('Are you sure you want to delete this expense?')) {
+    return;
+  }
+
   const all = this.travelService.getAllEntries();
-const of = confirm("are you sure you want to delete this Expense?")
+
   const actualIndex = all.findIndex((x, i) =>
     x.type === type &&
     (

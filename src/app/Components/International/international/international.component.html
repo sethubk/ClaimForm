@@ -38,6 +38,7 @@
 
 </div>
 
+
 <div class="addbutton">
 
   <button id="button1" class="btn btn-primary" (click)="openCurrencyModal()"
@@ -111,10 +112,10 @@
         <clr-dg-cell>{{ item.inrRate }}</clr-dg-cell>
         <clr-dg-cell>{{ item.totalLoaded }}</clr-dg-cell>
         <clr-dg-cell>{{ item.loadedDate }}</clr-dg-cell>
-        <clr-dg-cell>{{ item.totalInr }}</clr-dg-cell>
+        <clr-dg-cell>₹{{ item.totalInr }}</clr-dg-cell>
         <clr-dg-cell>
-          <button class="crud-btn remove" (click)="editEntry(i, 'Card')"><cds-icon shape="pencil"></cds-icon></button>
-          <button class="crud-btn edit" (click)="deleteEntry(i, 'Card')"> <cds-icon shape="trash"></cds-icon></button>
+          <button class="crud-btn edit" (click)="editEntry(i, 'Card')"><cds-icon shape="pencil"></cds-icon></button>
+          <button class="crud-btn remove" (click)="deleteEntry(i, 'Card')"> <cds-icon shape="trash"></cds-icon></button>
         </clr-dg-cell>
       </clr-dg-row>
     </clr-datagrid>
@@ -137,7 +138,7 @@
         <clr-dg-cell>{{ item.inrRate }}</clr-dg-cell>
         <clr-dg-cell>{{ item.totalLoaded }}</clr-dg-cell>
         <clr-dg-cell>{{ item.loadedDate }}</clr-dg-cell>
-        <clr-dg-cell>{{ item.totalInr }}</clr-dg-cell>
+        <clr-dg-cell>₹{{ item.totalInr }}</clr-dg-cell>
         <clr-dg-cell>
           <button class="crud-btn remove" (click)="editEntry(i, 'Cash')"><cds-icon shape="pencil"></cds-icon></button>
           <button class="crud-btn edit" (click)="deleteEntry(i, 'Cash')"> <cds-icon shape="trash"></cds-icon></button>

@@ -166,13 +166,27 @@ addEntry() {
     console.log('Current entries:', this.entries);
   }
 }
-  removeentry(index: number) {
-    const of = confirm("are you sure you want to delete this Expense?")
-    if (of) {
-      this.entries.splice(index, 1)
-    }
+ deleteIndex: number | null = null;
+showDeleteModal = false;
 
+removeEntry(index: number) {
+  this.deleteIndex = index;
+  this.showDeleteModal = true;
+}
+
+confirmDelete() {
+  if (this.deleteIndex !== null) {
+    this.entries.splice(this.deleteIndex, 1);
   }
+  this.closeModal();
+}
+
+closeModal() {
+  this.showDeleteModal = false;
+  this.deleteIndex = null;
+}
+
+  
 
 
 
@@ -225,27 +239,27 @@ addEntry() {
 
     console.log("Editing entry:", this.formData);
   }
-  closeModal() {
-    this.formopen = false;
+  // closeModal() {
+  //   this.formopen = false;
 
-    // ✅ Reset all form controls to their initial state
-    this.expenseForm.reset({
-      date: '',
-      supportingNo: '',
-      particulars: '',
-      paymentMode: '',
-      amount: '',
-      remarks: '',
-      screenshot: null,
-      fileName: ''
-    });
+  //   // ✅ Reset all form controls to their initial state
+  //   this.expenseForm.reset({
+  //     date: '',
+  //     supportingNo: '',
+  //     particulars: '',
+  //     paymentMode: '',
+  //     amount: '',
+  //     remarks: '',
+  //     screenshot: null,
+  //     fileName: ''
+  //   });
 
-    // ✅ Clear additional properties
+  //   // ✅ Clear additional properties
 
-    this.preview = null; // If you have image preview
-    this.isEdit = false;
-    this.editIndex = null;
-  }
+  //   this.preview = null; // If you have image preview
+  //   this.isEdit = false;
+  //   this.editIndex = null;
+  // }
   gotoreview() {
     this.router.navigate(['/internationalreview'])
   }

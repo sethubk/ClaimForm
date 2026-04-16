@@ -51,7 +51,7 @@
             <clr-dg-cell>{{ e.supportingNo }}</clr-dg-cell>
             <clr-dg-cell>{{ e.particulars }}</clr-dg-cell>
             <clr-dg-cell>{{ e.paymentMode }}</clr-dg-cell>
-            <clr-dg-cell>{{ e.amount }}</clr-dg-cell>
+            <clr-dg-cell>₹{{ e.amount }}</clr-dg-cell>
           </clr-dg-row>
 
           <!-- ROW -->
@@ -162,7 +162,7 @@
           <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
           <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
           <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
-          <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
+          <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
           <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
         </clr-dg-row>
 
@@ -266,7 +266,7 @@
           <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
           <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
 
-          <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
+          <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
 
         </clr-dg-row>
 
@@ -295,8 +295,8 @@
           <table class="table table-compact">
             <tbody>
               <tr>
-                <td>Total Expenses Bill</td>
-                <td>₹{{ claimDetails.totalAmount }}</td>
+                <td>Total Spent Amount</td>
+                <td>₹{{ calculateTotal() }}</td>
               </tr>
 
 

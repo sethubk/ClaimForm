@@ -5,7 +5,7 @@
 
 <div *ngIf="personalData">
   <clr-accordion>
-    <clr-accordion-panel [clrAccordionPanelOpen]="true">
+    <clr-accordion-panel [clrAccordionPanelOpen]="true" >
       <clr-accordion-title>
         <strong>Personal Details</strong>
       </clr-accordion-title>
@@ -150,7 +150,23 @@
 
 </clr-modal>
 
+<clr-modal [(clrModalOpen)]="showDeleteModal">
+  <h3 class="modal-title">Confirm Deletion</h3>
 
+  <div class="modal-body">
+    Are you sure you want to delete this expense?
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-outline" (click)="closeModal()">
+      Cancel
+    </button>
+
+    <button class="btn btn-danger" (click)="confirmDelete()">
+      Delete
+    </button>
+  </div>
+</clr-modal>
 <div class="datagriid">
   <clr-datagrid>
     <clr-dg-column>Sno</clr-dg-column>
@@ -175,7 +191,7 @@
       <clr-dg-cell>{{ entry.supportingNo }}</clr-dg-cell>
       <clr-dg-cell>{{ entry.particulars }}</clr-dg-cell>
       <clr-dg-cell>{{ entry.paymentMode }}</clr-dg-cell>
-      <clr-dg-cell>{{ entry.amount }}</clr-dg-cell>
+      <clr-dg-cell>₹{{ entry.amount }}</clr-dg-cell>
       <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
       <clr-dg-cell>
         <!-- <img *ngIf="entry.preview" [src]="entry.preview" alt="Preview" class="thumb" /> -->

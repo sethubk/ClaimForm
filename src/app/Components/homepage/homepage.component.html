@@ -4,7 +4,7 @@
   </div>
   <div class="content-container" [ngClass]="{ 'blur': isLoading }">
     <div class="content-container">
-      <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+      <!-- <clr-vertical-nav [clrVerticalNavCollapsible]="true">
         <a clrVerticalNavLink (click)="resetFilters()">All Claims</a>
         <clr-vertical-nav-group routerLinkActive="active">
           <a routerLink="#" hidden aria-hidden="true"></a>
@@ -42,7 +42,7 @@
         <a clrVerticalNavLink *ngIf="isadmin()" (click)="goadmin()" routerLinkActive="active">
           ReimburseMentStatus
         </a>
-      </clr-vertical-nav> 
+      </clr-vertical-nav>  -->
 
       <div class="content-area">
 
@@ -68,7 +68,7 @@
         </div>
 
 
-        <clr-modal [(clrModalOpen)]="showPersonalModal" [clrModalSize]="'md'">
+        <clr-modal [(clrModalOpen)]="showPersonalModal" [clrModalSize]="'md'", (clrModalOpenChange)="resetPersonalForm()">
           <h3 class="modal-title">Personal Details</h3>
 
           <div class="modal-body">
@@ -124,7 +124,7 @@
               <div class="divider"></div>
 
               <div class="actions">
-                <button class="btn outline-danger" type="button" (click)="reset()">Reset</button>
+                <button class="btn outline-danger" type="button" (click)="resetPersonalForm()">Reset</button>
 
                 <button class="btn btn-primary" [disabled]="personalForm.invalid" (click)="onPersonalNext()">
                   Next
@@ -144,7 +144,7 @@
             <clr-dg-column>Type</clr-dg-column>
             <clr-dg-column>Created Date</clr-dg-column>
             <clr-dg-column>Purpose & Place</clr-dg-column>
-            <clr-dg-column>Amount</clr-dg-column>
+            <clr-dg-column>Reimbursed Amount</clr-dg-column>
             <clr-dg-column>Status</clr-dg-column>
             <clr-dg-column>Reimbursement</clr-dg-column>
 
@@ -155,7 +155,7 @@
               <clr-dg-cell>{{ item.type }}</clr-dg-cell>
               <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
               <clr-dg-cell>{{ item.purpose }}</clr-dg-cell>
-              <clr-dg-cell> {{ getRoundedAmount(item?.amount) }}</clr-dg-cell>
+              <clr-dg-cell> ₹{{ getRoundedAmount(item?.amount) }}</clr-dg-cell>
               <clr-dg-cell>
                 <span [ngClass]="getStatusClass(item.status)" class="status-badge">
                   {{ item.status }}

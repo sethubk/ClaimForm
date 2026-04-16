@@ -155,13 +155,22 @@ addEntry() {
     console.log('Current entries:', this.entries);
   }
 }
-  removeentry(index: number) {
-    const of = confirm("are you sure you want to delete this Expense?")
-    if (of) {
-      this.entries.splice(index, 1)
-    }
+ deleteIndex: number | null = null;
+showDeleteModal = false;
 
+removeEntry(index: number) {
+  this.deleteIndex = index;
+  this.showDeleteModal = true;
+}
+
+confirmDelete() {
+  if (this.deleteIndex !== null) {
+    this.entries.splice(this.deleteIndex, 1);
   }
+  this.closeModal();
+}
+
+
 
   //open clarity model
   openmodel() {
@@ -212,7 +221,8 @@ addEntry() {
   }
   closeModal() {
     this.formopen = false;
-
+  this.showDeleteModal = false;
+  this.deleteIndex = null;
     //  Reset all form controls to their initial state
     this.expenseForm.reset({
       date: '',
