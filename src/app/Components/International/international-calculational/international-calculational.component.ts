@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../Services/Api Services/api.service';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
 import { loadCommerceIconSet } from '@cds/core/icon';
+import { ToasterService } from '../../../Services/toaster.service';
 
 @Component({
   selector: 'app-international-calculational',
@@ -33,7 +34,10 @@ export class InternationalCalculationalComponent {
     private urlroute: ActivatedRoute,
     private api: ApiService,
     private internationalApi:InternationalApiService,
-    private travelService: TravelEntryService, private router: Router, private service: ExpenseDataService) { }
+    private travelService: TravelEntryService, 
+    private router: Router,
+    private toastService: ToasterService, 
+    private service: ExpenseDataService) { }
   maxDate: string = '';
 
   startDate: string = '';
@@ -105,6 +109,7 @@ getInternationalExpenses() {
     next: (res) => {
       console.log('International expenses:', res)
       this.service.setentries(res);
+      this.entries=res
     },
     error: (err) => console.error('Error fetching international expenses:', err)
   }); 
@@ -118,7 +123,7 @@ getInternationalExpenses() {
       supportingNo: ['', Validators.required],
       particulars: ['', Validators.required],
       paymentMode: ['', Validators.required],
-      selectedCurrency_amt: ['', Validators.required], // Currency dropdown
+      currencyType: ['', Validators.required], // Currency dropdown
       amount: ['', [Validators.required, Validators.min(1)]], // Amount input
       remarks: [''],
       screenshot: [null],
@@ -143,20 +148,41 @@ getInternationalExpenses() {
       ? { maxDate: true }
       : null;
   }
+ imagePreview: string | ArrayBuffer | null = null;
+selectedFile: File | null = null;
+showModal: boolean = false;
+ onFileChange(event: any) {
+  const file = event.target.files[0];
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.expenseForm.patchValue({ screenshot: file, fileName: file.name });
-    }
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
+}
+openGridImage(img: string) {
+  console.log("Image clicked:", img); 
+this.toastService.bilopen(img );
+}
+removeImage() {
+  this.imagePreview = null;
+
+  // reset form values
+  this.expenseForm.patchValue({
+    screenshot: null,
+    fileName: ''
+  });
+}
 addEntry() {
   if (this.expenseForm.valid) {
+    
     const formValue = this.expenseForm.value;
 
     let convertedAmount = 0;
     const amount = Number(formValue.amount) || 0;
-    const currency = formValue.selectedCurrency_amt?.toUpperCase();
+    const currency = formValue.currencyType.toUpperCase();
 
     if (currency === 'INR' || currency === 'IND') {
       //  INR: no conversion
@@ -169,7 +195,8 @@ addEntry() {
     const entry = {
       ...formValue,
       convertedAmount,   //  included for INR and others
-      preview: this.preview
+    screenshot: this.imagePreview ,
+        fileName: this.selectedFile?.name || ''
     };
 
     if (this.editIndex != null && this.isEdit) {
@@ -213,10 +240,13 @@ closeModal() {
 
   //open clarity model
   openmodel() {
-
-    this.expenseForm.reset()
-    this.expenseForm.patchValue({ fileName: '' });
-
+//  this.expenseForm.patchValue({
+//     screenshot: null,
+//     fileName: ''
+//   });
+    // this.expenseForm.reset()
+    // this.expenseForm.patchValue({ fileName: '' });
+this.imagePreview = ''
     this.isEdit = false;
 
 
@@ -236,6 +266,7 @@ closeModal() {
   }
 
   Editentry(entry: any, index: number) {
+    debugger
     this.formData = { ...entry };
     this.editIndex = index;
     this.formopen = true;
@@ -252,8 +283,9 @@ closeModal() {
       remarks: entry.remarks,
       screenshot: entry.screenshot,
       fileName: entry.fileName
+      
     });
-
+this.imagePreview = entry.screenshot
     // ✅ Recalculate converted amount for UI if needed
 
 

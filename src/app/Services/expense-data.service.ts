@@ -24,7 +24,7 @@ private expense:Expense[]=[];
   getDetails() {
     return this.details;
   }
-setentries(entries:any){
+setentries(entries:any[]){
 this.entries=entries
 }
 getentries(){

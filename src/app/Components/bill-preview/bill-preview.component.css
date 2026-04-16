@@ -1,0 +1,32 @@
+.bill-container {
+  padding: 10px;
+}
+
+.bill-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.bill-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+}
+.bill-section {
+  margin-top: 10px;
+}
+
+.bill-image-container {
+  margin-top: 15px;
+}
+
+.bill-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+clr-modal {
+    z-index: 1050; /* Ensure the modal is above other elements */
+}

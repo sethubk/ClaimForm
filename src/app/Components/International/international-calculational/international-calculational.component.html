@@ -126,7 +126,7 @@
       <!-- Amount -->
         <clr-select-container>
         <label class="clr-col-12 clr-col-md-4">Select currency type</label>
-        <select class="clr-col-12 clr-col-md-8" clrSelect formControlName="selectedCurrency_amt">
+        <select class="clr-col-12 clr-col-md-8" clrSelect formControlName="currencyType">
    
           <option value="INR">INR</option>
           <option value="Eur">EUR</option>
@@ -158,9 +158,18 @@
       </clr-textarea-container>
 
       <!-- Screenshot -->
-      <div class="amount12">
+     <div class="amount12">
         <label class="clr-col-12 clr-col-md-2">Screenshot</label>
-        <input class="clr-col-12 clr-col-md-8" type="file" (change)="onFileChange($event)" accept="image/*" />
+
+        <input class="clr-col-12 clr-col-md-6" type="file" (change)="onFileChange($event)" accept="image/*" />
+        <button type="button" class="crud-btn remove" (click)="removeImage()" title="Remove Image">
+          <cds-icon shape="trash"></cds-icon>
+        </button>
+        <!-- Thumbnail Preview -->
+        <div *ngIf="imagePreview" class="preview-container">
+          <img [src]="imagePreview" class="preview-img" />
+
+        </div>
       </div>
 
       <!-- Actions -->
@@ -204,15 +213,15 @@
   <clr-dg-cell>{{ entry.amount }}</clr-dg-cell>
 
   <!-- Currency Type -->
-  <clr-dg-cell>{{ entry.selectedCurrency_amt  }}</clr-dg-cell>
+  <clr-dg-cell>{{ entry.currencyType}}</clr-dg-cell>
 
   <!-- Converted Amount -->
   <clr-dg-cell>{{ entry.convertedAmount   }}</clr-dg-cell>
 
       <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
       <clr-dg-cell>
-        <!-- <img *ngIf="entry.preview" [src]="entry.preview" alt="Preview" class="thumb" /> -->
-         {{entry.fileName}}
+        <img *ngIf="entry.screenshot" [src]="entry.screenshot" class="thumb"
+          (click)="openGridImage(entry.screenshot)" />
       </clr-dg-cell>
 
 

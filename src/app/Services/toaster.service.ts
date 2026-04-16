@@ -36,5 +36,26 @@ private toastSubject = new BehaviorSubject<ToastMessage | null>(null);
   info(message: string): void {
     this.show('info', message);
   }
+    imageUrl: string | null = null;
+  isOpen: boolean = false;
+  billopen: boolean = false;
+data:any[]=   [];
+ open(image: string) {
+    this.imageUrl = image;
+    this.isOpen = true;
+     
+  }
+  
+   bilopen(image: string) {
+    this.imageUrl = image;
+    this.billopen = true;
+     
+  }
 
+  close() {
+    this.isOpen = false;
+    this.billopen = false;
+    this.imageUrl = null;
+      this.data = [];
+  }
 }

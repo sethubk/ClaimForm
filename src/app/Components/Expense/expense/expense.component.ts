@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ExpenseDataService } from '../../../Services/expense-data.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ExpenseApiService } from '../../../Services/Api Services/expense-api.service';
+import { ToasterService } from '../../../Services/toaster.service';
 
 @Component({
   selector: 'app-expense',
@@ -23,7 +24,7 @@ Expense:Expense[]=[];
 constructor(private urlroute: ActivatedRoute, 
    private fb: FormBuilder,private api:ApiService,
    private ExpanseApi:ExpenseApiService,
-   private router:Router,private Service:ExpenseDataService){}
+   private router:Router,private Service:ExpenseDataService, private toaster: ToasterService){}
   
 personalData: Employee={ 
    today: '',
@@ -52,6 +53,7 @@ formopen: boolean = false;
   isEdit: boolean = false;
  isFutureDate: boolean = false;
   entries: Expense[] = [];
+  selectedGridImage: string | null = null;
  ngOnInit(){
   debugger
     this.Expenseid = this.urlroute.snapshot.paramMap.get('claimId')!;
@@ -147,22 +149,45 @@ if(this.Expenseid){
       ? { maxDate: true }
       : null;
   }
-  onFileChange(event: any) 
-  {
-    debugger
-    const file = event.target.files[0];
-    if (file) {
-      this.expenseForm.patchValue({ screenshot: file, 
-        fileName:file.name });
-    }
+ imagePreview: string | ArrayBuffer | null = null;
+selectedFile: File | null = null;
+showModal: boolean = false;
+
+
+onFileChange(event: any) {
+  const file = event.target.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
+}
+openGridImage(img: string) {
+  console.log("Image clicked:", img); 
+this.toaster.open(img );
+}
+openModal() {
+  
+}
+
+openPreview() {
+  if (this.imagePreview) {
+    this.toaster.open(      this.imagePreview as string
+    );
+  }
+}
+
   addEntry() {
     debugger
 
     if (this.expenseForm.valid) {
       const entry = {
         ...this.expenseForm.value,
-        preview: this.preview // include the image preview here
+        screenshot: this.imagePreview ,
+        fileName: this.selectedFile?.name || ''// include the image preview here
       };
 
       if (this.editIndex != null && this.isEdit) {
@@ -202,10 +227,21 @@ confirmDelete() {
 
 
 
+removeImage() {
+  this.imagePreview = null;
 
+  // reset form values
+  this.expenseForm.patchValue({
+    screenshot: null,
+    fileName: ''
+  });
+}
   //open clarity model
   openmodel() {
-
+ this.expenseForm.patchValue({
+    screenshot: null,
+    fileName: ''
+  });
     this.expenseForm.reset()
     this.expenseForm.patchValue({ fileName: '' });
     this.expenseForm.patchValue({screenshot: null });
@@ -251,6 +287,10 @@ confirmDelete() {
 
   }
   closeModal() {
+    
+  this.showModal = false;
+  this.selectedGridImage = null;
+
     this.formopen = false;
   this.showDeleteModal = false;
   this.deleteIndex = null;

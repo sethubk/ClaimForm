@@ -50,6 +50,8 @@
           <clr-dg-column>Particulars</clr-dg-column>
           <clr-dg-column>Payment Mode</clr-dg-column>
           <clr-dg-column>Amount</clr-dg-column>
+          <clr-dg-column>Remarks</clr-dg-column>
+          <clr-dg-column>Screenshot</clr-dg-column>
 
           <clr-dg-row *clrDgItems="let e of claimDetails.expenses">
             <clr-dg-cell>{{ e.date }}</clr-dg-cell>
@@ -57,6 +59,10 @@
             <clr-dg-cell>{{ e.particulars }}</clr-dg-cell>
             <clr-dg-cell>{{ e.paymentMode }}</clr-dg-cell>
             <clr-dg-cell>₹{{ e.amount }}</clr-dg-cell>
+            <clr-dg-cell>{{ e.remarks }}</clr-dg-cell>
+            <clr-dg-cell>
+              <img *ngIf="e.screenshot" [src]="e.screenshot" class="thumb" (click)="openGridImage(e.screenshot)" />   
+            </clr-dg-cell>
           </clr-dg-row>
 
           <!-- ROW -->

@@ -114,7 +114,7 @@ submitExpense() {
     amount: Number(e.amount) || 0,
     convertedAmount: Number(e.convertedAmount) || Number(e.amount) || 0,
     remarks: e.remarks ?? "",
-    screenshot: e.fileName ?? ""
+    screenshot: e.screenshot ?? ""
   }));
 
   // ✅ Call International AddBulk API

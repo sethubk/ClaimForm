@@ -114,4 +114,9 @@ private router: Router,
   if(this.claimDetails.claimType === 'DomesticTravels') {     
      this.router.navigate(['/DomesticTravels', claimId])  
   }}
+
+  openGridImage(img: string) {
+  console.log("Image clicked:", img); 
+this.toastService.bilopen(img );
+}
   }

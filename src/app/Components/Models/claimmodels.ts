@@ -83,8 +83,9 @@ export interface InternationalExpenseUI {
   amount?: string | number;
   convertedAmount?: string | number;
   remarks?: string;
-
+  screenshot?: string;
   fileName?: string;
+  currencyType?:string;
   file?: File;
 }
 export interface InternationalExpense {

@@ -85,7 +85,7 @@ const payload = (this.entries ?? []).map((e: any) => ({
   paymentMode: e.paymentMode ?? "",
   remarks: e.remarks ?? "",
   fileName: e.fileName ?? "",        // remove if not in DTO
-  screenshot: e.fileName ?? ""     // send "" or make DTO string?
+  screenshot: e.screenshot ?? ""     // send "" or make DTO string?
 }));
 
 this.ExpenseApi.createExpense(claimId, payload).subscribe({

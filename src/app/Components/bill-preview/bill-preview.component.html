@@ -1,0 +1,64 @@
+<clr-modal 
+  [clrModalOpen]="modalService.isOpen"
+  (clrModalOpenChange)="modalService.close()"
+  [clrModalSize]="'lg'">
+
+  <h3 class="modal-title">Bill Preview</h3>
+
+  <div class="modal-body">
+
+    <!-- Image Only -->
+    <img
+      *ngIf="modalService.imageUrl"
+      [src]="modalService.imageUrl"
+      class="bill-image"
+    />
+
+  
+
+ 
+
+    <button class="btn btn-outline" (click)="modalService.close()">
+      Close
+    </button>
+
+  </div>
+
+</clr-modal>
+<clr-modal 
+  [clrModalOpen]="modalService.billopen"
+  (clrModalOpenChange)="modalService.close()"
+  [clrModalSize]="'lg'">
+
+  <h3 class="modal-title">Bill Preview</h3>
+
+  <div class="modal-body">
+
+    <!-- Image Only -->
+    <img
+      *ngIf="modalService.imageUrl"
+      [src]="modalService.imageUrl"
+      class="bill-image"
+    />
+
+  </div>
+
+  <div class="modal-footer">
+
+    <!-- Download Button -->
+    <button
+  *ngIf="modalService.imageUrl"
+  class="btn btn-primary"
+  (click)="downloadImage()"
+>
+  Download
+</button>
+
+    <button class="btn btn-outline" (click)="modalService.close()">
+      Close
+    </button>
+
+  </div>
+
+</clr-modal>
+

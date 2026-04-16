@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './Components/sidebar/sidebar.component';
 import { ClrVerticalNavModule } from "@clr/angular";
 import { ToastComponent } from './Components/toast/toast.component';
+import { BillPreviewComponent } from "./Components/bill-preview/bill-preview.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, CommonModule, SidebarComponent, ClrVerticalNavModule,ToastComponent],
+  imports: [RouterOutlet, NavbarComponent, CommonModule, SidebarComponent, ClrVerticalNavModule, ToastComponent, BillPreviewComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
