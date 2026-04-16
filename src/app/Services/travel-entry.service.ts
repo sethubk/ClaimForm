@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CashInfoDtos } from '../Components/Models/claimmodels';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,25 @@ addEntry(entry: any) {
   this.cardCashEntries.push(newEntry);
 }
 
+addEntriesFromApi(entries: any[], currencyType: string) {
+ 
+
+  entries.forEach(entry => {
+    const totalInr = entry.inrRate * entry.totalLoadedAmount;
+
+    this.cardCashEntries.push({
+      currerncy: currencyType,                  
+      inrRate: entry.inrRate,
+      totalLoaded: entry.totalLoadedAmount,     
+      loadedDate: entry.loadedDate,
+      totalInr: totalInr,
+      type: entry.paymentType                                
+    });
+  });
+  console.log("cardCashEntries in service", this.cardCashEntries);
+}
+
+
  updateEntry(index: number, updatedEntry: any) {
   updatedEntry.totalInr = updatedEntry.inrRate * updatedEntry.totalLoaded;
   this.cardCashEntries[index] = updatedEntry;
@@ -56,7 +76,7 @@ getAllEntries() {
   return this.cardCashEntries;
 }
 
-  setentries(entries:any){
+  setentries(entries:any[]){
 this.entries=entries
 }
 getentries(){
@@ -82,6 +102,7 @@ clearCardEntries(): void {
     this.travelEnd = '';
     this.allowanceAmount=0
     this.entries=[];
+    this.cardCashEntries=[];
 }
 
   private travelStart: string = '';

@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
-import { Employee, FormDataModel } from '../../Models/claimmodels';
+import { Employee, Expense, FormDataModel } from '../../Models/claimmodels';
 import { ApiService } from '../../../Services/Api Services/api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExpenseDataService } from '../../../Services/expense-data.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ExpenseApiService } from '../../../Services/Api Services/expense-api.service';
 
 @Component({
   selector: 'app-expense',
@@ -17,10 +18,13 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 export class ExpenseComponent {
  
 preview: any;
-
-
-constructor(private fb: FormBuilder,private api:ApiService,private router:Router,private Service:ExpenseDataService){}
- 
+Expenseid!: string;
+Expense:Expense[]=[];
+constructor(private urlroute: ActivatedRoute, 
+   private fb: FormBuilder,private api:ApiService,
+   private ExpanseApi:ExpenseApiService,
+   private router:Router,private Service:ExpenseDataService){}
+  
 personalData: Employee={ 
    today: '',
   username: '',
@@ -47,8 +51,14 @@ formopen: boolean = false;
  editIndex: number | null = null;
   isEdit: boolean = false;
  isFutureDate: boolean = false;
-  entries: FormDataModel[] = [];
+  entries: Expense[] = [];
  ngOnInit(){
+  debugger
+    this.Expenseid = this.urlroute.snapshot.paramMap.get('claimId')!;
+if(this.Expenseid){
+  this.getExpenseDetails();
+
+}
    this.personalData=this.api.User;
    const today = new Date();
     this.maxDate = today.toISOString().split('T')[0]; // Format: yyyy-MM-dd
@@ -61,6 +71,38 @@ formopen: boolean = false;
     }
     this.from1()
  }
+
+ getExpenseDetails(){
+  this.ExpanseApi.getExpensesByClaimId(this.Expenseid).subscribe({
+
+    next: (res:Expense) => {
+      this.Expense.push(res);
+      console.log('expense details2:', this.Expense);
+      console.log('expense details:', res);
+      this.Service.setExpense(res);
+      this.entries.push(res);
+      this.Service.setentries(this.entries);
+      // this.entries = res.map((expense: Expense) => ({
+      //   date: expense.date,
+      //   supportingNo: expense.supportingNo,
+      //   particulars: expense.particulars,
+      //   paymentMode: expense.paymentMode,
+      //   amount: expense.amount,
+      //   remarks: expense.remarks,
+      //   screenshot: expense.screenshot,
+      //   fileName: expense.fileName
+      // }));
+      // this.Service.setentries(this.entries);
+      this.Expense.push(res);
+    },
+    
+    error: (err) => {
+      console.error('Error fetching expense details:', err);
+    }
+
+  });
+ }
+
  validateDate(): void {
     if (!this.formData.date) {
       this.isFutureDate = false;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/Api Services/api.service';
 import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import { ClarityModule } from '@clr/angular';
@@ -19,8 +19,9 @@ import { ToasterService } from '../../Services/toaster.service';
 export class ClaimViewComponent {
 
   constructor(
-    private route: ActivatedRoute,
+    private urlRoute: ActivatedRoute,
     private api: ApiService,
+private router: Router,
     private ClaimApi: ClaimApiService,
     private toastService: ToasterService
   ) { }
@@ -29,7 +30,8 @@ export class ClaimViewComponent {
   claimId!: string;
 
   ngOnInit() {
-    this.claimId = this.route.snapshot.paramMap.get('claimId')!;
+    this.claimId = this.urlRoute.snapshot.paramMap.get('claimId')!;
+    localStorage.setItem('lastClaimId', this.claimId);
     this.getClaimExpenses();
   }
   getClaimExpenses() {
@@ -74,7 +76,7 @@ export class ClaimViewComponent {
 
         this.isWithdrawModalOpen = false;
 
-        // Optional: show toast
+      
         this.toastService.success('Claim withdrawn successfully');
 
       },
@@ -100,4 +102,16 @@ export class ClaimViewComponent {
     }
     return this.totalAmount;
   }
-}
+  EditExpenses() {
+    const claimId = this.claimId;
+    if(this.claimDetails.claimType === 'Expense') {     
+     this.router.navigate(['/Expense', claimId])
+    // Implement the logic to navigate to the edit expenses page
+  }
+  if(this.claimDetails.claimType === 'InternationalTravels') {     
+     this.router.navigate(['/InternationalTravels', claimId])
+  }
+  if(this.claimDetails.claimType === 'DomesticTravels') {     
+     this.router.navigate(['/DomesticTravels', claimId])  
+  }}
+  }

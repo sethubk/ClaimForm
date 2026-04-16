@@ -19,6 +19,7 @@ createExpense(claimId: string, expense: any): Observable<any> {
   );
 }
 
-
+getExpensesByClaimId(claimId: string): Observable<any> {
+  return this.http.get(`${this.baseurl}/${claimId}/Expense`); }
 
 }

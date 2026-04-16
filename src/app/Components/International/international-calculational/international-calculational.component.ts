@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { Employee, FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExpenseDataService } from '../../../Services/expense-data.service';
 import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../Services/Api Services/api.service';
+import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
 
 @Component({
   selector: 'app-international-calculational',
@@ -27,7 +28,11 @@ export class InternationalCalculationalComponent {
     vendorCost: '',
    
   };
-  constructor(private fb: FormBuilder, private api: ApiService, private travelService: TravelEntryService, private router: Router, private service: ExpenseDataService) { }
+  constructor(private fb: FormBuilder,
+    private urlroute: ActivatedRoute,
+    private api: ApiService,
+    private internationalApi:InternationalApiService,
+    private travelService: TravelEntryService, private router: Router, private service: ExpenseDataService) { }
   maxDate: string = '';
 
   startDate: string = '';
@@ -53,10 +58,14 @@ export class InternationalCalculationalComponent {
     screenshot: '',
     fileName: ''
   };
+  claimId!: string;
+  internationalExpense: InternationalExpense[] = [];
   ngOnInit() {
-
+ this.claimId=this.urlroute.snapshot.paramMap.get('claimId')!;
     this.from1()
-   
+   if(!this.claimId){
+    this.getInternationalExpenses();
+   }
     this.selectedCurrency_amt = this.travelService.getselectedcurrencyType()
    
 
@@ -89,7 +98,15 @@ export class InternationalCalculationalComponent {
 
 
   }
+getInternationalExpenses() {
+  this.internationalApi.getInternationalExpensesByClaimId(this.claimId).subscribe({
+    next: (res) => {
+      console.log('International expenses:', res)
+    },
+    error: (err) => console.error('Error fetching international expenses:', err)
+  }); 
 
+}
   expenseForm!: FormGroup;
   from1() {
 

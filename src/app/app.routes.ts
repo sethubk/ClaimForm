@@ -32,5 +32,8 @@ export const routes: Routes = [
 {path:'reimbursement/:claimId',component:ReimbursementClaimComponent,canActivate: [AdminGuard]},
 {path:'domestic',component:DomesticComponent},
 {path:'domesticexpense',component:DomesticCalculationComponent},
-{path:'domesticreview',component:DomesticReviewComponent}
+{path:'domesticreview',component:DomesticReviewComponent},
+{path:'Expense/:claimId',component:ExpenseComponent},
+{path:'InternationalTravels/:claimId',component:InternationalComponent},
+{path:'DomesticTravels/:claimId',component:DomesticComponent}
 ];

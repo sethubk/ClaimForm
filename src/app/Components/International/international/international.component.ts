@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { EntryModel, FormDataModel, TravelDetailsDtos } from '../../Models/claimmodels';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
@@ -17,7 +17,9 @@ import { InternationalApiService } from '../../../Services/Api Services/internat
   styleUrl: './international.component.css'
 })
 export class InternationalComponent {
-  constructor(private fb: FormBuilder,private travelService: TravelEntryService, private router: Router,private internationalApi:InternationalApiService) { }
+  constructor(private fb: FormBuilder,
+    private urlroute: ActivatedRoute,
+    private travelService: TravelEntryService, private router: Router,private internationalApi:InternationalApiService) { }
 
  travelStart: string = '';
   travelEnd: string = '';
@@ -54,9 +56,16 @@ pendingType: 'Card' | 'Cash' | null = null;
     screenshot: ''
   };
 
-  
+  urlClaimid!: string;
+  travelDetails!: TravelDetailsDtos;
   ngOnInit(): void {
+ debugger
+this.urlClaimid=this.urlroute.snapshot.paramMap.get('claimId')!;
+if(this.urlClaimid){
+  this.gettravel()
 
+}
+else{
     this.travelStart = this.travelService.getTravelStart();
     this.travelEnd = this.travelService.getTravelEnd();
 this.selectedCurrency = this.travelService.getselectedcurrencyType();
@@ -64,9 +73,38 @@ this.selectedCurrency = this.travelService.getselectedcurrencyType();
     this.maxDate = today.toISOString().slice(0, 16); // 'yyyy-MM-ddTHH:mm'
 
     //this.personalData = this.service.getDetails();
-  
+}
 
     
+  }
+
+  gettravel(){
+this.internationalApi.getTravelDetails(this.urlClaimid).subscribe({
+  next:(res)=>{
+    console.log("travelDetailsdd",res),
+    this.travelService.setTravelDates(res.travelStartDate, res.travelEndDate ,res.currencyType);
+//this.travelService.setentries(this.travelDetails.cardCashEntries);
+    console.log("travelDetails",this.travelDetails)
+   this.travelDetails=res;
+   this.travelService.setentries(this.travelDetails.cardCashEntries);
+   this.travelStart=this.travelDetails.travelStartDate;
+   this.travelEnd=this.travelDetails.travelEndDate;
+   this.selectedCurrency=this.travelDetails.currencyType;
+//    this.travelDetails.cardCashEntries.forEach(entry => {
+//   this.travelService.addEntry(entry);
+// });
+this.travelService.addEntriesFromApi(
+  this.travelDetails.cardCashEntries,
+  this.travelDetails.currencyType
+);
+
+   //this.travelService.addEntries(this.travelDetails.cardCashEntries);
+   console.log("cardCashEntries",this.travelDetails.cardCashEntries)
+  },
+  error:(err)=>{
+    console.error(err)
+  }
+})
   }
   isInvalidDate: boolean = false;
   validateDate() {
@@ -243,8 +281,15 @@ const data = {
   }))
 };
 this.internationalApi.addTravelDetails(claimId, data).subscribe({
-  next: (res) => console.log("travelSaved", res),
-  error: (err) => console.error(err)
+  next: (res) =>{ console.log("travelSaved", res);
+    const travelId = res.recentClaimId;
+          localStorage.setItem('TravelId', travelId);
+
+
+
+  },
+  error: (err) => console.error(err),
+
 });
 
   this.router.navigate(['/internationalcal'])

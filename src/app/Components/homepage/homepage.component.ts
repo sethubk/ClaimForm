@@ -9,6 +9,7 @@ import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import '@cds/core/progress-circle/register.js';
 import { ToasterService } from '../../Services/toaster.service';
 import { ExpenseDataService } from '../../Services/expense-data.service';
+import { TravelEntryService } from '../../Services/travel-entry.service';
 
 
 export interface Claims {
@@ -39,7 +40,7 @@ export interface Personal {
 export class HomepageComponent {
   constructor(private api: ApiService, private toastService: ToasterService,
     private router: Router, private ClaimApi: ClaimApiService,
-    private expenseDataService: ExpenseDataService) { }
+    private expenseDataService: ExpenseDataService,private travelEntryService: TravelEntryService) { }
   username: string = '';
   showPersonalModal = false;
 
@@ -65,7 +66,8 @@ export class HomepageComponent {
 
 
   ngOnInit() {
-   
+   this.expenseDataService.Clearentries();
+this.travelEntryService.clearCardEntries();
     this.isLoading = true;
 
     const now = new Date();
@@ -77,7 +79,7 @@ export class HomepageComponent {
     this.User.today = today
    
     this.getclaim();
-this.expenseDataService.Clearentries();
+
     this.isLoading = false
 
   }
@@ -187,13 +189,12 @@ resetFilters() {
           const claimId = res.recentClaimId;
           localStorage.setItem('lastClaimId', claimId);
 
-          // ✅ SUCCESS TOAST
-         
+       
         },
         error: (err) => {
           console.error('Error creating claim', err);
 
-          // ✅ ERROR TOAST
+        
          
         }
       });

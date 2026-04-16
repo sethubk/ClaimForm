@@ -91,16 +91,6 @@ const payload = (this.entries ?? []).map((e: any) => ({
 this.ExpenseApi.createExpense(claimId, payload).subscribe({
   next: res => {console.log('Expense created', res);
 this.toastService.success('Expense submitted successfully');
-
-  },
-  error: err => {
-    console.error('Expense ERROR:', err);
-    // check server message here:
-    this.toastService.error('Failed to submit expense. Please try again.');
-    // console.error('Server says:', err.error);
-  }
-});
-
 const claim={
       status:"pending",
       amount:this.totalAmount
@@ -127,6 +117,17 @@ setTimeout(() => {
         }
          
       });
+
+  },
+  error: err => {
+    console.error('Expense ERROR:', err);
+    // check server message here:
+    this.toastService.error('Failed to submit expense. Please try again.');
+    // console.error('Server says:', err.error);
+  }
+});
+
+
 this.loading = false;
 
 

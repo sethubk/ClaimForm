@@ -35,17 +35,7 @@ export interface Claims {
   expense?: string;
 }
 
-export interface FormDataModel {
-  date: string;
-  supportingNo: string;
-  particulars: string;
-  paymentMode: 'Cash' | 'Card' | 'Online' | string;
-  amount: number | null;
-  remarks: string;
-  screenshot: string;
-   preview?: string;
-   fileName?:string
-}
+
 export interface EntryModel {
   type: 'Card' | 'Cash' | 'Online' | string;
   inrRate: number | null;
@@ -59,6 +49,7 @@ export interface CashInfoDtos {
   type: string;
   inrRate: string;
   totalLoaded: string;
+  paymentType: string;
 }
 
 export interface TravelDetailsDtos {
@@ -160,4 +151,26 @@ export interface DomesticExpense {
   fileName?: string;
   /** Receipt / screenshot file name or URL */
   screenshot: string;
+}
+export interface Expense {
+  date: string;               // ISO date string
+  supportingNo: string;
+  particulars: string;
+  paymentMode: 'Cash' | 'Card';
+  amount: number;
+  remarks?: string;
+  screenshot?: string; 
+  fileName: '' 
+   preview?: string;      // base64 / file path / URL
+}
+export interface FormDataModel {
+  date: string;
+  supportingNo: string;
+  particulars: string;
+  paymentMode: 'Cash' | 'Card' | 'Online' | string;
+  amount: number | null;
+  remarks: string;
+  screenshot: string;
+   preview?: string;
+   fileName?:string
 }

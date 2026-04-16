@@ -178,6 +178,6 @@ clr-input-container label {
 }
 .button-group {
   display: flex;
-  gap: 700px; /* Space between buttons */
+  gap: 50px; /* Space between buttons */
   justify-content: space-evenly;
 }

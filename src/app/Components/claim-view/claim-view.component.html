@@ -12,6 +12,10 @@
 
       Withdraw Claim
     </button>
+<button class="btn btn-primary" (click)="EditExpenses()">
+      Edit expense
+    </button>
+   
   </div>
 
   <clr-modal [(clrModalOpen)]="isWithdrawModalOpen">
@@ -35,6 +39,7 @@
   <!-- EXPENSE CLAIM UI -->
   <!-- ======================= -->
   <section *ngIf="isExpense()">
+ 
 
     <h4>Expense Details</h4>
     <div class="datagriid">

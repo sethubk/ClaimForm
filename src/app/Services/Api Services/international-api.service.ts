@@ -16,13 +16,16 @@ private readonly Internatioanl = 'https://localhost:7283/api/InternationalExpens
 addTravelDetails(ClaimId: string, data: any): Observable<any> {
   return this.http.post(`${this.travel}/${ClaimId}/InternationalTravel`, data);
 }
-
+getTravelDetails(ClaimId: string): Observable<any> {
+  return this.http.get(`${this.travel}/${ClaimId}/InternationalTravel`);
+}
 
 createExpense(ClaimId: string, payload: any[]): Observable<any> {
     return this.http.post(
       `${this.Internatioanl}/${ClaimId}/InternationalExpense`,
       payload
     );
-
-
+  }
+getInternationalExpensesByClaimId(ClaimId: string): Observable<any> {
+  return this.http.get(`${this.Internatioanl}/${ClaimId}/InternationalExpense`);
 }}

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Expense } from '../Components/Models/claimmodels';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ this.entries=entries
 getentries(){
   return this.entries
 }
-setExpense(data: any)  {
+setExpense(data: Expense)  {
  this.expense.push(data);
 }
 getExpense(){
