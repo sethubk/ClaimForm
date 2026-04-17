@@ -106,6 +106,7 @@ submitExpense() {
   }
 
   const payload = (this.entries ?? []).map((e: InternationalExpenseUI) => ({
+    id:e.id,
     date: e.date ,
     supportingNo: e.supportingNo ?? "",
     particulars: e.particulars ?? "",

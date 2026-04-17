@@ -7,7 +7,7 @@ import { ClarityIcons } from '@clr/icons';
 import { ClarityModule } from '@clr/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Employee } from '../../Models/claimmodels';
+import { Employee, Expense } from '../../Models/claimmodels';
 import { ApiService } from '../../../Services/Api Services/api.service';
 import { defaultEquals } from '@angular/core/primitives/signals';
 import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
@@ -43,7 +43,7 @@ constructor(private service:ExpenseDataService,private api:ApiService, private r
    vendorCost: '',
   
  };
- entries:Entry[]=[];
+ entries:Expense[]=[];
  
   ngOnInit(): void {
  this.personalData=this.api.User;
@@ -57,7 +57,7 @@ constructor(private service:ExpenseDataService,private api:ApiService, private r
  totalAmount: number = 0;
 
 calculateTotal() {
-  this.totalAmount = this.entries.reduce((sum, entry: Entry) => sum + entry.amount, 0);
+  this.totalAmount = this.entries.reduce((sum, entry: Expense) => sum + entry.amount, 0);
 console.log(this.totalAmount)
 }
 
@@ -65,33 +65,57 @@ printPage() {
   window.print();
 }
 
-
-
+ EditClaimId!: string;
+claimId!:string
 loading = false;
 submitExpense(){
   debugger
   this.loading = true;
-const claimId = localStorage.getItem('lastClaimId');
-if (!claimId) {
-  console.error('No Claim ID found. Create claim first.');
-  return;
-}
+const entries=this.entries;
+ this.claimId = localStorage.getItem('lastClaimId')||'';
+  this.EditClaimId=localStorage.getItem('EditClaim')||'';
 
-const payload = (this.entries ?? []).map((e: any) => ({
-  amount: Number(e.amount),
-  date: e.date ,
-  supportingNo: e.supportingNo ?? "",
-  particulars: e.particulars ?? "",
-  paymentMode: e.paymentMode ?? "",
-  remarks: e.remarks ?? "",
-  fileName: e.fileName ?? "",        // remove if not in DTO
-  screenshot: e.screenshot ?? ""     // send "" or make DTO string?
-}));
+if(this.EditClaimId){
+this.ExpenseApi.UpdateExpesne(this.EditClaimId,entries).subscribe({next:res=>{
 
-this.ExpenseApi.createExpense(claimId, payload).subscribe({
+  console.log('Expense created', res);
+this.toastService.success('Expense submitted successfully');},
+
+  error:res=>{
+
+    console.log("Filed",res)
+  }
+
+});}
+
+
+
+else{
+
+
+this.ExpenseApi.createExpense(this.claimId, entries).subscribe({
   next: res => {console.log('Expense created', res);
 this.toastService.success('Expense submitted successfully');
-const claim={
+
+this.UpdateClaim(this.claimId);
+  },
+  error: err => {
+    console.error('Expense ERROR:', err);
+    // check server message here:
+    this.toastService.error('Failed to submit expense. Please try again.');
+    // console.error('Server says:', err.error);
+  }
+});
+
+
+this.loading = false;
+}
+
+
+}
+
+UpdateClaim(claimId:string){
+  const claim={
       status:"pending",
       amount:this.totalAmount
    
@@ -117,33 +141,8 @@ setTimeout(() => {
         }
          
       });
-
-  },
-  error: err => {
-    console.error('Expense ERROR:', err);
-    // check server message here:
-    this.toastService.error('Failed to submit expense. Please try again.');
-    // console.error('Server says:', err.error);
-  }
-});
-
-
-this.loading = false;
-
-
-
 }
 
-showClaimSummary() {
-  const summary = `
-    Type: Expense
-    Created Date: ${new Date().toLocaleDateString()}
-    Purpose & Place: ${this.personalData?.purposePlace}
-    Total Amount: ₹{this.totalAmount}
-  `;
- 
-  alert(summary);
-}
 backbtn(){
   this.router.navigate(['/Expense'])
 }

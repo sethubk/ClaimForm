@@ -100,7 +100,7 @@ export class InternationalCalculationalComponent {
    
     }
     // Save to service
-    this.service.setentries(this.entries);
+    this.service.setinternationalentries(this.entries);
 
 
   }
@@ -108,7 +108,7 @@ getInternationalExpenses() {
   this.internationalApi.getInternationalExpensesByClaimId(this.claimId).subscribe({
     next: (res) => {
       console.log('International expenses:', res)
-      this.service.setentries(res);
+      this.service.setinternationalentries(res);
       this.entries=res
     },
     error: (err) => console.error('Error fetching international expenses:', err)
@@ -208,7 +208,7 @@ addEntry() {
     }
 
     this.formopen = false;
-    this.service.setentries(this.entries);
+    this.service.setinternationalentries(this.entries);
 
     console.log('Current entries:', this.entries);
   }

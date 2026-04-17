@@ -73,6 +73,7 @@ export interface Entry {
 
 
 export interface InternationalExpenseUI {
+  id:'';
   date?: Date | string;
   supportingNo?: string;
   particulars?: string;
@@ -89,6 +90,7 @@ export interface InternationalExpenseUI {
   file?: File;
 }
 export interface InternationalExpense {
+  id:'';
   date: string;
   supportingNo: string;
   particulars: string;
@@ -154,6 +156,7 @@ export interface DomesticExpense {
   screenshot: string;
 }
 export interface Expense {
+  id:null;
   date: string;               // ISO date string
   supportingNo: string;
   particulars: string;

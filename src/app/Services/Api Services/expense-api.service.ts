@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Expense } from '../../Components/Models/claimmodels';
 
 @Injectable({
   providedIn: 'root'
@@ -22,4 +23,10 @@ createExpense(claimId: string, expense: any): Observable<any> {
 getExpensesByClaimId(claimId: string): Observable<any> {
   return this.http.get(`${this.baseurl}/${claimId}/Expense`); }
 
-}
+ 
+
+  UpdateExpesne(claimId: string, expense: Expense[]): Observable<Expense> {
+  return this.http.put<Expense>(
+    `${this.baseurl}/${claimId}/Expense`,
+    expense
+  );}}

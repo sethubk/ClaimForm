@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Expense } from '../Components/Models/claimmodels';
+import { Expense, InternationalExpenseUI } from '../Components/Models/claimmodels';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ private expense:Expense[]=[];
   getDetails() {
     return this.details;
   }
-setentries(entries:any[]){
+setentries(entries:Expense[]){
 this.entries=entries
 }
 getentries(){
@@ -36,6 +36,10 @@ setExpense(data: Expense[])  {
     this.expense.push(data[i])
   }
  
+}
+
+setinternationalentries(entries:InternationalExpenseUI[]){
+this.entries=entries
 }
 getExpense(){
   return this.expense

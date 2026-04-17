@@ -85,7 +85,7 @@ isEdit: boolean = false;
    
     }
     // Save to service
-    this.service.setentries(this.entries);
+    this.service.setinternationalentries(this.entries);
 
 
   }
@@ -150,7 +150,7 @@ addEntry() {
     }
 
     this.formopen = false;
-    this.service.setentries(this.entries);
+    this.service.setinternationalentries(this.entries);
 
     console.log('Current entries:', this.entries);
   }

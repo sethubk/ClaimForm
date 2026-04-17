@@ -31,7 +31,7 @@ private router: Router,
 
   ngOnInit() {
     this.claimId = this.urlRoute.snapshot.paramMap.get('claimId')!;
-    localStorage.setItem('lastClaimId', this.claimId);
+    localStorage.setItem('EditClaim', this.claimId);
     this.getClaimExpenses();
   }
   getClaimExpenses() {
