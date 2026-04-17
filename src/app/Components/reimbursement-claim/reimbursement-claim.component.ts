@@ -42,6 +42,11 @@ export class ReimbursementClaimComponent {
     });
   }
 
+  
+  openGridImage(img: string) {
+  console.log("Image clicked:", img); 
+this.toastService.bilopen(img );
+}
   isExpense(): boolean {
     return this.claimDetails?.claimType === 'Expense';
   }

@@ -166,6 +166,8 @@
         <clr-dg-column>Currency</clr-dg-column>
         <clr-dg-column>Amount</clr-dg-column>
         <clr-dg-column>Converted (INR)</clr-dg-column>
+        <clr-dg-column>Remarks</clr-dg-column>
+         <clr-dg-column>Screenshot</clr-dg-column>
 
         <clr-dg-row *clrDgItems="let ie of claimDetails.internationalExpenses">
           <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
@@ -175,6 +177,11 @@
           <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
           <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
           <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
+          <clr-dg-cell>{{ie.remarks}}</clr-dg-cell>
+            <clr-dg-cell>
+              <img *ngIf="ie.screenshot" [src]="ie.screenshot" class="thumb" (click)="openGridImage(ie.screenshot)" />   
+            </clr-dg-cell>
+          
         </clr-dg-row>
 
         <clr-dg-footer>
@@ -269,7 +276,8 @@
         <clr-dg-column>Payment</clr-dg-column>
 
         <clr-dg-column>Amount</clr-dg-column>
-
+        <clr-dg-column>Remarks</clr-dg-column>
+ <clr-dg-column>Screenshot</clr-dg-column>
 
         <clr-dg-row *clrDgItems="let ie of claimDetails.domesticExpenses">
           <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
@@ -278,6 +286,11 @@
           <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
 
           <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
+          <clr-dg-cell>{{ie.remarks}}</clr-dg-cell>
+            <clr-dg-cell>
+              <img *ngIf="ie.screenshot" [src]="ie.screenshot" class="thumb" (click)="openGridImage(ie.screenshot)" />   
+            </clr-dg-cell>
+          
 
         </clr-dg-row>
 
