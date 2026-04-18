@@ -68,6 +68,7 @@ export class HomepageComponent {
   ngOnInit() {
    this.expenseDataService.Clearentries();
 this.travelEntryService.clearCardEntries();
+localStorage.clear()
     this.isLoading = true;
 
     const now = new Date();

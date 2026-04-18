@@ -72,64 +72,23 @@ submitExpense(){
   debugger
   this.loading = true;
 const entries=this.entries;
- this.claimId = localStorage.getItem('lastClaimId')||'';
-  this.EditClaimId=localStorage.getItem('EditClaim')||'';
+ this.claimId = localStorage.getItem('lastClaimId')|| localStorage.getItem('EditClaim')||'';
 
-if(this.EditClaimId){
-this.ExpenseApi.UpdateExpesne(this.EditClaimId,entries).subscribe({next:res=>{
-
-  console.log('Expense created', res);
-this.toastService.success('Expense submitted successfully');},
-
-  error:res=>{
-
-    console.log("Filed",res)
-  }
-
-});}
-
-
-
-else{
-
-
-this.ExpenseApi.createExpense(this.claimId, entries).subscribe({
-  next: res => {console.log('Expense created', res);
-this.toastService.success('Expense submitted successfully');
-
-this.UpdateClaim(this.claimId);
-  },
-  error: err => {
-    console.error('Expense ERROR:', err);
-    // check server message here:
-    this.toastService.error('Failed to submit expense. Please try again.');
-    // console.error('Server says:', err.error);
-  }
-});
-
-
-this.loading = false;
-}
-
-
-}
-
-UpdateClaim(claimId:string){
-  const claim={
+ const claim={
       status:"pending",
       amount:this.totalAmount
    
 }
 
-this.ClaimApi.updateClaim(this.api.User.employeeCode,claimId,claim).subscribe({
+this.ClaimApi.updateClaim(this.api.User.employeeCode,this.claimId,claim).subscribe({
        next: res => {
       console.log("Claim updated", res);
       this.loading = false;
       this.toastService.success('Expense and claim submitted  successfully');
-     this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-  next: res => console.log('Email sent', res),
-  error: err => console.error('Email ERROR:', err)
-});
+//      this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
+//   next: res => console.log('Email sent', res),
+//   error: err => console.error('Email ERROR:', err)
+// });
 setTimeout(() => {
       this.router.navigate(['/Homepage']);
     }, 1200);
@@ -142,6 +101,13 @@ setTimeout(() => {
          
       });
 }
+
+
+
+
+
+
+
 
 backbtn(){
   this.router.navigate(['/Expense'])

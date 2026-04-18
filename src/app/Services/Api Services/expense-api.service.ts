@@ -25,8 +25,8 @@ getExpensesByClaimId(claimId: string): Observable<any> {
 
  
 
-  UpdateExpesne(claimId: string, expense: Expense[]): Observable<Expense> {
-  return this.http.put<Expense>(
+  UpdateExpesne(claimId: string, expense: any[]): Observable<any> {
+  return this.http.put(
     `${this.baseurl}/${claimId}/Expense`,
     expense
   );}}

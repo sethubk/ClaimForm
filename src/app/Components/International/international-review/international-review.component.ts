@@ -95,17 +95,14 @@ getTotalByMode(mode: string): number {
   return found ? found.total : 0;
 }
 loading = false;
+ EditClaimId!: string;
+claimId!:string
 submitExpense() {
+  debugger
   this.loading = true;
-
-  const claimId = localStorage.getItem('lastClaimId');
-  if (!claimId) {
-    console.error('No Claim ID found. Create claim first.');
-    this.loading = false;
-    return;
-  }
-
-  const payload = (this.entries ?? []).map((e: InternationalExpenseUI) => ({
+this.claimId = localStorage.getItem('lastClaimId')||localStorage.getItem('EditClaim')||'';
+  this.EditClaimId=localStorage.getItem('EditClaim')||'';
+ const payload = (this.entries ?? []).map((e: InternationalExpenseUI) => ({
     id:e.id,
     date: e.date ,
     supportingNo: e.supportingNo ?? "",
@@ -118,9 +115,23 @@ submitExpense() {
     screenshot: e.screenshot ?? ""
   }));
 
+ if(this.EditClaimId){
+this.InternationalExpenseapi.updateExpense(this.EditClaimId,payload).subscribe({
+    next: res => {
+      console.log('International Expense Updated', res);
+      this.loading = false;
+    },
+    error: err => {
+      console.error('Expense ERROR:', err);
+      console.error('Server says:', err.error);
+      this.loading = false;
+    }
+  });
+ }
+
   // ✅ Call International AddBulk API
-  
-this.InternationalExpenseapi.createExpense(claimId, payload).subscribe({
+  else{
+this.InternationalExpenseapi.createExpense(this.claimId, payload).subscribe({
     next: res => {
       console.log('International Expense created', res);
       this.loading = false;
@@ -130,7 +141,7 @@ this.InternationalExpenseapi.createExpense(claimId, payload).subscribe({
       console.error('Server says:', err.error);
       this.loading = false;
     }
-  });
+  });}
 setInterval(() => {
 }, 1000);
 const totalConvertedAmount = payload.reduce(
@@ -144,16 +155,16 @@ const claim:ClaimUpdate = {
 debugger
   this.ClaimApi.updateClaim(
     this.api.User.employeeCode,
-    claimId,
+    this.claimId,
     claim
   ).subscribe({
     next: res => {
       console.log("Claim updated", res);
       this.loading = false;
-       this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-  next: res => console.log('Email sent', res),
-  error: err => console.error('Email ERROR:', err)
-});
+//        this.api.sendmail(this.api.User.employeeCode,this.claimId).subscribe({
+//   next: res => console.log('Email sent', res),
+//   error: err => console.error('Email ERROR:', err)
+// });
       this.toastService.success('Expense submitted and claim updated successfully');
       this.router.navigate(['/Homepage']).then(() => {
         setTimeout(() => window.location.reload(), 50);
@@ -165,8 +176,8 @@ debugger
       this.loading = false;
     }
   });
+  }
 
-}
 
 
 

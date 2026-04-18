@@ -67,7 +67,7 @@ export class InternationalCalculationalComponent {
   internationalExpense: InternationalExpense[] = [];
   ngOnInit() {
     debugger
- this.claimId=localStorage.getItem('lastClaimId') || '';
+ this.claimId=localStorage.getItem('lastClaimId') || localStorage.getItem('EditClaim')|| '';
     this.from1()
    if(this.claimId){
     this.getInternationalExpenses();
@@ -119,6 +119,7 @@ getInternationalExpenses() {
   from1() {
 
     this.expenseForm = this.fb.group({
+      id:'',
       date: ['', [Validators.required, this.maxDateValidator.bind(this)]],
       supportingNo: ['', Validators.required],
       particulars: ['', Validators.required],
@@ -274,6 +275,7 @@ this.imagePreview = ''
 
     // ✅ Patch form with entry values
     this.expenseForm.patchValue({
+      id:entry.id||'',
       date: entry.date,
       supportingNo: entry.supportingNo,
       particulars: entry.particulars,

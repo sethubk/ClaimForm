@@ -137,7 +137,7 @@ clr-input-container label {
 }
 .button-group {
   display: flex;
-  gap: 700px; /* Space between buttons */
+  gap: 70px; /* Space between buttons */
   justify-content: space-evenly;
 }
   .footer {
@@ -155,6 +155,6 @@ clr-input-container label {
 }
 .button-group {
   display: flex;
-  gap: 700px; /* Space between buttons */
+  gap: 70px; /* Space between buttons */
   justify-content: space-evenly;
 }

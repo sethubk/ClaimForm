@@ -51,6 +51,7 @@ addEntriesFromApi(entries: any[], currencyType: string) {
     const totalInr = entry.inrRate * entry.totalLoadedAmount;
 
     this.cardCashEntries.push({
+      id:entry.id,
       currerncy: currencyType,                  
       inrRate: entry.inrRate,
       totalLoaded: entry.totalLoadedAmount,     

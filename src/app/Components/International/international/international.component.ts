@@ -258,7 +258,7 @@ deleteEntry(filteredIndex: number, type: 'Card' | 'Cash') {
 
 
   gotoreview() {
-const claimId = localStorage.getItem('lastClaimId');
+const claimId = localStorage.getItem('lastClaimId')|| localStorage.getItem('EditClaim')||'';
 if (!claimId) {
   console.error('No Claim ID found. Create claim first.');
   return;
@@ -274,6 +274,7 @@ const data = {
   advanceAmount: String(this.allowanceAmount),
 
   cardCashEntries: this.travelService.cardCashEntries.map(x => ({
+    id: x.id || null,   
     loadedDate: String(x.loadedDate),
     PaymentType: String(x.type),
     inrRate: String(x.inrRate),
@@ -285,14 +286,12 @@ this.internationalApi.addTravelDetails(claimId, data).subscribe({
     const travelId = res.recentClaimId;
           localStorage.setItem('TravelId', travelId);
 
-
+this.router.navigate(['/internationalcal'])
 
   },
   error: (err) => console.error(err),
 
 });
-
-  this.router.navigate(['/internationalcal'])
 
     console.log("cal", this.allowanceAmount)
   }

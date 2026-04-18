@@ -23,7 +23,8 @@ Expenseid!: string;
 Expense:Expense[]=[];
 constructor(private urlroute: ActivatedRoute, 
    private fb: FormBuilder,private api:ApiService,
-   private ExpanseApi:ExpenseApiService,
+   private ExpenseApi:ExpenseApiService,
+   
    private router:Router,private Service:ExpenseDataService, private toaster: ToasterService){}
   
 personalData: Employee={ 
@@ -75,7 +76,7 @@ if(this.Expenseid){
  }
 
  getExpenseDetails(){
-  this.ExpanseApi.getExpensesByClaimId(this.Expenseid).subscribe({
+  this.ExpenseApi.getExpensesByClaimId(this.Expenseid).subscribe({
 
     next: (res:Expense[]) => {
       this.Expense=res;
@@ -84,17 +85,7 @@ if(this.Expenseid){
       this.Service.setExpense(res);
       this.entries = res;
       this.Service.setentries(this.entries);
-      // this.entries = res.map((expense: Expense) => ({
-      //   date: expense.date,
-      //   supportingNo: expense.supportingNo,
-      //   particulars: expense.particulars,
-      //   paymentMode: expense.paymentMode,
-      //   amount: expense.amount,
-      //   remarks: expense.remarks,
-      //   screenshot: expense.screenshot,
-      //   fileName: expense.fileName
-      // }));
-      // this.Service.setentries(this.entries);
+   
       this.Expense=res;
     },
     
@@ -121,6 +112,7 @@ if(this.Expenseid){
   from1() {
 
     this.expenseForm = this.fb.group({
+      id: [null],
       date: ['', [Validators.required, this.maxDateValidator.bind(this)]],
       supportingNo: ['', Validators.required],
       particulars: ['', Validators.required],
@@ -272,6 +264,7 @@ removeImage() {
     this.isEdit = true;
       this.expenseForm.patchValue({
     date: entry.date,
+     id: entry.id || null,
     supportingNo: entry.supportingNo,
     particulars: entry.particulars,
     paymentMode: entry.paymentMode,
@@ -312,9 +305,59 @@ removeImage() {
     this.isEdit = false;
     this.editIndex = null;
   }
-
+ EditClaimId!: string;
+claimId!:string
   gotoreview() {
-    this.router.navigate(['expensereview'])
+
+debugger
+  
+const entries=this.entries;
+ this.claimId = localStorage.getItem('lastClaimId')||'';
+  this.EditClaimId=localStorage.getItem('EditClaim')||'';
+  const payload = this.entries.map(x => ({
+    id: x.id || null,
+    date: x.date,
+    supportingNo: x.supportingNo,
+    particulars: x.particulars,
+    paymentMode: x.paymentMode,
+    amount: x.amount,
+    remarks: x.remarks,
+    screenshot: x.screenshot
+  }));
+if(this.EditClaimId){
+this.ExpenseApi.UpdateExpesne(this.EditClaimId,payload).subscribe({next:res=>{
+
+  console.log('Expense created', res);
+this.toaster.success('Expense submitted successfully');
+  this.router.navigate(['expensereview'])},
+
+  error:res=>{
+
+    console.log("Filed",res)
+  }
+
+});}
+
+
+
+else{
+
+
+this.ExpenseApi.createExpense(this.claimId, payload).subscribe({
+  next: res => {console.log('Expense created', res);
+this.toaster.success('Expense submitted successfully');
+
+  this.router.navigate(['expensereview'])
+  },
+  error: err => {
+    console.error('Expense ERROR:', err);
+    // check server message here:
+    this.toaster.error('Failed to submit expense. Please try again.');
+    // console.error('Server says:', err.error);
+  }
+});}
+
+  
   }
   backbtn() {
     this.router.navigate(['/Homepage'])
