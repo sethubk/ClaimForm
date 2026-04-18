@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Employee, FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
+import { DomesticExpense, Employee, Expense, FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
 import { Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { ExpenseDataService } from '../../../Services/expense-data.service';
 import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../Services/Api Services/api.service';
+import { DomesticapiService } from '../../../Services/Api Services/domesticapi.service';
+import { ToasterService } from '../../../Services/toaster.service';
 
 @Component({
   selector: 'app-domestic-calculation',
@@ -27,7 +29,10 @@ isEdit: boolean = false;
     vendorCost: '',
    
   };
-  constructor(private fb: FormBuilder, private api: ApiService, private travelService: TravelEntryService, private router: Router, private service: ExpenseDataService) { }
+  constructor(private fb: FormBuilder,
+    private domestic:DomesticapiService,
+    private toastService:ToasterService,
+    private api: ApiService, private travelService: TravelEntryService, private router: Router, private service: ExpenseDataService) { }
   maxDate: string = '';
 
   startDate: string = '';
@@ -36,7 +41,7 @@ isEdit: boolean = false;
 
   isFutureDate: boolean = false;
   formopen: boolean = false;
-  entries: InternationalExpenseUI[] = [];
+  entries: Expense[] = [];
   index1: number = this.entries.length
   editIndex: number | null = null;
   editType: 'Card' | 'Cash' | null = null;
@@ -53,9 +58,14 @@ isEdit: boolean = false;
     screenshot: '',
     fileName: ''
   };
+  claimId!: string;
+  internationalExpense: Expense[] = [];
   ngOnInit() {
-
+this.claimId=localStorage.getItem('lastClaimId') || localStorage.getItem('EditClaim')|| '';
     this.from1()
+   if(this.claimId){
+    this.getInternationalExpenses();
+   }
    
     this.selectedCurrency_amt = this.travelService.getselectedcurrencyType()
    
@@ -85,15 +95,29 @@ isEdit: boolean = false;
    
     }
     // Save to service
-    this.service.setinternationalentries(this.entries);
+    this.service.setExpense(this.entries);
 
 
   }
+  getInternationalExpenses() {
+  this.domestic.getDomesticExpensesByClaimId(this.claimId).subscribe({
+    next: (res) => {
+      console.log('International expenses:', res)
+      this.service.setExpense(res);
+      this.entries=res;
+       this.service.setentries(this.entries);
+      
+    },
+    error: (err) => console.error('Error fetching international expenses:', err)
+  }); 
+
+}
 
   expenseForm!: FormGroup;
   from1() {
 
     this.expenseForm = this.fb.group({
+      id:'',
       date: ['', [Validators.required, this.maxDateValidator.bind(this)]],
       supportingNo: ['', Validators.required],
       particulars: ['', Validators.required],
@@ -123,12 +147,33 @@ isEdit: boolean = false;
       : null;
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.expenseForm.patchValue({ screenshot: file, fileName: file.name });
-    }
+imagePreview: string | ArrayBuffer | null = null;
+selectedFile: File | null = null;
+showModal: boolean = false;
+ onFileChange(event: any) {
+  const file = event.target.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
+}
+openGridImage(img: string) {
+  console.log("Image clicked:", img); 
+this.toastService.bilopen(img );
+}
+removeImage() {
+  this.imagePreview = null;
+
+  // reset form values
+  this.expenseForm.patchValue({
+    screenshot: null,
+    fileName: ''
+  });
+}
 addEntry() {
   if (this.expenseForm.valid) {
     const formValue = this.expenseForm.value;
@@ -138,7 +183,8 @@ addEntry() {
     const entry = {
       ...formValue,
         //  included for INR and others
-      preview: this.preview
+        screenshot: this.imagePreview ,
+        fileName: this.selectedFile?.name || ''
     };
 
     if (this.editIndex != null && this.isEdit) {
@@ -150,7 +196,7 @@ addEntry() {
     }
 
     this.formopen = false;
-    this.service.setinternationalentries(this.entries);
+    this.service.setExpense(this.entries);
 
     console.log('Current entries:', this.entries);
   }
@@ -203,6 +249,7 @@ confirmDelete() {
     this.isEdit = true;
 
     this.expenseForm.patchValue({
+      id:entry.id||'',
       date: entry.date,
       supportingNo: entry.supportingNo,
       particulars: entry.particulars,
@@ -212,7 +259,8 @@ confirmDelete() {
       remarks: entry.remarks,
       screenshot: entry.screenshot,
       fileName: entry.fileName
-    });
+       });
+this.imagePreview = entry.screenshot
 
     //  Recalculate converted amount for UI if needed
 

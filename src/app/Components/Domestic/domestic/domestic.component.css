@@ -302,7 +302,6 @@ clr-dg-row  clr-dg-cell{
   width: 300px;
   text-align: center;
 }
-
 .addbutton{
   display: flex;
   justify-content: flex-end;

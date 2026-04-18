@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
-import { EntryModel, FormDataModel } from '../../Models/claimmodels';
+import { EntryModel, FormDataModel, TravelDetailsDtos } from '../../Models/claimmodels';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
 import { CommonModule } from '@angular/common';
 import { ClarityModule, ClrInputModule } from "@clr/angular";
@@ -15,7 +15,9 @@ import { ClarityModule, ClrInputModule } from "@clr/angular";
   styleUrl: './domestic.component.css'
 })
 export class DomesticComponent {
- constructor(private fb: FormBuilder,private travelService: TravelEntryService, private router: Router,private internationalApi:InternationalApiService) { }
+ constructor(private fb: FormBuilder,
+ private urlroute: ActivatedRoute,
+  private travelService: TravelEntryService, private router: Router,private internationalApi:InternationalApiService) { }
 
  travelStart: string = '';
   travelEnd: string = '';
@@ -49,10 +51,15 @@ export class DomesticComponent {
     remarks: '',
     screenshot: ''
   };
-
+ urlClaimid!: string;
+  travelDetails!: TravelDetailsDtos;
   
   ngOnInit(): void {
+this.urlClaimid=this.urlroute.snapshot.paramMap.get('claimId')!;
+if(this.urlClaimid){
+  this.gettravel()
 
+}
     this.travelStart = this.travelService.getTravelStart();
     this.travelEnd = this.travelService.getTravelEnd();
 
@@ -63,6 +70,34 @@ export class DomesticComponent {
   
 
     
+  }
+    gettravel(){
+this.internationalApi.getTravelDetails(this.urlClaimid).subscribe({
+  next:(res)=>{
+    console.log("travelDetailsdd",res),
+    this.travelService.setTravelDates(res.travelStartDate, res.travelEndDate ,res.currencyType);
+//this.travelService.setentries(this.travelDetails.cardCashEntries);
+    console.log("travelDetails",this.travelDetails)
+   this.travelDetails=res;
+   this.travelService.setentries(this.travelDetails.cardCashEntries);
+   this.travelStart=this.travelDetails.travelStartDate;
+   this.travelEnd=this.travelDetails.travelEndDate;
+   this.selectedCurrency=this.travelDetails.currencyType;
+//    this.travelDetails.cardCashEntries.forEach(entry => {
+//   this.travelService.addEntry(entry);
+// });
+this.travelService.addEntriesFromApi(
+  this.travelDetails.cardCashEntries,
+  this.travelDetails.currencyType
+);
+
+   //this.travelService.addEntries(this.travelDetails.cardCashEntries);
+   console.log("cardCashEntries",this.travelDetails.cardCashEntries)
+  },
+  error:(err)=>{
+    console.error(err)
+  }
+})
   }
   isInvalidDate: boolean = false;
   validateDate() {
@@ -190,7 +225,8 @@ deleteEntry(filteredIndex: number, type: 'Card' | 'Cash') {
 
 
   gotoreview() {
-const claimId = localStorage.getItem('lastClaimId');
+
+const claimId = localStorage.getItem('lastClaimId')|| localStorage.getItem('EditClaim')||'';
 if (!claimId) {
   console.error('No Claim ID found. Create claim first.');
   return;
@@ -206,6 +242,7 @@ const data = {
   advanceAmount: String(this.allowanceAmount),
 
   cardCashEntries: this.travelService.cardCashEntries.map(x => ({
+    id: x.id || null,   
     loadedDate: String(x.loadedDate),
     PaymentType: String(x.type),
     inrRate: String(x.inrRate),

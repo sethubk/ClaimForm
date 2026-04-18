@@ -19,14 +19,13 @@
   flex: 1;
   min-width: 400px;
 }
-
+/*  */
 .model{
-  margin-top: 0;
-  padding: 0;
+  
 }
 /* Remove top space before modal title */
 clr-modal .modal-body {
-  padding-top: 0 !important;
+  
 }
 
 /* Optional: Reduce padding around modal content */
@@ -50,7 +49,7 @@ clr-modal .modal-title h1 {
     text-align: center;
 }
 .personal-card-form{
-    overflow: hidden;
+   
 }
 .modal-body {
   
@@ -58,7 +57,6 @@ clr-modal .modal-title h1 {
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
 }
 
 
@@ -311,4 +309,37 @@ display: flex;
 
   
  
+}
+
+.preview-container {
+  position: relative;
+  display: inline-block;
+}
+
+.preview-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.view-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 0 6px 0 6px;
+}
+.thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #ccc;
 }

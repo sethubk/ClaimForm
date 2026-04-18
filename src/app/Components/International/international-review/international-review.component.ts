@@ -108,7 +108,7 @@ this.claimId = localStorage.getItem('lastClaimId')||localStorage.getItem('EditCl
     supportingNo: e.supportingNo ?? "",
     particulars: e.particulars ?? "",
     paymentMode: e.paymentMode ?? "",
-    currencyType: e.selectedCurrency_amt,
+    currencyType: e.currencyType,
     amount: Number(e.amount) || 0,
     convertedAmount: Number(e.convertedAmount) || Number(e.amount) || 0,
     remarks: e.remarks ?? "",

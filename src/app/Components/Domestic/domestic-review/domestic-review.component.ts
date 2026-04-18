@@ -6,7 +6,7 @@ import { TravelEntryService } from '../../../Services/travel-entry.service';
 import { ClarityModule } from '@clr/angular';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ClaimUpdate, DomesticExpense, Employee, Entry, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
+import { ClaimUpdate, DomesticExpense, Employee, Entry, Expense, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
 import { ClaimApiService } from '../../../Services/Api Services/claim-api.service';
 import { ApiService } from '../../../Services/Api Services/api.service';
@@ -26,7 +26,7 @@ export class DomesticReviewComponent {
     private TravelService: TravelEntryService,
     private toastService: ToasterService,
     private Domestic: DomesticapiService, private ClaimApi: ClaimApiService) { }
-  entries: InternationalExpense[] = [];
+  entries: Expense[] = [];
   personalData: Employee = {
     today: '',
     username: '',
@@ -53,7 +53,7 @@ export class DomesticReviewComponent {
 
     this.entries.forEach(entry => {
       const mode = entry.paymentMode;
-      const amount = Number(entry.convertedAmount);
+      const amount = Number(entry.amount);
 
       // Only include 'Cash' or 'Card' payment modes
       if (mode === 'Cash' || mode === 'Card') {
@@ -72,7 +72,7 @@ export class DomesticReviewComponent {
   totalAmount: number = 0;
 
   calculateTotal() {
-    this.totalAmount = this.entries.reduce((sum, entry: Entry) => sum + entry.amount, 0);
+    this.totalAmount = this.entries.reduce((sum, entry: Expense) => sum + entry.amount, 0);
     console.log(this.totalAmount)
 
   }
@@ -95,29 +95,43 @@ export class DomesticReviewComponent {
     return found ? found.total : 0;
   }
   loading = false;
+   EditClaimId!: string;
+claimId!:string
   submitExpense() {
     this.loading = true;
     debugger
-    const claimId = localStorage.getItem('lastClaimId');
-    if (!claimId) {
-      console.error('No Claim ID found. Create claim first.');
-      this.loading = false;
-      return;
-    }
+    this.claimId = localStorage.getItem('lastClaimId')||localStorage.getItem('EditClaim')||'';
+  this.EditClaimId=localStorage.getItem('EditClaim')||'';
 
-    const payload = (this.entries ?? []).map((e: DomesticExpense) => ({
+
+    const payload = (this.entries ?? []).map((e: Expense) => ({
+      id:e.id||null,
       date: e.date,
       supportingNo: e.supportingNo ?? "",
       particulars: e.particulars ?? "",
       paymentMode: e.paymentMode ?? "",
-      amount: Number(e.amount) || 0,
+      amount: e.amount || 0,
       remarks: e.remarks ?? "",
-      screenshot: e.fileName ?? ""
+      screenshot: e.screenshot ?? ""
     }));
 
     // Call Domestic AddBulk API
+if(this.EditClaimId){
+  this.Domestic.updateExpense(this.EditClaimId,payload).subscribe({
+    next: res => {
+      console.log('Domestic Expense Updated', res);
+      this.loading = false;
+    },
+    error: err => {
+      console.error('Expense ERROR:', err);
+      console.error('Server says:', err.error);
+      this.loading = false;
+    }
+  });
+}
 
-    this.Domestic.createExpense(claimId, payload).subscribe({
+else{
+    this.Domestic.createExpense(this.claimId, payload).subscribe({
       next: res => {
         console.log('Domestic Expense created', res);
         this.loading = false;
@@ -127,7 +141,7 @@ export class DomesticReviewComponent {
         console.error('Server says:', err.error);
         this.loading = false;
       }
-    });
+    });}
 
     const totalConvertedAmount = payload.reduce(
       (sum, item) => sum + (item.amount || 0),
@@ -140,16 +154,16 @@ export class DomesticReviewComponent {
 
     this.ClaimApi.updateClaim(
       this.api.User.employeeCode,
-      claimId,
+      this.claimId,
       claim
     ).subscribe({
       next: res => {
         console.log("Claim updated", res);
         this.loading = false;
-         this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-  next: res => console.log('Email sent', res),
-  error: err => console.error('Email ERROR:', err)
-});
+//          this.api.sendmail(this.api.User.employeeCode,this.claimId).subscribe({
+//   next: res => console.log('Email sent', res),
+//   error: err => console.error('Email ERROR:', err)
+// });
         this.toastService.success('Expense submitted and claim updated successfully');
         this.router.navigate(['/Homepage']).then(() => {
           setTimeout(() => window.location.reload(), 50);
