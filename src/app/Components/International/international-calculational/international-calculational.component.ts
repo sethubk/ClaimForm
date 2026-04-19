@@ -64,12 +64,14 @@ export class InternationalCalculationalComponent {
     fileName: ''
   };
   claimId!: string;
+  EditClaim!: string;
   internationalExpense: InternationalExpense[] = [];
   ngOnInit() {
     debugger
  this.claimId=localStorage.getItem('lastClaimId') || localStorage.getItem('EditClaim')|| '';
-    this.from1()
-   if(this.claimId){
+this.EditClaim=localStorage.getItem('EditClaim')|| '';
+ this.from1()
+   if(this.EditClaim){
     this.getInternationalExpenses();
    }
     this.selectedCurrency_amt = this.travelService.getselectedcurrencyType()

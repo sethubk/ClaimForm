@@ -67,6 +67,7 @@ loading: boolean = false;
   costCenter: res.costCenter ?? '',
   vendorCost: res.vendorCost ?? ''
 };
+localStorage.setItem("token", res.token);
      console.log('User role:', res.role); // Store user role for admin check
         this.router.navigate(['/Homepage']);
       },

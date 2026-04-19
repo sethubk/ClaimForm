@@ -59,11 +59,13 @@ isEdit: boolean = false;
     fileName: ''
   };
   claimId!: string;
+  EditClaim!:string
   internationalExpense: Expense[] = [];
   ngOnInit() {
 this.claimId=localStorage.getItem('lastClaimId') || localStorage.getItem('EditClaim')|| '';
-    this.from1()
-   if(this.claimId){
+this.EditClaim=   localStorage.getItem('EditClaim')|| ''
+this.from1()
+   if(this.EditClaim){
     this.getInternationalExpenses();
    }
    

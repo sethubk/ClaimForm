@@ -157,7 +157,23 @@
       </clr-dg-row>
     </clr-datagrid>
   </div>
-</div>
+</div><clr-modal [(clrModalOpen)]="isDeleteModalOpen">
+  <h3 class="modal-title">Confirm Delete</h3>
+
+  <div class="modal-body">
+    Are you sure you want to delete ?
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-danger" (click)="confirmDelete()">
+      Yes, Delete
+    </button>
+
+    <button class="btn btn-outline" (click)="closeDeleteModal()">
+      Cancel
+    </button>
+  </div>
+</clr-modal>
 
 
 

@@ -47,4 +47,10 @@ clr-vertical-nav {
     width: 100% !important;
     overflow:scroll;
   }
+
+  app-reimbursement{
+       width: 100% !important;
+    overflow:scroll;
+  }
 }
+

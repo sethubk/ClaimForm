@@ -119,7 +119,7 @@ if(this.Expenseid){
       paymentMode: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       remarks: [''],
-      screenshot: [null],
+      screenshot: ['',Validators.required],
       fileName: ''
     });
 
@@ -148,21 +148,61 @@ showModal: boolean = false;
 
 onFileChange(event: any) {
   const file = event.target.files[0];
+  if (!file) return;
 
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-    };
-    reader.readAsDataURL(file);
-  }
+  this.selectedFile = file;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.imagePreview = reader.result;
+
+    // ✅ SET VALUE → REQUIRED FOR VALIDATION
+    this.expenseForm.patchValue({
+      screenshot: this.imagePreview
+    });
+
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+  };
+
+  reader.readAsDataURL(file);
 }
 openGridImage(img: string) {
   console.log("Image clicked:", img); 
 this.toaster.open(img );
 }
+resetForm() {
+  // ✅ Reset form
+  this.expenseForm.reset();
+
+  // ✅ Clear image preview
+  this.imagePreview = null;
+
+  // ✅ Clear file object
+  this.selectedFile = null;
+
+  // ✅ Clear file input (IMPORTANT)
+ 
+
+  // ✅ Re-apply required validation (for ADD mode)
+  if (!this.isEdit) {
+    this.expenseForm.get('screenshot')?.setValidators(Validators.required);
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+  }
+}
 openModal() {
-  
+  this.imagePreview = null;
+   this.expenseForm.reset();
+
+  // ✅ Clear image + file
+  this.imagePreview = null;
+  this.selectedFile = null;
+
+  // ✅ Make screenshot required (ADD mode)
+  this.expenseForm.get('screenshot')?.setValidators(Validators.required);
+  this.expenseForm.get('screenshot')?.updateValueAndValidity();
+
+  // ✅ Clear file input (VERY IMPORTANT)
+
 }
 
 openPreview() {
@@ -221,12 +261,13 @@ confirmDelete() {
 
 removeImage() {
   this.imagePreview = null;
-
+ 
   // reset form values
   this.expenseForm.patchValue({
     screenshot: null,
     fileName: ''
   });
+   this.expenseForm.get('screenshot')?.markAsTouched();
 }
   //open clarity model
   openmodel() {
@@ -274,7 +315,11 @@ removeImage() {
     screenshot: entry.screenshot,
     fileName: entry.fileName
   });
+ this.imagePreview = entry.screenshot || null;
 
+  // ❗ REMOVE required validator in EDIT
+  this.expenseForm.get('screenshot')?.clearValidators();
+  this.expenseForm.get('screenshot')?.updateValueAndValidity();
     console.log("forms", this.formData);
 
 
@@ -300,63 +345,17 @@ removeImage() {
     });
 
     // ✅ Clear additional properties
-
+ 
     this.preview = null; // If you have image preview
     this.isEdit = false;
     this.editIndex = null;
   }
- EditClaimId!: string;
-claimId!:string
+
   gotoreview() {
 
-debugger
+
   
-const entries=this.entries;
- this.claimId = localStorage.getItem('lastClaimId')||'';
-  this.EditClaimId=localStorage.getItem('EditClaim')||'';
-  const payload = this.entries.map(x => ({
-    id: x.id || null,
-    date: x.date,
-    supportingNo: x.supportingNo,
-    particulars: x.particulars,
-    paymentMode: x.paymentMode,
-    amount: x.amount,
-    remarks: x.remarks,
-    screenshot: x.screenshot
-  }));
-if(this.EditClaimId){
-this.ExpenseApi.UpdateExpesne(this.EditClaimId,payload).subscribe({next:res=>{
-
-  console.log('Expense created', res);
-this.toaster.success('Expense submitted successfully');
-  this.router.navigate(['expensereview'])},
-
-  error:res=>{
-
-    console.log("Filed",res)
-  }
-
-});}
-
-
-
-else{
-
-
-this.ExpenseApi.createExpense(this.claimId, payload).subscribe({
-  next: res => {console.log('Expense created', res);
-this.toaster.success('Expense submitted successfully');
-
-  this.router.navigate(['expensereview'])
-  },
-  error: err => {
-    console.error('Expense ERROR:', err);
-    // check server message here:
-    this.toaster.error('Failed to submit expense. Please try again.');
-    // console.error('Server says:', err.error);
-  }
-});}
-
+ this.router.navigate(['expensereview'])
   
   }
   backbtn() {

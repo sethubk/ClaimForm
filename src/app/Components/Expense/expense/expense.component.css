@@ -46,7 +46,10 @@ clr-modal .modal-title h1 {
 }
 
 
-
+.required {
+  color: red;
+  margin-left: 4px;
+}
 
 
 clr-input-container label::after,
@@ -57,9 +60,9 @@ clr-select-container label::after {
 }
 
  
-clr-input-container label.Screenshot::after {
+/* clr-input-container label.Screenshot::after {
   content: "";
-}
+} */
 .mandatory label::after {
   content: " *";
   color: red;

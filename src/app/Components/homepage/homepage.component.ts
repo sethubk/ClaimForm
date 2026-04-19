@@ -68,12 +68,13 @@ export class HomepageComponent {
   ngOnInit() {
    this.expenseDataService.Clearentries();
 this.travelEntryService.clearCardEntries();
-localStorage.clear()
+
     this.isLoading = true;
 
     const now = new Date();
     const today = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-
+localStorage.removeItem('lastClaimId')
+localStorage.removeItem('EditClaim')
 
     this.User = this.api.User;
      this.empcode = this.api.User.employeeCode;
@@ -182,7 +183,7 @@ resetFilters() {
       if (this.selectedCategory === 'DomesticTravels') {
         this.router.navigate(['/domestic'])
       }
-     
+     debugger
       this.api.createClaim(this.empcode, dto).subscribe({
         next: (res) => {
           console.log('Claim created', res);

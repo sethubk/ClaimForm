@@ -70,9 +70,74 @@ claimId!:string
 loading = false;
 submitExpense(){
   debugger
+  const entries=this.entries;
+ this.claimId = localStorage.getItem('lastClaimId')||'';
+ this.EditClaimId=localStorage.getItem('EditClaim')||'';
+  const payload = this.entries.map(x => ({
+    id: x.id || null,
+    date: x.date,
+    supportingNo: x.supportingNo,
+    particulars: x.particulars,
+    paymentMode: x.paymentMode,
+    amount: x.amount,
+    remarks: x.remarks,
+    screenshot: x.screenshot
+  }));
+if(this.EditClaimId){
+this.ExpenseApi.UpdateExpesne(this.EditClaimId,payload).subscribe({next:res=>{
+
+  console.log('Expense created', res);
+this.toastService.success('Expense submitted successfully');
+ this.ClaimApi.updateClaim(this.api.User.employeeCode,this.EditClaimId,claim).subscribe({
+       next: res => {
+      console.log("Claim updated", res);
+      this.loading = false;
+      this.toastService.success('Expense and claim submitted  successfully');
+//      this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
+//   next: res => console.log('Email sent', res),
+//   error: err => console.error('Email ERROR:', err)
+// });
+setTimeout(() => {
+      this.router.navigate(['/Homepage']);
+    }, 1200);
+
+    },
+        error: (err2) => {
+          console.error("Update claim error", err2);
+          this.toastService.error('Failed to update claim. Please contact support.');
+        }
+         
+      });
+},
+  error:res=>{
+
+    console.log("Filed",res)
+  }
+
+});}
+
+
+
+else{
+
+
+this.ExpenseApi.createExpense(this.claimId, payload).subscribe({
+  next: res => {console.log('Expense created', res);
+this.toastService.success('Expense submitted successfully');
+
+ 
+  },
+  error: err => {
+    console.error('Expense ERROR:', err);
+    // check server message here:
+    this.toastService.error('Failed to submit expense. Please try again.');
+    // console.error('Server says:', err.error);
+  }
+});}
+
+  
   this.loading = true;
-const entries=this.entries;
- this.claimId = localStorage.getItem('lastClaimId')|| localStorage.getItem('EditClaim')||'';
+
 
  const claim={
       status:"pending",

@@ -8,7 +8,7 @@
     <div class="action-bar">
 
         <div class="select-container">
-            <select [(ngModel)]="selectedAction" class="custom-select">
+            <select [(ngModel)]="selectedAction" class="custom-select" [disabled]="claimDetails.claimStatus === 'Withdrawn' ||claimDetails.claimStatus === 'Rejected'|| claimDetails.claimStatus === 'Approved'">
                 <option value="" disabled selected>Select Action</option>
                 <option value="Approved">✔ Approve</option>
                 <option value="Rejected">✖ Reject</option>
@@ -16,7 +16,7 @@
         
 
         <button [ngClass]="getButtonClass()" [disabled]="!selectedAction" class="action-btn"
-            [disabled]="claimDetails.claimStatus === 'Withdrawn' || claimDetails.claimStatus === 'Approved'"
+            [disabled]="claimDetails.claimStatus === 'Withdrawn' ||claimDetails.claimStatus === 'Rejected'|| claimDetails.claimStatus === 'Approved'"
             (click)="confirmWithdraw()">
 
             {{ selectedAction || 'Submit' }}
@@ -57,6 +57,7 @@
                     <clr-dg-column>Particulars</clr-dg-column>
                     <clr-dg-column>Payment Mode</clr-dg-column>
                     <clr-dg-column>Amount</clr-dg-column>
+                    <clr-dg-column>Screenshot</clr-dg-column>
 
                     <clr-dg-row *clrDgItems="let e of claimDetails.expenses">
                         <clr-dg-cell>{{ e.date }}</clr-dg-cell>
@@ -64,6 +65,9 @@
                         <clr-dg-cell>{{ e.particulars }}</clr-dg-cell>
                         <clr-dg-cell>{{ e.paymentMode }}</clr-dg-cell>
                         <clr-dg-cell>{{ e.amount }}</clr-dg-cell>
+                                <clr-dg-cell>
+              <img *ngIf="e.screenshot" [src]="e.screenshot" class="thumb" (click)="openGridImage(e.screenshot)" />   
+            </clr-dg-cell>
                     </clr-dg-row>
 
                     <!-- ROW -->
@@ -161,38 +165,41 @@
 
         <h4 style="margin-top: 20px">International Expenses</h4>
         <div class="datagriid">
-            <clr-datagrid>
-                <clr-dg-column>Date</clr-dg-column>
-                <clr-dg-column>Supporting No</clr-dg-column>
-                <clr-dg-column>Particulars</clr-dg-column>
-                <clr-dg-column>Payment</clr-dg-column>
-                <clr-dg-column>Currency</clr-dg-column>
-                <clr-dg-column>Amount</clr-dg-column>
-                <clr-dg-column>Converted (INR)</clr-dg-column>
+              <clr-datagrid>
+        <clr-dg-column>Date</clr-dg-column>
+        <clr-dg-column>Supporting No</clr-dg-column>
+        <clr-dg-column>Particulars</clr-dg-column>
+        <clr-dg-column>Payment</clr-dg-column>
+        <clr-dg-column>Currency</clr-dg-column>
+        <clr-dg-column>Amount</clr-dg-column>
+        <clr-dg-column>Converted (INR)</clr-dg-column>
+ <clr-dg-column>Screenshot</clr-dg-column>
+        <clr-dg-row *clrDgItems="let ie of claimDetails.internationalExpenses">
+          <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
+          <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
+            <clr-dg-cell>
+              <img *ngIf="ie.screenshot" [src]="ie.screenshot" class="thumb" (click)="openGridImage(ie.screenshot)" />   
+            </clr-dg-cell>
+        </clr-dg-row>
 
-                <clr-dg-row *clrDgItems="let ie of claimDetails.internationalExpenses">
-                    <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
-                </clr-dg-row>
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
 
-                <clr-dg-footer>
-                    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+              Items per page
+            </clr-dg-page-size>
 
-                        <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
-                            Items per page
-                        </clr-dg-page-size>
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+            {{ pagination.totalItems }} items
 
-                        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-                        {{ pagination.totalItems }} items
-
-                    </clr-dg-pagination>
-                </clr-dg-footer>
-            </clr-datagrid>
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
         </div>
 
 
@@ -266,37 +273,39 @@
         <h4 style="margin-top: 20px">International Expenses</h4>
         <div class="datagriid">
             <clr-datagrid>
-                <clr-dg-column>Date</clr-dg-column>
-                <clr-dg-column>Supporting No</clr-dg-column>
-                <clr-dg-column>Particulars</clr-dg-column>
-                <clr-dg-column>Payment</clr-dg-column>
-                <clr-dg-column>Currency</clr-dg-column>
-                <clr-dg-column>Amount</clr-dg-column>
-                <clr-dg-column>Converted (INR)</clr-dg-column>
+        <clr-dg-column>Date</clr-dg-column>
+        <clr-dg-column>Supporting No</clr-dg-column>
+        <clr-dg-column>Particulars</clr-dg-column>
+        <clr-dg-column>Payment</clr-dg-column>
 
-                <clr-dg-row *clrDgItems="let ie of claimDetails.domesticExpenses">
-                    <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.amount }}</clr-dg-cell>
-                    <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
-                </clr-dg-row>
+        <clr-dg-column>Amount</clr-dg-column>
+ <clr-dg-column>Screenshot</clr-dg-column> <clr-dg-column>Screenshot</clr-dg-column>
 
-                <clr-dg-footer>
-                    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+        <clr-dg-row *clrDgItems="let ie of claimDetails.domesticExpenses">
+          <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.particulars }}</clr-dg-cell>
+          <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
 
-                        <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
-                            Items per page
-                        </clr-dg-page-size>
+          <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
+  <clr-dg-cell>
+              <img *ngIf="ie.screenshot" [src]="ie.screenshot" class="thumb" (click)="openGridImage(ie.screenshot)" />   
+            </clr-dg-cell>
+        </clr-dg-row>
 
-                        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-                        {{ pagination.totalItems }} items
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
 
-                    </clr-dg-pagination>
-                </clr-dg-footer>
-            </clr-datagrid>
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
+              Items per page
+            </clr-dg-page-size>
+
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+            {{ pagination.totalItems }} items
+
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
         </div>
 
 

@@ -1,38 +1,118 @@
+<div class="page-container">
+  <h1 class="page-title">Reimbursement Admin Dashboard</h1>
 
-<div class="datagriid">
-          <clr-datagrid>
+<!-- =======================
+     SUMMARY CARDS
+======================= -->
+<div class="dashboard-cards">
+  <div class="card total">
+    <h3>Total</h3>
+    <p>{{ Claims.length }}</p>
+  </div>
 
-            <clr-dg-column>Empcode</clr-dg-column>
-            <clr-dg-column>EmployeeName</clr-dg-column>
-            <clr-dg-column>Type</clr-dg-column>
-            <clr-dg-column>Created Date</clr-dg-column>
-            <clr-dg-column>Purpose & Place</clr-dg-column>
-            <clr-dg-column>Amount</clr-dg-column>
-           
+  <div class="card pending">
+    <h3>Pending</h3>
+    <p>{{ getCount('pending') }}</p>
+  </div>
+
+  <div class="card approved">
+    <h3>Approved</h3>
+    <p>{{ getCount('Approved') }}</p>
+  </div>
+
+  <div class="card rejected">
+    <h3>Rejected</h3>
+    <p>{{ getCount('Rejected') }}</p>
+  </div>
+</div>
 
 
+<!-- =======================
+     SEARCH
+======================= -->
+<div class="toolbar">
+  <input
+    type="text"
+    placeholder="Search by Emp Code / Name"
+    [(ngModel)]="searchText"
+    class="search-box" />
+</div>
 
-            <clr-dg-row *clrDgItems="let item of Claims" (click)="goToClaimView(item.recentClaimId!)"
-              style="cursor:pointer">
-              <clr-dg-cell>{{item.empCode}}</clr-dg-cell>
-              <clr-dg-cell>{{item.name}}</clr-dg-cell>
-              
-              <clr-dg-cell>{{ item.type }}</clr-dg-cell>
-              <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
-              <clr-dg-cell>{{ item.purpose }}</clr-dg-cell>
-              <clr-dg-cell>{{ item.amount }}</clr-dg-cell>
-             
-            </clr-dg-row>
+<!-- =======================
+     PENDING
+======================= -->
+<h2 class="section-title pending">Pending Claims</h2>
 
-            <clr-dg-footer>
-              <clr-dg-pagination #pagination [clrDgPageSize]="10">
-                <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
-                  Items per page
-                </clr-dg-page-size>
-                {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-                {{ pagination.totalItems }} items
-              </clr-dg-pagination>
-            </clr-dg-footer>
+<clr-datagrid *ngIf="pendingClaims.length">
 
-          </clr-datagrid>
-        </div>
+  <clr-dg-column>Emp Code</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Type</clr-dg-column>
+  <clr-dg-column>Date</clr-dg-column>
+  <clr-dg-column>Amount</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let item of filterClaims(pendingClaims)"
+              (click)="goToClaimView(item.recentClaimId!)"
+              class="row">
+
+    <clr-dg-cell>{{ item.empCode }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.type }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
+    <clr-dg-cell>₹{{ item.amount }}</clr-dg-cell>
+
+  </clr-dg-row>
+</clr-datagrid>
+
+<!-- =======================
+     APPROVED
+======================= -->
+<h2 class="section-title approved" *ngIf="approvedClaims.length">Approved Claims</h2>
+
+<clr-datagrid *ngIf="approvedClaims.length">
+
+  <clr-dg-column>Emp Code</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Type</clr-dg-column>
+  <clr-dg-column>Date</clr-dg-column>
+  <clr-dg-column>Amount</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let item of filterClaims(approvedClaims)"
+              (click)="goToClaimView(item.recentClaimId!)"
+              class="row">
+
+    <clr-dg-cell>{{ item.empCode }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.type }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
+    <clr-dg-cell>₹{{ item.amount }}</clr-dg-cell>
+
+  </clr-dg-row>
+</clr-datagrid>
+
+<!-- =======================
+     REJECTED
+======================= -->
+<h2 class="section-title rejected" *ngIf="rejectedClaims.length">Rejected Claims</h2>
+
+<clr-datagrid *ngIf="rejectedClaims.length">
+
+  <clr-dg-column>Emp Code</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Type</clr-dg-column>
+  <clr-dg-column>Date</clr-dg-column>
+  <clr-dg-column>Amount</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let item of filterClaims(rejectedClaims)"
+              (click)="goToClaimView(item.recentClaimId!)"
+              class="row">
+
+    <clr-dg-cell>{{ item.empCode }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.type }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.date | date:'mediumDate' }}</clr-dg-cell>
+    <clr-dg-cell>₹{{ item.amount }}</clr-dg-cell>
+
+  </clr-dg-row>
+</clr-datagrid>
+</div>

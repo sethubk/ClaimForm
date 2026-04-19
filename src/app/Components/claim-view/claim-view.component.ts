@@ -89,7 +89,7 @@ private router: Router,
   totalAmount: number = 0;
   calculateTotal() {
     if (this.claimDetails.claimType == 'InternationalTravels') {
-      this.totalAmount = this.claimDetails.internationalExpenses.reduce((sum, entry: Entry) => sum + (entry.amount || 0), 0);
+      this.totalAmount = this.claimDetails.internationalExpenses.reduce((sum, entry: Entry) => sum + (entry.convertedAmount || 0), 0);
       console.log(this.totalAmount)
     }
     if (this.claimDetails.claimType == 'DomesticTravels') {
@@ -117,6 +117,6 @@ private router: Router,
 
   openGridImage(img: string) {
   console.log("Image clicked:", img); 
-this.toastService.bilopen(img );
+this.toastService.open(img );
 }
   }

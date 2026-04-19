@@ -188,19 +188,50 @@ get cashEntries() {
   this.currencyModalOpen = true;
 }
 
-deleteEntry(filteredIndex: number, type: 'Card' | 'Cash') {
+// ✅ modal control
+isDeleteModalOpen = false;
+
+// ✅ store selected item
+deleteIndex: number = -1;
+deleteType: 'Card' | 'Cash' = 'Card';
+
+// =========================
+// OPEN DELETE MODAL
+// =========================
+deleteEntry(index: number, type: 'Card' | 'Cash') {
+  this.deleteIndex = index;
+  this.deleteType = type;
+  this.isDeleteModalOpen = true;
+}
+
+// =========================
+// CONFIRM DELETE
+// =========================
+confirmDelete() {
   const all = this.travelService.getAllEntries();
 
-  const actualIndex = all.findIndex((x, i) =>
-    x.type === type &&
+  const actualIndex = all.findIndex((x) =>
+    x.type === this.deleteType &&
     (
-      type === 'Card'
-        ? this.cardEntries.indexOf(x) === filteredIndex
-        : this.cashEntries.indexOf(x) === filteredIndex
+      this.deleteType === 'Card'
+        ? this.cardEntries.indexOf(x) === this.deleteIndex
+        : this.cashEntries.indexOf(x) === this.deleteIndex
     )
   );
 
-  this.travelService.deleteEntry(actualIndex);
+  if (actualIndex !== -1) {
+    this.travelService.deleteEntry(actualIndex);
+  }
+
+  this.closeDeleteModal();
+}
+
+// =========================
+// CLOSE MODAL
+// =========================
+closeDeleteModal() {
+  this.isDeleteModalOpen = false;
+  this.deleteIndex = -1;
 }
 
   calculateDays(start: string, end: string): number {

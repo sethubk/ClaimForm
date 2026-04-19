@@ -61,6 +61,10 @@ export class ReimbursementClaimComponent {
   }
 
 
+  openGridImage(img: string) {
+  console.log("Image clicked:", img); 
+this.toastService.bilopen(img );
+}
   //Call backend
   withdrawClaim() {
 

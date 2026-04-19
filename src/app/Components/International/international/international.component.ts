@@ -200,38 +200,59 @@ askDeleteConfirmation(index: number, type: 'Card' | 'Cash') {
   this.pendingType = type;
   this.showDeleteModal = true;
 }
+
+
+// closeDeleteModal() {
+//   this.showDeleteModal = false;
+//   this.pendingIndex = null;
+//   this.pendingType = null;
+// }
+
+// ✅ modal control
+isDeleteModalOpen = false;
+
+// ✅ store selected item
+deleteIndex: number = -1;
+deleteType: 'Card' | 'Cash' = 'Card';
+
+// =========================
+// OPEN DELETE MODAL
+// =========================
+deleteEntry(index: number, type: 'Card' | 'Cash') {
+  this.deleteIndex = index;
+  this.deleteType = type;
+  this.isDeleteModalOpen = true;
+}
+
+// =========================
+// CONFIRM DELETE
+// =========================
 confirmDelete() {
-  if (this.pendingIndex !== null && this.pendingType !== null) {
-    this.deleteEntry(this.pendingIndex, this.pendingType);
-  }
-  this.closeDeleteModal();
-}
-
-closeDeleteModal() {
-  this.showDeleteModal = false;
-  this.pendingIndex = null;
-  this.pendingType = null;
-}
-
-deleteEntry(filteredIndex: number, type: 'Card' | 'Cash') {
-  if (!confirm('Are you sure you want to delete this expense?')) {
-    return;
-  }
-
   const all = this.travelService.getAllEntries();
 
-  const actualIndex = all.findIndex((x, i) =>
-    x.type === type &&
+  const actualIndex = all.findIndex((x) =>
+    x.type === this.deleteType &&
     (
-      type === 'Card'
-        ? this.cardEntries.indexOf(x) === filteredIndex
-        : this.cashEntries.indexOf(x) === filteredIndex
+      this.deleteType === 'Card'
+        ? this.cardEntries.indexOf(x) === this.deleteIndex
+        : this.cashEntries.indexOf(x) === this.deleteIndex
     )
   );
 
-  this.travelService.deleteEntry(actualIndex);
+  if (actualIndex !== -1) {
+    this.travelService.deleteEntry(actualIndex);
+  }
+
+  this.closeDeleteModal();
 }
 
+// =========================
+// CLOSE MODAL
+// =========================
+closeDeleteModal() {
+  this.isDeleteModalOpen = false;
+  this.deleteIndex = -1;
+}
   calculateDays(start: string, end: string): number {
     if (!start || !end) return 0;
 
