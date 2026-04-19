@@ -227,7 +227,7 @@ addEntry() {
     }
 
     this.formopen = false;
-    this.service.setExpense(this.entries);
+    this.service.setentries(this.entries);
 
     console.log('Current entries:', this.entries);
   }
@@ -256,6 +256,13 @@ confirmDelete() {
     screenshot: null,
     fileName: ''
   });
+  this.imagePreview = null;
+   this.expenseForm.reset();
+  this.imagePreview = null;
+  this.selectedFile = null;
+  this.expenseForm.get('screenshot')?.setValidators(Validators.required);
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+
     this.expenseForm.reset()
     this.expenseForm.patchValue({ fileName: '' });
     this.expenseForm.patchValue({screenshot: null });

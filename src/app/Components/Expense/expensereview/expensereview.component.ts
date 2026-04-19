@@ -77,7 +77,7 @@ submitExpense() {
   this.claimId = localStorage.getItem('lastClaimId') || '';
   this.EditClaimId = localStorage.getItem('EditClaim') || '';
 
-  const payload = this.entries.map(x => ({
+  const payload = (this.entries??[]).map((x:Expense) => ({
     id: x.id || null,
     date: x.date,
     supportingNo: x.supportingNo,
@@ -85,7 +85,8 @@ submitExpense() {
     paymentMode: x.paymentMode,
     amount: x.amount,
     remarks: x.remarks,
-    screenshot: x.screenshot
+    fileName:x.fileName,
+    screenshot: x.screenshot ??""
   }));
 
   const claim = {

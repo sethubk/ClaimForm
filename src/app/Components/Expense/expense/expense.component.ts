@@ -258,7 +258,6 @@ confirmDelete() {
 
 
 
-
 removeImage() {
   this.imagePreview = null;
  
@@ -275,6 +274,9 @@ removeImage() {
     screenshot: null,
     fileName: ''
   });
+   this.imagePreview = null;
+    this.imagePreview = null;
+  this.selectedFile = null;
     this.expenseForm.reset()
     this.expenseForm.patchValue({ fileName: '' });
     this.expenseForm.patchValue({screenshot: null });

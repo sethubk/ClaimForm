@@ -140,7 +140,7 @@
         </button>
         <!-- Thumbnail Preview -->
         <div *ngIf="imagePreview" class="preview-container">
-          <img [src]="imagePreview" class="preview-img" (click)="openModal()" />
+          <img [src]="imagePreview" class="preview-img"  />
           <!-- ✅ REQUIRED VALIDATION -->
           <clr-control-error *ngIf="expenseForm.get('screenshot')?.touched &&
            expenseForm.get('screenshot')?.hasError('required')">

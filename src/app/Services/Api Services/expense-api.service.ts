@@ -13,7 +13,7 @@ export class ExpenseApiService {
   baseurl='https://localhost:7283/api/Expense';
 
   
-createExpense(claimId: string, expense: any): Observable<any> {
+createExpense(claimId: string, expense: Expense[]): Observable<any> {
   return this.http.post(
     `${this.baseurl}/${claimId}/Expense`,
     expense
@@ -25,7 +25,7 @@ getExpensesByClaimId(claimId: string): Observable<any> {
 
  
 
-  UpdateExpesne(claimId: string, expense: any[]): Observable<any> {
+  UpdateExpesne(claimId: string, expense: Expense[]): Observable<any> {
   return this.http.put(
     `${this.baseurl}/${claimId}/Expense`,
     expense
