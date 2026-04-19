@@ -7,12 +7,13 @@
   </div>
   <div class="action-bar">
     <button class="btn btn-danger"
-      [disabled]="claimDetails.claimStatus === 'Withdrawn' || claimDetails.claimStatus === 'Approved'"
+      [disabled]="claimDetails.claimStatus === 'Withdrawn' || claimDetails.claimStatus === 'Approved' ||  claimDetails.claimStatus === 'Rejected'"
       (click)="confirmWithdraw()">
 
       Withdraw Claim
     </button>
-<button class="btn btn-primary" (click)="EditExpenses()">
+<button class="btn btn-primary" [disabled]="claimDetails.claimStatus === 'Withdrawn' || claimDetails.claimStatus === 'Approved' ||  claimDetails.claimStatus === 'Rejected'"
+ (click)="EditExpenses()">
       Edit expense
     </button>
    

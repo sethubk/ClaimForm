@@ -126,7 +126,7 @@ this.from1()
       paymentMode: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]], // Amount input
       remarks: [''],
-      screenshot: [null],
+      screenshot: ['',Validators.required],
       fileName: ''
     });
 
@@ -152,16 +152,25 @@ this.from1()
 imagePreview: string | ArrayBuffer | null = null;
 selectedFile: File | null = null;
 showModal: boolean = false;
- onFileChange(event: any) {
+onFileChange(event: any) {
   const file = event.target.files[0];
+  if (!file) return;
 
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-    };
-    reader.readAsDataURL(file);
-  }
+  this.selectedFile = file;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.imagePreview = reader.result;
+
+    // ✅ SET VALUE → REQUIRED FOR VALIDATION
+    this.expenseForm.patchValue({
+      screenshot: this.imagePreview
+    });
+
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+  };
+
+  reader.readAsDataURL(file);
 }
 openGridImage(img: string) {
   console.log("Image clicked:", img); 
@@ -169,12 +178,32 @@ this.toastService.bilopen(img );
 }
 removeImage() {
   this.imagePreview = null;
-
+ 
   // reset form values
   this.expenseForm.patchValue({
     screenshot: null,
     fileName: ''
   });
+   this.expenseForm.get('screenshot')?.markAsTouched();
+}
+resetForm() {
+  // ✅ Reset form
+  this.expenseForm.reset();
+
+  // ✅ Clear image preview
+  this.imagePreview = null;
+
+  // ✅ Clear file object
+  this.selectedFile = null;
+
+  // ✅ Clear file input (IMPORTANT)
+ 
+
+  // ✅ Re-apply required validation (for ADD mode)
+  if (!this.isEdit) {
+    this.expenseForm.get('screenshot')?.setValidators(Validators.required);
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+  }
 }
 addEntry() {
   if (this.expenseForm.valid) {
@@ -223,11 +252,15 @@ confirmDelete() {
   //open clarity model
   openmodel() {
 
+   this.expenseForm.patchValue({
+    screenshot: null,
+    fileName: ''
+  });
     this.expenseForm.reset()
     this.expenseForm.patchValue({ fileName: '' });
+    this.expenseForm.patchValue({screenshot: null });
 
     this.isEdit = false;
-
 
     this.expenseForm.reset({
       date: '',
@@ -263,7 +296,7 @@ confirmDelete() {
       fileName: entry.fileName
        });
 this.imagePreview = entry.screenshot
-
+ this.imagePreview = entry.screenshot || null;
     //  Recalculate converted amount for UI if needed
 
 

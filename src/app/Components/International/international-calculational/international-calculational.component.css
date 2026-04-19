@@ -15,6 +15,11 @@
     text-align: center;
   }
 }
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
 .datagrid-box {
   flex: 1;
   min-width: 400px;

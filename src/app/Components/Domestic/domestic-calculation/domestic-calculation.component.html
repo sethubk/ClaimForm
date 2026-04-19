@@ -133,21 +133,25 @@
 
       <!-- Screenshot -->
        <div class="amount12">
-          <label class="clr-col-12 clr-col-md-2">Screenshot</label>
+        <label class="clr-col-12 clr-col-md-2">Screenshot<span class="required">*</span></label>
 
-          <input class="clr-col-12 clr-col-md-6" type="file" (change)="onFileChange($event)" accept="image/*" />
-          <button type="button" class="crud-btn remove" (click)="removeImage()" title="Remove Image">
-            <cds-icon shape="trash"></cds-icon>
-          </button>
-          <!-- Thumbnail Preview -->
-          <div *ngIf="imagePreview" class="preview-container">
-            <img [src]="imagePreview" class="preview-img" />
-
-          </div>
+        <input class="clr-col-12 clr-col-md-6" type="file" (change)="onFileChange($event)" accept="image/*" />
+        <button type="button" class="crud-btn remove" (click)="removeImage()" title="Remove Image">
+          <cds-icon shape="trash"></cds-icon>
+        </button>
+        <!-- Thumbnail Preview -->
+        <div *ngIf="imagePreview" class="preview-container">
+          <img [src]="imagePreview" class="preview-img"  />
+          <!-- ✅ REQUIRED VALIDATION -->
+          <clr-control-error *ngIf="expenseForm.get('screenshot')?.touched &&
+           expenseForm.get('screenshot')?.hasError('required')">
+            Screenshot is required
+          </clr-control-error>
         </div>
+      </div>
       <!-- Actions -->
       <div class="actions">
-        <button class="btn outline-danger" type="reset" (click)="expenseForm.reset()">Reset</button>
+        <button class="btn outline-danger" type="reset" (click)="resetForm()">Reset</button>
         <button class="btn btn-info" [disabled]="!expenseForm.valid" type="button" (click)="addEntry()">
           {{ !isEdit ? 'Add' : 'Update' }}
         </button>

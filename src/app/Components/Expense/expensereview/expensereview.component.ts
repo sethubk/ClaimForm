@@ -24,55 +24,59 @@ interface Entry {
 @Component({
   selector: 'app-expensereview',
   standalone: true,
-  imports: [ClarityModule,FormsModule,CommonModule],
+  imports: [ClarityModule, FormsModule, CommonModule],
   templateUrl: './expensereview.component.html',
   styleUrl: './expensereview.component.css'
 })
 export class ExpensereviewComponent {
-constructor(private service:ExpenseDataService,private api:ApiService, private router:Router,private toastService: ToasterService,
-  private TravelService:TravelEntryService,private ExpenseApi:ExpenseApiService,private ClaimApi:ClaimApiService){
+  constructor(private service: ExpenseDataService, private api: ApiService, private router: Router, private toastService: ToasterService,
+    private TravelService: TravelEntryService, private ExpenseApi: ExpenseApiService, private ClaimApi: ClaimApiService) {
 
- }
- personalData: Employee={ 
+  }
+  personalData: Employee = {
     today: '',
-   username: '',
-   employeeCode: '',
-   purposePlace: '',
-   companyPlant: '',
-   costCenter: '',
-   vendorCost: '',
-  
- };
- entries:Expense[]=[];
- 
+    username: '',
+    employeeCode: '',
+    purposePlace: '',
+    companyPlant: '',
+    costCenter: '',
+    vendorCost: '',
+
+  };
+  entries: Expense[] = [];
+
   ngOnInit(): void {
- this.personalData=this.api.User;
-    this.entries=this.service.getentries();
-   
+    this.personalData = this.api.User;
+    this.entries = this.service.getentries();
+
     console.log(this.entries)
 
     this.calculateTotal();
-  
+
   }
- totalAmount: number = 0;
+  totalAmount: number = 0;
 
-calculateTotal() {
-  this.totalAmount = this.entries.reduce((sum, entry: Expense) => sum + entry.amount, 0);
-console.log(this.totalAmount)
-}
+  calculateTotal() {
+    this.totalAmount = this.entries.reduce((sum, entry: Expense) => sum + entry.amount, 0);
+    console.log(this.totalAmount)
+  }
 
-printPage() {
-  window.print();
-}
+  printPage() {
+    window.print();
+  }
 
- EditClaimId!: string;
-claimId!:string
-loading = false;
-submitExpense(){
-  debugger
-  const entries=this.entries;
- this.claimId = localStorage.getItem('lastClaimId')||'';
- this.EditClaimId=localStorage.getItem('EditClaim')||'';
+  EditClaimId!: string;
+  claimId!: string
+  loading = false;
+ 
+submitExpense() {
+  debugger;
+
+  this.loading = true;
+
+  this.claimId = localStorage.getItem('lastClaimId') || '';
+  this.EditClaimId = localStorage.getItem('EditClaim') || '';
+
   const payload = this.entries.map(x => ({
     id: x.id || null,
     date: x.date,
@@ -83,88 +87,64 @@ submitExpense(){
     remarks: x.remarks,
     screenshot: x.screenshot
   }));
-if(this.EditClaimId){
-this.ExpenseApi.UpdateExpesne(this.EditClaimId,payload).subscribe({next:res=>{
 
-  console.log('Expense created', res);
-this.toastService.success('Expense submitted successfully');
- this.ClaimApi.updateClaim(this.api.User.employeeCode,this.EditClaimId,claim).subscribe({
-       next: res => {
-      console.log("Claim updated", res);
-      this.loading = false;
-      this.toastService.success('Expense and claim submitted  successfully');
-//      this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-//   next: res => console.log('Email sent', res),
-//   error: err => console.error('Email ERROR:', err)
-// });
-setTimeout(() => {
-      this.router.navigate(['/Homepage']);
-    }, 1200);
+  const claim = {
+    status: "pending",
+    amount: this.totalAmount
+  };
 
-    },
-        error: (err2) => {
-          console.error("Update claim error", err2);
-          this.toastService.error('Failed to update claim. Please contact support.');
-        }
-         
-      });
-},
-  error:res=>{
+  // 🔥 COMMON SUCCESS HANDLER
+  const updateClaimCall = (claimId: string) => {
+    this.ClaimApi.updateClaim(this.api.User.employeeCode, claimId, claim).subscribe({
+      next: res => {
+        console.log("Claim updated", res);
+        this.loading = false;
+        this.toastService.success('Expense and claim submitted successfully');
 
-    console.log("Filed",res)
+        setTimeout(() => {
+          this.router.navigate(['/Homepage']);
+        }, 1200);
+      },
+      error: err => {
+        console.error("Update claim error", err);
+        this.loading = false;
+        this.toastService.error('Failed to update claim.');
+      }
+    });
+  };
+
+  if (this.EditClaimId) {
+    this.ExpenseApi.UpdateExpesne(this.EditClaimId, payload).subscribe({
+      next: res => {
+        console.log('Expense updated', res);
+        this.toastService.success('Expense updated successfully');
+
+        updateClaimCall(this.EditClaimId); // ✅ only here
+      },
+      error: err => {
+        console.error("Expense update error", err);
+        this.loading = false;
+        this.toastService.error('Failed to update expense');
+      }
+    });
   }
-
-});}
-
-
-
-else{
-
-
-this.ExpenseApi.createExpense(this.claimId, payload).subscribe({
-  next: res => {console.log('Expense created', res);
-this.toastService.success('Expense submitted successfully');
-
- 
-  },
-  error: err => {
-    console.error('Expense ERROR:', err);
-    // check server message here:
-    this.toastService.error('Failed to submit expense. Please try again.');
-    // console.error('Server says:', err.error);
-  }
-});}
 
   
-  this.loading = true;
+  else {
+    this.ExpenseApi.createExpense(this.claimId, payload).subscribe({
+      next: res => {
+        console.log('Expense created', res);
+        this.toastService.success('Expense created successfully');
 
-
- const claim={
-      status:"pending",
-      amount:this.totalAmount
-   
-}
-
-this.ClaimApi.updateClaim(this.api.User.employeeCode,this.claimId,claim).subscribe({
-       next: res => {
-      console.log("Claim updated", res);
-      this.loading = false;
-      this.toastService.success('Expense and claim submitted  successfully');
-//      this.api.sendmail(this.api.User.employeeCode,claimId).subscribe({
-//   next: res => console.log('Email sent', res),
-//   error: err => console.error('Email ERROR:', err)
-// });
-setTimeout(() => {
-      this.router.navigate(['/Homepage']);
-    }, 1200);
-
-    },
-        error: (err2) => {
-          console.error("Update claim error", err2);
-          this.toastService.error('Failed to update claim. Please contact support.');
-        }
-         
-      });
+        updateClaimCall(this.claimId); // ✅ only here
+      },
+      error: err => {
+        console.error('Expense ERROR:', err);
+        this.loading = false;
+        this.toastService.error('Failed to submit expense.');
+      }
+    });
+  }
 }
 
 
@@ -173,9 +153,8 @@ setTimeout(() => {
 
 
 
-
-backbtn(){
-  this.router.navigate(['/Expense'])
-}
+  backbtn() {
+    this.router.navigate(['/Expense'])
+  }
 
 }

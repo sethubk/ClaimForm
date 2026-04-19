@@ -123,9 +123,7 @@ this.travelService.addEntriesFromApi(
   }
 
 
-  openmodel() {
-    this.router.navigate(['/internationalcal']);
-  }
+ 
 
 
   get travelEndDateOnly(): string {
@@ -176,6 +174,7 @@ get cashEntries() {
     this.editIndex = null;
   }
 }
+
  editEntry(filteredIndex: number, type: 'Card' | 'Cash') {
   const all = this.travelService.getAllEntries();
 

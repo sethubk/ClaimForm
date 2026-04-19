@@ -129,7 +129,7 @@ getInternationalExpenses() {
       currencyType: ['', Validators.required], // Currency dropdown
       amount: ['', [Validators.required, Validators.min(1)]], // Amount input
       remarks: [''],
-      screenshot: [null],
+       screenshot: ['',Validators.required],
       fileName: ''
     });
 
@@ -154,16 +154,25 @@ getInternationalExpenses() {
  imagePreview: string | ArrayBuffer | null = null;
 selectedFile: File | null = null;
 showModal: boolean = false;
- onFileChange(event: any) {
+onFileChange(event: any) {
   const file = event.target.files[0];
+  if (!file) return;
 
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-    };
-    reader.readAsDataURL(file);
-  }
+  this.selectedFile = file;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.imagePreview = reader.result;
+
+    // ✅ SET VALUE → REQUIRED FOR VALIDATION
+    this.expenseForm.patchValue({
+      screenshot: this.imagePreview
+    });
+
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+  };
+
+  reader.readAsDataURL(file);
 }
 openGridImage(img: string) {
   console.log("Image clicked:", img); 
@@ -240,15 +249,35 @@ closeModal() {
 
 
 
+resetForm() {
+  // ✅ Reset form
+  this.expenseForm.reset();
 
+  // ✅ Clear image preview
+  this.imagePreview = null;
+
+  // ✅ Clear file object
+  this.selectedFile = null;
+
+  // ✅ Clear file input (IMPORTANT)
+ 
+
+  // ✅ Re-apply required validation (for ADD mode)
+  if (!this.isEdit) {
+    this.expenseForm.get('screenshot')?.setValidators(Validators.required);
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+  }
+}
   //open clarity model
   openmodel() {
-//  this.expenseForm.patchValue({
-//     screenshot: null,
-//     fileName: ''
-//   });
-    // this.expenseForm.reset()
-    // this.expenseForm.patchValue({ fileName: '' });
+ this.expenseForm.patchValue({
+    screenshot: null,
+    fileName: ''
+  });
+    this.expenseForm.reset()
+    this.expenseForm.patchValue({ fileName: '' });
+    this.expenseForm.patchValue({screenshot: null });
+
 this.imagePreview = ''
     this.isEdit = false;
 
@@ -291,7 +320,8 @@ this.imagePreview = ''
     });
 this.imagePreview = entry.screenshot
     // ✅ Recalculate converted amount for UI if needed
-
+ this.expenseForm.get('screenshot')?.clearValidators();
+  this.expenseForm.get('screenshot')?.updateValueAndValidity();
 
     console.log("Editing entry:", this.formData);
   }

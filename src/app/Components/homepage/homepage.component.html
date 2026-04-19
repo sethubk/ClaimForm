@@ -68,7 +68,8 @@
         </div>
 
 
-        <clr-modal [(clrModalOpen)]="showPersonalModal" [clrModalSize]="'md'", (clrModalOpenChange)="resetPersonalForm()">
+        <clr-modal [(clrModalOpen)]="showPersonalModal" [clrModalSize]="'md'" ,
+          (clrModalOpenChange)="resetPersonalForm()">
           <h3 class="modal-title">Personal Details</h3>
 
           <div class="modal-body">
@@ -161,17 +162,11 @@
                   {{ item.status }}
                 </span>
               </clr-dg-cell>
-  <clr-dg-cell>
-  <span
-    class="status-text"
-    [ngClass]="(item?.amount ?? 0) < 0 ? 'recoverable' : 'payable'">
-    
-    {{ (item?.amount ?? 0) < 0
-        ? 'Amount Recover from Employee'
-        : 'Amount Payable to Employee' }}
+              <clr-dg-cell>
+                <span class="status-text" [ngClass]="(item?.amount ?? 0) < 0 ? 'recoverable' : 'payable'">
 
-  </span>
-</clr-dg-cell>
+                  {{ (item?.amount ?? 0) < 0 ? 'Amount Recover from Employee' : 'Amount Payable to Employee' }} </span>
+              </clr-dg-cell>
 
 
             </clr-dg-row>
@@ -179,10 +174,10 @@
             <clr-dg-footer>
               <clr-dg-pagination #pagination [clrDgPageSize]="10">
                 <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">
-                  Items per page
+                  claims per page
                 </clr-dg-page-size>
                 {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-                {{ pagination.totalItems }} items
+                {{ pagination.totalItems }} claim
               </clr-dg-pagination>
             </clr-dg-footer>
 
