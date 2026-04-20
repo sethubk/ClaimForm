@@ -34,13 +34,25 @@ export class ReimbursementClaimComponent {
     this.claimId = this.route.snapshot.paramMap.get('claimId')!;
     this.getClaimExpenses();
   }
-  getClaimExpenses() {
-    this.ClaimApi.getExpensesByClaimId(this.claimId).subscribe(res => {
-      console.log("Claim details fetched:", res);
-      this.claimDetails = res;
+getClaimExpenses() {
+  this.toastService.showLoader();
 
-    });
-  }
+  this.ClaimApi.getExpensesByClaimId(this.claimId).subscribe({
+    next: (res) => {
+      console.log('Claim details fetched:', res);
+      this.claimDetails = res;
+      this.toastService.hideLoader();
+    },
+    error: (error) => {
+      console.error('Error fetching claim expenses:', error);
+
+      // Optional: show error message
+      this.toastService.error('Failed to load claim expenses');
+
+      this.toastService.hideLoader();
+    }
+  });
+}
 
   isExpense(): boolean {
     return this.claimDetails?.claimType === 'Expense';
@@ -67,7 +79,7 @@ this.toastService.bilopen(img );
 }
   //Call backend
   withdrawClaim() {
-
+this.toastService.showLoader()
     const claimId = this.claimId
 
     const payload: ClaimStatusDto = {
@@ -77,7 +89,7 @@ this.toastService.bilopen(img );
     this.ClaimApi.updateClaimStatus(claimId, payload).subscribe({
       next: (res) => {
         console.log('Withdraw successful');
-
+this.toastService.hideLoader()
         // Update UI status immediately
         this.claimDetails.claimStatus = this.selectedAction;
 
@@ -87,6 +99,7 @@ this.toastService.bilopen(img );
           },
           error: (err) => {
             this.toastService.error('Failed to send admin action email. Please contact support.');
+          this.toastService.hideLoader()
           }
         });
         this.isWithdrawModalOpen = false;
@@ -97,6 +110,7 @@ this.toastService.bilopen(img );
       },
       error: (err) => {
         console.error(err);
+        this.toastService.hideLoader()
         this.toastService.error(`Failed to ${this.selectedAction} claim`);
       }
     });

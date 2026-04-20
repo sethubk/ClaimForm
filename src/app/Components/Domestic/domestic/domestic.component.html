@@ -59,7 +59,7 @@
 </div>
 
 <!-- Clarity Modal -->
-<clr-modal [(clrModalOpen)]="currencyModalOpen">
+<clr-modal [(clrModalOpen)]="currencyModalOpen" (clrModalOpenChange)="onCurrencyModalChange($event)">
   <h3 class="modal-title">{{ editIndex !== null ? 'Edit Entry' : 'Add Cash or Card Entry' }}</h3>
   <div class="modal-body">
     <form clrForm #entryForm="ngForm">

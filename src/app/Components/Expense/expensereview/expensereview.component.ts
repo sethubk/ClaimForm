@@ -96,6 +96,7 @@ submitExpense() {
 
   // 🔥 COMMON SUCCESS HANDLER
   const updateClaimCall = (claimId: string) => {
+  
     this.ClaimApi.updateClaim(this.api.User.employeeCode, claimId, claim).subscribe({
       next: res => {
         console.log("Claim updated", res);
@@ -115,6 +116,7 @@ submitExpense() {
   };
 
   if (this.EditClaimId) {
+    this.toastService.showLoader();
     this.ExpenseApi.UpdateExpesne(this.EditClaimId, payload).subscribe({
       next: res => {
         console.log('Expense updated', res);
@@ -132,16 +134,19 @@ submitExpense() {
 
   
   else {
+    this.toastService.showLoader();
     this.ExpenseApi.createExpense(this.claimId, payload).subscribe({
       next: res => {
         console.log('Expense created', res);
         this.toastService.success('Expense created successfully');
 
-        updateClaimCall(this.claimId); // ✅ only here
+        updateClaimCall(this.claimId);
+        this.toastService.hideLoader() // ✅ only here
       },
       error: err => {
         console.error('Expense ERROR:', err);
         this.loading = false;
+        this.toastService.hideLoader()
         this.toastService.error('Failed to submit expense.');
       }
     });

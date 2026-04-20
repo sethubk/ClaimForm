@@ -37,6 +37,7 @@ export class ReimbursementComponent {
   }
 
   getclaims() {
+    this.toastService.showLoader()
     this.ClaimApi.getAllClaims().subscribe({
       next: (res) => {
 console.log(res);
@@ -45,13 +46,14 @@ console.log(res);
         );
 
         this.Claims = validClaims;
-
+  this.toastService.hideLoader()
         this.pendingClaims = validClaims.filter(c => c.status === 'pending');
         this.approvedClaims = validClaims.filter(c => c.status === 'Approved');
         this.rejectedClaims = validClaims.filter(c => c.status === 'Rejected');
       },
       error: () => {
         this.toastService.error("Failed to load claims");
+        this.toastService.hideLoader()
       }
     });
   }

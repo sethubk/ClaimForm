@@ -30,17 +30,35 @@ private router: Router,
   claimId!: string;
 
   ngOnInit() {
+    debugger
     this.claimId = this.urlRoute.snapshot.paramMap.get('claimId')!;
     localStorage.setItem('EditClaim', this.claimId);
     this.getClaimExpenses();
   }
   getClaimExpenses() {
-    this.ClaimApi.getExpensesByClaimId(this.claimId).subscribe(res => {
-      console.log("Claim details fetched:", res);
-      this.claimDetails = res;
+  this.toastService.showLoader();
 
-    });
-  }
+  this.ClaimApi.getExpensesByClaimId(this.claimId).subscribe({
+    next: (res) => {
+      console.log('Claim details fetched:', res);
+
+      this.claimDetails = res;
+      this.api.User.purposePlace = res?.purpose || '';
+      this.api.User.today=res?.date ||'';
+      
+      this.toastService.hideLoader();
+    },
+    error: (err) => {
+      console.error('Error fetching claim details:', err);
+
+      // Optional: show error toast
+      this.toastService.error('Failed to fetch claim expenses');
+
+      this.toastService.hideLoader();
+    }
+  });
+}
+
 
   isExpense(): boolean {
     return this.claimDetails?.claimType === 'Expense';
@@ -62,6 +80,7 @@ private router: Router,
 
   // Call backend
   withdrawClaim() {
+     this.toastService.showLoader()
     const claimId = this.claimId
     const payload: ClaimStatusDto = {
       ClaimStatus: 'Withdrawn'
@@ -73,9 +92,9 @@ private router: Router,
         // Update UI status immediately
         this.claimDetails.claimStatus = 'Withdrawn';
 
-
+        
         this.isWithdrawModalOpen = false;
-
+         this.toastService.hideLoader()
       
         this.toastService.success('Claim withdrawn successfully');
 
@@ -83,6 +102,7 @@ private router: Router,
       error: (err) => {
         console.error(err);
         this.toastService.error('Failed to withdraw claim');
+      this.toastService.hideLoader()
       }
     });
   }

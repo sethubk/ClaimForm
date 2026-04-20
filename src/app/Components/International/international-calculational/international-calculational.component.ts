@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Employee, FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
@@ -39,7 +39,7 @@ export class InternationalCalculationalComponent {
     private toastService: ToasterService, 
     private service: ExpenseDataService) { }
   maxDate: string = '';
-
+@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   startDate: string = '';
   endDate: string = '';
   showMax: boolean = false;
@@ -65,11 +65,15 @@ export class InternationalCalculationalComponent {
   };
   claimId!: string;
   EditClaim!: string;
+   travelStart: string = '';
+  travelEnd: string = '';
   internationalExpense: InternationalExpense[] = [];
   ngOnInit() {
     debugger
  this.claimId=localStorage.getItem('lastClaimId') || localStorage.getItem('EditClaim')|| '';
 this.EditClaim=localStorage.getItem('EditClaim')|| '';
+   this.travelStart = this.travelService.getTravelStart();
+    this.travelEnd = this.travelService.getTravelEnd();
  this.from1()
    if(this.EditClaim){
     this.getInternationalExpenses();
@@ -180,7 +184,7 @@ this.toastService.bilopen(img );
 }
 removeImage() {
   this.imagePreview = null;
-
+this.fileInput.nativeElement.value = '';
   // reset form values
   this.expenseForm.patchValue({
     screenshot: null,
@@ -188,6 +192,7 @@ removeImage() {
   });
 }
 addEntry() {
+  
   if (this.expenseForm.valid) {
     
     const formValue = this.expenseForm.value;
@@ -201,7 +206,7 @@ addEntry() {
       convertedAmount = amount;
     } else {
       //  Other currencies
-      convertedAmount = amount * 100;
+      convertedAmount = amount * this.travelService.getAvg();
     }
 
     const entry = {
@@ -260,7 +265,7 @@ resetForm() {
   this.selectedFile = null;
 
   // ✅ Clear file input (IMPORTANT)
- 
+ this.fileInput.nativeElement.value = '';
 
   // ✅ Re-apply required validation (for ADD mode)
   if (!this.isEdit) {
@@ -281,7 +286,7 @@ resetForm() {
 this.imagePreview = ''
     this.isEdit = false;
 
-
+this.fileInput.nativeElement.value = '';
     this.expenseForm.reset({
       date: '',
       supportingNo: '',
@@ -315,7 +320,8 @@ this.imagePreview = ''
       amount: entry.amount,
       remarks: entry.remarks,
       screenshot: entry.screenshot,
-      fileName: entry.fileName
+      fileName: entry.fileName,
+      currencyType:entry.currencyType
       
     });
 this.imagePreview = entry.screenshot

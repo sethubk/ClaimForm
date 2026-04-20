@@ -9,30 +9,28 @@
       </clr-accordion-title>
       <clr-accordion-content>
         <div class="clr-row" style="margin-bottom: 1rem;">
-          <div class="clr-col-2"><strong>Date of Submission:</strong></div>
-          <div class="clr-col-2">{{ personalData.today }}</div>
+          
 
           <div class="clr-col-2"><strong>Expense Statement of:</strong></div>
           <div class="clr-col-2">{{ personalData.username }}</div>
 
           <div class="clr-col-2"><strong>Employee Code:</strong></div>
           <div class="clr-col-2">{{ personalData.employeeCode }}</div>
+                 
+          <div class="clr-col-2"><strong>Company &amp; Plant:</strong></div>
+          <div class="clr-col-2">{{ personalData.companyPlant }}</div>
         </div>
 
         <div class="clr-row" style="margin-bottom: 1rem;">
-          <div class="clr-col-2"><strong>Purpose &amp; Place:</strong></div>
-          <div class="clr-col-2">{{ personalData.purposePlace }}</div>
 
-          <div class="clr-col-2"><strong>Company &amp; Plant:</strong></div>
-          <div class="clr-col-2">{{ personalData.companyPlant }}</div>
-
+  <div class="clr-col-2"><strong>Vendor Code:</strong></div>
+          <div class="clr-col-2">{{ personalData.vendorCost }}</div>
           <div class="clr-col-2"><strong>Cost Center:</strong></div>
           <div class="clr-col-2">{{ personalData.costCenter }}</div>
         </div>
 
         <div class="clr-row">
-          <div class="clr-col-2"><strong>Vendor Code:</strong></div>
-          <div class="clr-col-2">{{ personalData.vendorCost }}</div>
+        
 
           <!-- Fill remaining space -->
           <div class="clr-col-2"></div>
@@ -74,7 +72,7 @@
         <!-- Date Field -->
         <clr-input-container>
           <label class="clr-col-6 clr-col-md-4">Date</label>
-          <input class="clr-col-6 clr-col-md-8" clrInput type="date" formControlName="date" [max]="maxDate" />
+          <input class="clr-col-6 clr-col-md-8" clrInput type="date" formControlName="date" [min]="travelStart" [max]="travelEnd" />
           <clr-control-error *ngIf="expenseForm.get('date')?.hasError('required')">
             Date cannot be valid
           </clr-control-error>
@@ -161,7 +159,7 @@
          <div class="amount12">
         <label class="clr-col-12 clr-col-md-2">Screenshot<span class="required">*</span></label>
 
-        <input class="clr-col-12 clr-col-md-6" type="file" (change)="onFileChange($event)" accept="image/*" />
+        <input class="clr-col-12 clr-col-md-6"  #fileInput type="file" (change)="onFileChange($event)" accept="image/*" />
         <button type="button" class="crud-btn remove" (click)="removeImage()" title="Remove Image">
           <cds-icon shape="trash"></cds-icon>
         </button>

@@ -62,3 +62,12 @@
 
 </clr-modal>
 
+<!-- <div class="loader-backdrop" *ngIf="modalService.isLoading">
+  <div class="rupee-loader">₹</div>
+</div> -->
+<div class="loader-backdrop" *ngIf="modalService.isLoading">
+  <div class="circle-wrapper">
+    <div class="circle-loader"></div>
+    <div class="rupee-symbol">₹</div>
+  </div>
+</div>

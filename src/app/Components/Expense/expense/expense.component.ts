@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 import { Employee, Expense, FormDataModel } from '../../Models/claimmodels';
 import { ApiService } from '../../../Services/Api Services/api.service';
@@ -59,6 +59,7 @@ formopen: boolean = false;
   debugger
     this.Expenseid = this.urlroute.snapshot.paramMap.get('claimId')!;
 if(this.Expenseid){
+ 
   this.getExpenseDetails();
 
 }
@@ -74,8 +75,9 @@ if(this.Expenseid){
     }
     this.from1()
  }
-
+@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
  getExpenseDetails(){
+   this.toaster.showLoader();
   this.ExpenseApi.getExpensesByClaimId(this.Expenseid).subscribe({
 
     next: (res:Expense[]) => {
@@ -85,12 +87,13 @@ if(this.Expenseid){
       this.Service.setExpense(res);
       this.entries = res;
       this.Service.setentries(this.entries);
-   
+    this.toaster.hideLoader()
       this.Expense=res;
     },
     
     error: (err) => {
       console.error('Error fetching expense details:', err);
+      this.toaster.hideLoader()
     }
 
   });
@@ -190,13 +193,18 @@ resetForm() {
   }
 }
 openModal() {
+  debugger
   this.imagePreview = null;
    this.expenseForm.reset();
+
+ if (this.fileInput) {
+    this.fileInput.nativeElement.value = '';
+  }
 
   // ✅ Clear image + file
   this.imagePreview = null;
   this.selectedFile = null;
-
+   
   // ✅ Make screenshot required (ADD mode)
   this.expenseForm.get('screenshot')?.setValidators(Validators.required);
   this.expenseForm.get('screenshot')?.updateValueAndValidity();
@@ -260,16 +268,19 @@ confirmDelete() {
 
 removeImage() {
   this.imagePreview = null;
- 
+ this.selectedFile=null;
   // reset form values
   this.expenseForm.patchValue({
     screenshot: null,
-    fileName: ''
+    fileName: null
   });
    this.expenseForm.get('screenshot')?.markAsTouched();
+       this.expenseForm.get('screenshot')?.updateValueAndValidity();
+this.fileInput.nativeElement.value = '';
 }
   //open clarity model
   openmodel() {
+    debugger
  this.expenseForm.patchValue({
     screenshot: null,
     fileName: ''

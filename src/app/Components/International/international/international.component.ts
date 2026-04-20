@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
@@ -40,8 +40,8 @@ pendingType: 'Card' | 'Cash' | null = null;
     type: 'Card',
     inrRate: null,
     totalLoaded: null,
-    loadedDate: '',
-    currerncy: ''
+    loadedDate: null,
+    currerncy: null
   };
   username: string = '';
 
@@ -55,7 +55,7 @@ pendingType: 'Card' | 'Cash' | null = null;
     remarks: '',
     screenshot: ''
   };
-
+@ViewChild('entryForm') entryForm!: NgForm;
   urlClaimid!: string;
   travelDetails!: TravelDetailsDtos;
   ngOnInit(): void {
@@ -148,9 +148,14 @@ get cashEntries() {
       type: 'Card',
       inrRate: null,
       totalLoaded: null,
-      loadedDate: '',
+      loadedDate: null,
       currerncy: this.selectedCurrency
     };
+      this.entryForm.resetForm(this.entry);
+
+      // ✅ extra safety for Clarity styling
+      this.entryForm.form.markAsPristine();
+      this.entryForm.form.markAsUntouched();
     this.travelService.selectedCurrency = this.selectedCurrency;
     this.editIndex = null;
     this.editType = null;
@@ -175,6 +180,26 @@ get cashEntries() {
   }
 }
 
+onCurrencyModalChange(isOpen: boolean) {
+  if (isOpen) {
+    this.entry = {
+      type: 'Card',
+      inrRate: null,
+      totalLoaded: null,
+      loadedDate: null,   // ✅ IMPORTANT
+      currerncy: this.selectedCurrency
+    };
+
+    setTimeout(() => {
+      this.entryForm.resetForm(this.entry);
+
+      // ✅ extra safety for Clarity styling
+      this.entryForm.form.markAsPristine();
+      this.entryForm.form.markAsUntouched();
+    });
+  }
+}
+
  editEntry(filteredIndex: number, type: 'Card' | 'Cash') {
   const all = this.travelService.getAllEntries();
 
@@ -189,7 +214,7 @@ get cashEntries() {
   );
 
   this.entry = { ...all[actualIndex] };
-  this.selectedCurrency = this.entry.currerncy;
+ 
 
   this.editIndex = actualIndex;
   this.currencyModalOpen = true;
@@ -295,10 +320,10 @@ const data = {
 
   cardCashEntries: this.travelService.cardCashEntries.map(x => ({
     id: x.id || null,   
-    loadedDate: String(x.loadedDate),
-    PaymentType: String(x.type),
-    inrRate: String(x.inrRate),
-    TotalLoadedAmount: String(x.totalLoaded)
+    loadedDate: x.loadedDate,
+    PaymentType:x.type,
+    inrRate:x.inrRate,
+    TotalLoadedAmount: x.totalLoaded
   }))
 };
 this.internationalApi.addTravelDetails(claimId, data).subscribe({

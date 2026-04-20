@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
 import { EntryModel, FormDataModel, TravelDetailsDtos } from '../../Models/claimmodels';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
@@ -36,11 +36,11 @@ export class DomesticComponent {
     type: 'Card',
     inrRate: 1,
     totalLoaded: null,
-    loadedDate: '',
-    currerncy: ''
+    loadedDate: null,
+    currerncy: null
   };
   username: string = '';
-
+@ViewChild('entryForm') entryForm!: NgForm;
   isEdit: boolean = false;
   formData: FormDataModel = {
     date: '',
@@ -116,9 +116,7 @@ this.travelService.addEntriesFromApi(
   }
 
 
-  openmodel() {
-    this.router.navigate(['/internationalcal']);
-  }
+  
 
 
   get travelEndDateOnly(): string {
@@ -149,7 +147,34 @@ get cashEntries() {
     this.editIndex = null;
     this.editType = null;
     this.currencyModalOpen = true;
+      this.entryForm.resetForm(this.entry);
+
+      // ✅ extra safety for Clarity styling
+      this.entryForm.form.markAsPristine();
+      this.entryForm.form.markAsUntouched();
+
   }
+ 
+onCurrencyModalChange(isOpen: boolean) {
+  if (isOpen) {
+    this.entry = {
+      type: 'Card',
+      inrRate: 1,
+      totalLoaded: null,
+      loadedDate: null,   // ✅ IMPORTANT
+      currerncy: this.selectedCurrency
+    };
+
+    setTimeout(() => {
+      this.entryForm.resetForm(this.entry);
+
+      // ✅ extra safety for Clarity styling
+      this.entryForm.form.markAsPristine();
+      this.entryForm.form.markAsUntouched();
+    });
+  }
+}
+
 
   saveEntry(form: NgForm) {
   if (form.valid) {
@@ -182,7 +207,7 @@ get cashEntries() {
   );
 
   this.entry = { ...all[actualIndex] };
-  this.selectedCurrency = this.entry.currerncy;
+ 
 
   this.editIndex = actualIndex;
   this.currencyModalOpen = true;

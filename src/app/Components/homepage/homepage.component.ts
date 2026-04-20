@@ -173,6 +173,14 @@ resetFilters() {
         Status: "Draft",
       }
 
+   this.toastService.showLoader();
+     debugger
+      this.api.createClaim(this.empcode, dto).subscribe({
+        next: (res) => {
+          console.log('Claim created', res);
+this.toastService.hideLoader();
+          const claimId = res.recentClaimId;
+          localStorage.setItem('lastClaimId', claimId);
       this.showPersonalModal = false;
       if (this.selectedCategory === 'Expense') {
         this.router.navigate(['/Expense'])
@@ -183,20 +191,12 @@ resetFilters() {
       if (this.selectedCategory === 'DomesticTravels') {
         this.router.navigate(['/domestic'])
       }
-     debugger
-      this.api.createClaim(this.empcode, dto).subscribe({
-        next: (res) => {
-          console.log('Claim created', res);
-
-          const claimId = res.recentClaimId;
-          localStorage.setItem('lastClaimId', claimId);
-
        
         },
         error: (err) => {
           console.error('Error creating claim', err);
 
-        
+        this.toastService.hideLoader();
          
         }
       });

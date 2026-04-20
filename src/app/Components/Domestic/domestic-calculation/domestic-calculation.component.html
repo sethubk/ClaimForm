@@ -135,7 +135,7 @@
        <div class="amount12">
         <label class="clr-col-12 clr-col-md-2">Screenshot<span class="required">*</span></label>
 
-        <input class="clr-col-12 clr-col-md-6" type="file" (change)="onFileChange($event)" accept="image/*" />
+        <input class="clr-col-12 clr-col-md-6"  #fileInput type="file" (change)="onFileChange($event)" accept="image/*" />
         <button type="button" class="crud-btn remove" (click)="removeImage()" title="Remove Image">
           <cds-icon shape="trash"></cds-icon>
         </button>

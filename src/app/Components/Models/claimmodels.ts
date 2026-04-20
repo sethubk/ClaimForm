@@ -23,6 +23,8 @@ export interface ClaimDetailsResponse {
   claimStatus?: string;
   empcode: string;
   totalAmount?: number;
+  purpose?:string;
+  date:string;
 }
 
 export interface Claims {
@@ -40,8 +42,8 @@ export interface EntryModel {
   type: 'Card' | 'Cash' | 'Online' | string;
   inrRate: number | null;
   totalLoaded: number | null;
-  loadedDate: string;
-  currerncy: string;
+  loadedDate: string |null ;
+  currerncy: string |null;
 }
 
 export interface CashInfoDtos {
@@ -81,8 +83,8 @@ export interface InternationalExpenseUI {
 
   // UI-only fields
   selectedCurrency_amt?: string;
-  amount?: string | number;
-  convertedAmount?: string | number;
+  amount?: number;
+  convertedAmount?:  number;
   remarks?: string;
   screenshot?: string;
   fileName?: string;
@@ -178,3 +180,4 @@ export interface FormDataModel {
    preview?: string;
    fileName?:string
 }
+

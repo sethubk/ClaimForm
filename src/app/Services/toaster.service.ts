@@ -24,6 +24,17 @@ private toastSubject = new BehaviorSubject<ToastMessage | null>(null);
   success(message: string): void {
     this.show('success', message);
   }
+  
+isLoading = false;
+
+  showLoader() {
+    this.isLoading = true;
+  }
+
+  hideLoader() {
+    this.isLoading = false;
+  }
+
 
   error(message: string): void {
     this.show('error', message);

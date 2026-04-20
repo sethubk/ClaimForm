@@ -4,7 +4,7 @@ import { ExpenseDataService } from '../../../Services/expense-data.service';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
 import { ClarityIcons } from '@clr/icons';
 import { ClarityModule } from '@clr/angular';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ClaimUpdate, Employee, Entry, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { InternationalApiService } from '../../../Services/Api Services/international-api.service';
@@ -109,8 +109,8 @@ this.claimId = localStorage.getItem('lastClaimId')||localStorage.getItem('EditCl
     particulars: e.particulars ?? "",
     paymentMode: e.paymentMode ?? "",
     currencyType: e.currencyType,
-    amount: Number(e.amount) || 0,
-    convertedAmount: Number(e.convertedAmount) || Number(e.amount) || 0,
+    amount: e.amount || 0,
+    convertedAmount: e.convertedAmount ,
     remarks: e.remarks ?? "",
     screenshot: e.screenshot ?? ""
   }));

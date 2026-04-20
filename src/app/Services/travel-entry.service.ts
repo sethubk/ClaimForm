@@ -22,17 +22,14 @@ getAvg(): number {
   let total = 0;
   let count = 0;
 
-  this.cardEntries.forEach(x => {
-    total += x.totalLoaded;
+  this.cardCashEntries.forEach(x => {
+    total += x.inrRate;
     count++;
   });
 
-  this.cashEntries.forEach(x => {
-    total += x.totalLoaded;
-    count++;
-  });
+ 
 
-  return count ? total / count : 0;
+  return  total / count ;
 }
 
  cardCashEntries: any[] = [];

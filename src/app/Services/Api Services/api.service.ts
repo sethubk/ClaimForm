@@ -52,6 +52,7 @@ isAdmin(): boolean {
   this.User.costCenter=User.costCenter;
   this.User.companyPlant="Nordex"
        // convert string → object
+  
 console.log("USers from session ",userObj)
   console.log("USers",this.User);
    }

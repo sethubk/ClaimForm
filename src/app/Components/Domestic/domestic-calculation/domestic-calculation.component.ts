@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DomesticExpense, Employee, Expense, FormDataModel, InternationalExpense, InternationalExpenseUI } from '../../Models/claimmodels';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TravelEntryService } from '../../../Services/travel-entry.service';
@@ -34,7 +34,7 @@ isEdit: boolean = false;
     private toastService:ToasterService,
     private api: ApiService, private travelService: TravelEntryService, private router: Router, private service: ExpenseDataService) { }
   maxDate: string = '';
-
+@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   startDate: string = '';
   endDate: string = '';
   showMax: boolean = false;
@@ -184,6 +184,7 @@ removeImage() {
     screenshot: null,
     fileName: ''
   });
+  this.fileInput.nativeElement.value = '';
    this.expenseForm.get('screenshot')?.markAsTouched();
 }
 resetForm() {
@@ -197,7 +198,7 @@ resetForm() {
   this.selectedFile = null;
 
   // ✅ Clear file input (IMPORTANT)
- 
+ this.fileInput.nativeElement.value = '';
 
   // ✅ Re-apply required validation (for ADD mode)
   if (!this.isEdit) {
@@ -260,6 +261,7 @@ confirmDelete() {
    this.expenseForm.reset();
   this.imagePreview = null;
   this.selectedFile = null;
+  this.fileInput.nativeElement.value = '';
   this.expenseForm.get('screenshot')?.setValidators(Validators.required);
     this.expenseForm.get('screenshot')?.updateValueAndValidity();
 
@@ -313,6 +315,7 @@ this.imagePreview = entry.screenshot
     this.formopen = false;
   this.showDeleteModal = false;
   this.deleteIndex = null;
+  this.fileInput.nativeElement.value = '';
     //  Reset all form controls to their initial state
     this.expenseForm.reset({
       date: '',

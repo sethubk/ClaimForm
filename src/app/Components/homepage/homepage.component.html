@@ -11,8 +11,8 @@
 
           Expense
           <clr-vertical-nav-group-children *clrIfExpanded="true">
-            <a clrVerticalNavLink routerLinkActive="active" (click)="goToPersonalDetails('DomesticTravels')">New
-              Expense</a>
+            <a clrVerticalNavLink routerLinkActive="active" (click)="goToPersonalDetails('Expense')">New
+             General  Expense</a>
             <a clrVerticalNavLink (click)="filterByType('Expense')">Expense claim</a>
           </clr-vertical-nav-group-children>
         </clr-vertical-nav-group>
@@ -55,15 +55,15 @@
 
         <div class="custom-buttons">
           <button class="custom-btn" (click)="goToPersonalDetails('Expense')">
-            New Expense Claim
+            New General Expense Claim
           </button>
 
           <button class="custom-btn" (click)="goToPersonalDetails('InternationalTravels')">
-            New International Travels Claim
+            New International Travels Expense Claim
           </button>
 
           <button class="custom-btn" (click)="goToPersonalDetails('DomesticTravels')">
-            New Domestic Travels Claim
+            New Domestic Travels Expense Claim
           </button>
         </div>
 

@@ -11,6 +11,9 @@ import 'chart.js/auto';
 import { Claims } from '../homepage/homepage.component';
 import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import { ApiService } from '../../Services/Api Services/api.service';
+import { status } from '../Enum';
+import { ToasterService } from '../../Services/toaster.service';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -20,7 +23,9 @@ import { ApiService } from '../../Services/Api Services/api.service';
 })
 export class DashboardComponent {
 
-  constructor(private ClaimApi:ClaimApiService,private api: ApiService) { }
+  constructor(private ClaimApi:ClaimApiService,
+    private api: ApiService,
+  private toaster:ToasterService) { }
   dataSource: any[] = [];
   allClaims: Claims[] = [];
   filteredData: any[] = [];
@@ -51,7 +56,7 @@ export class DashboardComponent {
   }
 
   loadData() {
-    debugger
+    
     // 🔥 Replace with API
     this.Empcode = this.api.User.employeeCode;
   
@@ -77,6 +82,7 @@ export class DashboardComponent {
 //   }
 
  getclaim(): void {
+  this.toaster.showLoader()
     this.ClaimApi.getClaimByEmpCode(this.Empcode)
       .subscribe({
         next: (res: Claims[]) => {
@@ -91,6 +97,7 @@ export class DashboardComponent {
           this.calculateKPIs();
           this.prepareCharts();
            console.log("Claims fetched:", this.dataSource);
+           this.toaster.hideLoader()
         },
         error: (err) => {
           console.error('Error fetching claims:', err);
@@ -101,55 +108,11 @@ export class DashboardComponent {
   calculateKPIs() {
     this.totalClaims = this.filteredData.length;
     this.totalAmount = this.filteredData.reduce((a, b) => a + b.amount, 0);
-    this.approvedCount = this.filteredData.filter(x => x.status === 'Approved').length;
-    this.pendingCount = this.filteredData.filter(x => x.status === 'pending').length;
+    this.approvedCount = this.filteredData.filter(x => x.status === status.Approved).length;
+    this.pendingCount = this.filteredData.filter(x => x.status === status.pending).length;
   }
 
-  // prepareCharts() {
-  //   const typeMap: any = {};
-  //   const monthMap: any = {};
-
-  //   this.filteredData.forEach(c => {
-  //     // Pie
-  //     typeMap[c.type] = (typeMap[c.type] || 0) + c.amount;
-
-  //     // Bar (month)
-  //     //   const month = new Date(c.date).toLocaleString('default', { month: 'short' });
-  //     //   monthMap[month] = (monthMap[month] || 0) + c.amount;
-  //   });
-
-  //   // PIE
-  //   this.pieChartData = {
-  //     labels: Object.keys(typeMap),
-  //     datasets: [
-  //       { data: Object.values(typeMap) }
-  //     ]
-  //   };
-
-  //   let grandTotal = 0;
-  //   this.dataSource.forEach(item => {
-  //     const type = item.type.toLowerCase();
-
-  //     if (!typeMap[type]) {
-  //       typeMap[type] = 0;
-  //     }
-
-  //     typeMap[type] += item.amount;
-  //     grandTotal += item.amount;
-  //   });
-  //   typeMap['total'] = grandTotal;
-
-  //   // BAR
-  //   this.barChartData = {
-  //     labels: Object.keys(typeMap),
-  //     datasets: [
-  //       {
-  //         data: Object.values(typeMap),
-  //         label: 'Expense by Type'
-  //       }
-  //     ]
-  //   };
-  // }
+  
 prepareCharts() {
   const typeMap: Record<string, number> = {};
 
