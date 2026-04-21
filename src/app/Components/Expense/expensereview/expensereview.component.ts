@@ -101,6 +101,10 @@ submitExpense() {
       next: res => {
         console.log("Claim updated", res);
         this.loading = false;
+   this.api.sendmail(this.api.User.employeeCode,this.claimId).subscribe({
+  next: res => console.log('Email sent', res),
+  error: err => console.error('Email ERROR:', err)});
+
         this.toastService.success('Expense and claim submitted successfully');
 
         setTimeout(() => {
@@ -122,7 +126,7 @@ submitExpense() {
         console.log('Expense updated', res);
         this.toastService.success('Expense updated successfully');
 
-        updateClaimCall(this.EditClaimId); // ✅ only here
+        updateClaimCall(this.EditClaimId); 
       },
       error: err => {
         console.error("Expense update error", err);

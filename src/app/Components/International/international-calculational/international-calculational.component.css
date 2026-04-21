@@ -37,7 +37,16 @@ clr-modal .modal-body {
 clr-modal .modal-body {
 
 }
+.screenshot-link {
+  color: #0065ab;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
 
+.screenshot-link:hover {
+  color: #004a80;
+}
 /* Style the modal title */
 clr-modal .modal-title {
   margin-top: 0;

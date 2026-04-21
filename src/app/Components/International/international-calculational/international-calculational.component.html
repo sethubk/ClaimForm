@@ -157,7 +157,7 @@
 
         <!-- Screenshot -->
          <div class="amount12">
-        <label class="clr-col-12 clr-col-md-2">Screenshot<span class="required">*</span></label>
+        <label class="clr-col-12 clr-col-md-2">Attachment<span class="required">*</span></label>
 
         <input class="clr-col-12 clr-col-md-6"  #fileInput type="file" (change)="onFileChange($event)" accept="image/*" />
         <button type="button" class="crud-btn remove" (click)="removeImage()" title="Remove Image">
@@ -201,7 +201,7 @@
 
       <clr-dg-column>Converted Expense Amount(* In INR)</clr-dg-column>
       <clr-dg-column>Remarks</clr-dg-column>
-      <clr-dg-column>Screenshot</clr-dg-column>
+      <clr-dg-column>Attachment</clr-dg-column>
       <clr-dg-column>Actions</clr-dg-column>
 
       <clr-dg-row *clrDgItems="let entry of entries let i = index">
@@ -221,10 +221,17 @@
         <clr-dg-cell>{{ entry.convertedAmount }}</clr-dg-cell>
 
         <clr-dg-cell>{{ entry.remarks }}</clr-dg-cell>
-        <clr-dg-cell>
-          <img *ngIf="entry.screenshot" [src]="entry.screenshot" class="thumb"
-            (click)="openGridImage(entry.screenshot)" />
-        </clr-dg-cell>
+   <clr-dg-cell>
+  <span
+    *ngIf="entry.screenshot"
+    class="screenshot-link"
+    (click)="openGridImage(entry.screenshot)">
+    
+    {{ entry.fileName || getFileNameFromBase64(entry.screenshot) }}
+
+  </span>
+</clr-dg-cell>
+
 
 
         <clr-dg-cell>

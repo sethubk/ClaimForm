@@ -52,5 +52,11 @@ clr-vertical-nav {
        width: 100% !important;
     overflow:scroll;
   }
+
+  clr-datagrid clr-dg-row:hover {
+  background-color: #daf0ff;
+  cursor: pointer;
+}
+
 }
 

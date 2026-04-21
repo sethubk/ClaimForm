@@ -178,3 +178,22 @@ clr-datagrid{
   border-color: #dc3545;
   background-color: #fdeaea;
 }
+
+.backbtn{
+  
+position: fixed;
+  bottom: 20px;   
+  left: 20px;     
+  z-index: 9999;
+
+}
+.screenshot-link {
+  color: #0065ab;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.screenshot-link:hover {
+  color: #004a80;
+}

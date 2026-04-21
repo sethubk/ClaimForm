@@ -24,6 +24,16 @@
   color: green;
   font-weight: 600;
 }
+.screenshot-link {
+  color: #0065ab;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.screenshot-link:hover {
+  color: #004a80;
+}
 
 .recoverable-text {
   color: red;
@@ -94,6 +104,7 @@ canvas {
 
   
 }
+
 clr-datagrid{
   overflow-y: auto;
   height:250px;
@@ -111,4 +122,9 @@ margin:auto;
 table {
   
 }
+}
+
+  clr-datagrid clr-dg-row:hover {
+  background-color: #daf0ff;
+  cursor: pointer;
 }

@@ -45,7 +45,7 @@
 
     <h4>Expense Details</h4>
     <div class="datagriid">
-      <div class="datagriid">
+      <div class="datagriid2">
         <clr-datagrid>
           <clr-dg-column>Date</clr-dg-column>
           <clr-dg-column>Supporting No</clr-dg-column>
@@ -53,7 +53,7 @@
           <clr-dg-column>Payment Mode</clr-dg-column>
           <clr-dg-column>Amount</clr-dg-column>
           <clr-dg-column>Remarks</clr-dg-column>
-          <clr-dg-column>Screenshot</clr-dg-column>
+          <clr-dg-column>Attachment</clr-dg-column>
 
           <clr-dg-row *clrDgItems="let e of claimDetails.expenses">
             <clr-dg-cell>{{ e.date }}</clr-dg-cell>
@@ -63,8 +63,17 @@
             <clr-dg-cell>₹{{ e.amount }}</clr-dg-cell>
             <clr-dg-cell>{{ e.remarks }}</clr-dg-cell>
             <clr-dg-cell>
-              <img *ngIf="e.screenshot" [src]="e.screenshot" class="thumb" (click)="openGridImage(e.screenshot)" />
+    <span
+    *ngIf="e.screenshot"
+    class="screenshot-link"
+    (click)="openGridImage(e.screenshot)">
+    
+    {{ e.fileName || getFileNameFromBase64(e.screenshot) }}
+
+  </span>
+
             </clr-dg-cell>
+      
           </clr-dg-row>
 
           <!-- ROW -->
@@ -115,10 +124,10 @@
             <div class="clr-col-2">{{ claimDetails.travelDetails?.currencyType }}</div>
 
             <div class="clr-col-2"><strong>Start Date:</strong></div>
-            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelStartDate }}</div>
+            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelStartDate | date:'dd MMM yyyy, h:mm a' }}</div>
 
             <div class="clr-col-2"><strong>End Date:</strong></div>
-            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelEndDate }}</div>
+            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelEndDate| date:'dd MMM yyyy, h:mm a'}}</div>
 
           </div>
 
@@ -168,7 +177,7 @@
         <clr-dg-column>Currency</clr-dg-column>
         <clr-dg-column>Amount</clr-dg-column>
         <clr-dg-column>Converted (INR)</clr-dg-column>
-        <clr-dg-column>Screenshot</clr-dg-column>
+        <clr-dg-column>Attachment</clr-dg-column>
         <clr-dg-row *clrDgItems="let ie of claimDetails.internationalExpenses">
           <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
           <clr-dg-cell>{{ ie.supportingNo }}</clr-dg-cell>
@@ -177,9 +186,18 @@
           <clr-dg-cell>{{ ie.currencyType }}</clr-dg-cell>
           <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
           <clr-dg-cell>{{ ie.convertedAmount }}</clr-dg-cell>
-          <clr-dg-cell>
-            <img *ngIf="ie.screenshot" [src]="ie.screenshot" class="thumb" (click)="openGridImage(ie.screenshot)" />
-          </clr-dg-cell>
+         
+         
+         <clr-dg-cell>
+<span
+    *ngIf="ie.screenshot"
+    class="screenshot-link"
+    (click)="openGridImage(ie.screenshot)">
+    
+    {{ ie.fileName || getFileNameFromBase64(ie.screenshot) }}
+
+  </span>
+         </clr-dg-cell> 
         </clr-dg-row>
 
         <clr-dg-footer>
@@ -222,10 +240,10 @@
             <div class="clr-col-2">{{ claimDetails.travelDetails?.currencyType }}</div>
 
             <div class="clr-col-2"><strong>Start Date:</strong></div>
-            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelStartDate }}</div>
+            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelStartDate | date:'dd MMM yyyy, h:mm a' }}</div>
 
             <div class="clr-col-2"><strong>End Date:</strong></div>
-            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelEndDate }}</div>
+            <div class="clr-col-2">{{ claimDetails.travelDetails?.travelEndDate | date:'dd MMM yyyy, h:mm a' }}</div>
 
           </div>
 
@@ -265,7 +283,7 @@
 
     </clr-accordion>
 
-    <h4 style="margin-top: 20px">International Expenses</h4>
+    <h4 style="margin-top: 20px">Domestic Expenses</h4>
     <div class="datagriid">
       <clr-datagrid>
         <clr-dg-column>Date</clr-dg-column>
@@ -274,7 +292,7 @@
         <clr-dg-column>Payment</clr-dg-column>
 
         <clr-dg-column>Amount</clr-dg-column>
-        <clr-dg-column>Screenshot</clr-dg-column> <clr-dg-column>Screenshot</clr-dg-column>
+        <clr-dg-column>Attachment</clr-dg-column> 
 
         <clr-dg-row *clrDgItems="let ie of claimDetails.domesticExpenses">
           <clr-dg-cell>{{ ie.date }}</clr-dg-cell>
@@ -283,9 +301,16 @@
           <clr-dg-cell>{{ ie.paymentMode }}</clr-dg-cell>
 
           <clr-dg-cell>₹{{ ie.amount }}</clr-dg-cell>
-          <clr-dg-cell>
-            <img *ngIf="ie.screenshot" [src]="ie.screenshot" class="thumb" (click)="openGridImage(ie.screenshot)" />
-          </clr-dg-cell>
+        <clr-dg-cell>
+<span
+    *ngIf="ie.screenshot"
+    class="screenshot-link"
+    (click)="openGridImage(ie.screenshot)">
+    
+    {{ ie.fileName || getFileNameFromBase64(ie.screenshot) }}
+
+  </span>
+         </clr-dg-cell> 
         </clr-dg-row>
 
         <clr-dg-footer>

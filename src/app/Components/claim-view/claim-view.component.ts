@@ -58,7 +58,23 @@ private router: Router,
     }
   });
 }
+getFileNameFromBase64(base64: string): string {
+  if (!base64) {
+    return 'Screenshot';
+  }
 
+  // Check if name exists in base64
+  const nameMatch = base64.match(/name=([^;]+)/);
+  if (nameMatch) {
+    return nameMatch[1];
+  }
+
+  // Fallback: create name from MIME type
+  const typeMatch = base64.match(/data:image\/(.*?);base64/);
+  const ext = typeMatch ? typeMatch[1] : 'png';
+
+  return `foodbill.${ext}`;
+}
 
   isExpense(): boolean {
     return this.claimDetails?.claimType === 'Expense';

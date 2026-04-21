@@ -10,7 +10,16 @@
 
 
 }
+.screenshot-link {
+  color: #0065ab;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
 
+.screenshot-link:hover {
+  color: #004a80;
+}
 .required {
   color: red;
   margin-left: 4px;

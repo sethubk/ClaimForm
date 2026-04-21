@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ClaimDetailsResponse, Claims, ClaimStatusDto } from '../Models/claimmodels';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/Api Services/api.service';
 import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import { ToasterService } from '../../Services/toaster.service';
@@ -24,7 +24,8 @@ export class ReimbursementClaimComponent {
     private route: ActivatedRoute,
     private api: ApiService,
     private ClaimApi: ClaimApiService,
-    private toastService: ToasterService
+    private toastService: ToasterService,
+    private router:Router
   ) { }
   claimDetails!: ClaimDetailsResponse;
   Claims: Claims[] = [];
@@ -72,7 +73,23 @@ getClaimExpenses() {
     this.isWithdrawModalOpen = true;
   }
 
+getFileNameFromBase64(base64: string): string {
+  if (!base64) {
+    return 'proof of Expense';
+  }
 
+  // Check if name exists in base64
+  const nameMatch = base64.match(/name=([^;]+)/);
+  if (nameMatch) {
+    return nameMatch[1];
+  }
+
+  // Fallback: create name from MIME type
+  const typeMatch = base64.match(/data:image\/(.*?);base64/);
+  const ext = typeMatch ? typeMatch[1] : 'png';
+
+  return `proof of Expense.${ext}`;
+}
   openGridImage(img: string) {
   console.log("Image clicked:", img); 
 this.toastService.bilopen(img );
@@ -128,5 +145,7 @@ this.toastService.hideLoader()
       return 'default-btn';
     }
   }
-
+backbtn() {
+    this.router.navigate(['/reimbursement'])
+  }
 }

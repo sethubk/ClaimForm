@@ -23,7 +23,16 @@ clr-modal .modal-title {
   margin-top: 0;
   padding-top: 0;
 }
+.screenshot-link {
+  color: #0065ab;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
 
+.screenshot-link:hover {
+  color: #004a80;
+}
 /* Optional: Style the modal header */
 clr-modal .modal-title h1 {
   font-size: 1.5rem;

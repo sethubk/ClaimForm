@@ -153,7 +153,7 @@ get cashEntries() {
     };
       this.entryForm.resetForm(this.entry);
 
-      // ✅ extra safety for Clarity styling
+      //  extra safety for Clarity styling
       this.entryForm.form.markAsPristine();
       this.entryForm.form.markAsUntouched();
     this.travelService.selectedCurrency = this.selectedCurrency;
@@ -186,14 +186,14 @@ onCurrencyModalChange(isOpen: boolean) {
       type: 'Card',
       inrRate: null,
       totalLoaded: null,
-      loadedDate: null,   // ✅ IMPORTANT
+      loadedDate: null,   // IMPORTANT
       currerncy: this.selectedCurrency
     };
 
     setTimeout(() => {
       this.entryForm.resetForm(this.entry);
 
-      // ✅ extra safety for Clarity styling
+      //  extra safety for Clarity styling
       this.entryForm.form.markAsPristine();
       this.entryForm.form.markAsUntouched();
     });

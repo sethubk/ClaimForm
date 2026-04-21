@@ -192,6 +192,23 @@ resetForm() {
     this.expenseForm.get('screenshot')?.updateValueAndValidity();
   }
 }
+getFileNameFromBase64(base64: string): string {
+  if (!base64) {
+    return 'Screenshot';
+  }
+
+  // Check if name exists in base64
+  const nameMatch = base64.match(/name=([^;]+)/);
+  if (nameMatch) {
+    return nameMatch[1];
+  }
+
+  // Fallback: create name from MIME type
+  const typeMatch = base64.match(/data:image\/(.*?);base64/);
+  const ext = typeMatch ? typeMatch[1] : 'png';
+
+  return `foodbill.${ext}`;
+}
 openModal() {
   debugger
   this.imagePreview = null;
@@ -201,15 +218,15 @@ openModal() {
     this.fileInput.nativeElement.value = '';
   }
 
-  // ✅ Clear image + file
+  //  Clear image + file
   this.imagePreview = null;
   this.selectedFile = null;
    
-  // ✅ Make screenshot required (ADD mode)
+  //  Make screenshot required (ADD mode)
   this.expenseForm.get('screenshot')?.setValidators(Validators.required);
   this.expenseForm.get('screenshot')?.updateValueAndValidity();
 
-  // ✅ Clear file input (VERY IMPORTANT)
+  //  Clear file input (VERY IMPORTANT)
 
 }
 

@@ -6,6 +6,7 @@
     <div class="card">Total Amount: ₹{{ totalAmount }}</div>
     <div class="card">Approved: {{ approvedCount }}</div>
     <div class="card">Pending: {{ pendingCount }}</div>
+    <div class="card">Rejected: {{ rejectedCount }}</div>
   </div>
 
   <!-- FILTERS -->
@@ -102,4 +103,7 @@
     </table>
   </div>
 
+</div>
+<div class="backbtn">
+<button class="btn btn-info" (click)="backbtn()">back  </button>
 </div>

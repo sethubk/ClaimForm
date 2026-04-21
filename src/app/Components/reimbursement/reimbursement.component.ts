@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 export class ReimbursementComponent {
 
   Claims: ClaimWithEmployeeDetails[] = [];
-
+filteredClaims: ClaimWithEmployeeDetails[] = [];
   pendingClaims: ClaimWithEmployeeDetails[] = [];
   approvedClaims: ClaimWithEmployeeDetails[] = [];
   rejectedClaims: ClaimWithEmployeeDetails[] = [];
@@ -34,6 +34,7 @@ export class ReimbursementComponent {
 
   ngOnInit() {
     this.getclaims();
+    
   }
 
   getclaims() {
@@ -46,6 +47,7 @@ console.log(res);
         );
 
         this.Claims = validClaims;
+        this.filteredClaims=validClaims;
   this.toastService.hideLoader()
         this.pendingClaims = validClaims.filter(c => c.status === 'pending');
         this.approvedClaims = validClaims.filter(c => c.status === 'Approved');
@@ -57,22 +59,42 @@ console.log(res);
       }
     });
   }
+  currentStatusFilter: string = 'all';
+applyFilter(status: string): void {
+  this.currentStatusFilter = status;
 
+  if (status === 'all') {
+    this.filteredClaims = [...this.Claims];
+  } else {
+    this.filteredClaims = this.Claims.filter(
+      c => c.status === status
+    );
+  }
+}
   goToClaimView(claimId: string) {
     this.router.navigate(['/reimbursement', claimId]);
   }
 
-  // 🔍 Search filter
-  filterClaims(list: ClaimWithEmployeeDetails[]) {
-    return list.filter(c =>
-      !this.searchText ||
-      c.empCode?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      c.name?.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+ filterClaims(): void {
+  if (!this.searchText) {
+    this.filteredClaims = [...this.Claims];
+    return;
   }
+
+  const text = this.searchText.toLowerCase();
+
+  this.filteredClaims = this.Claims.filter(c =>
+    c.empCode?.toLowerCase().includes(text) ||
+    c.name?.toLowerCase().includes(text)
+  );
+}
 
   // 📊 Counts
   getCount(status: string) {
     return this.Claims.filter(c => c.status === status).length;
+  }
+
+  backbtn() {
+    this.router.navigate(['/Homepage'])
   }
 }

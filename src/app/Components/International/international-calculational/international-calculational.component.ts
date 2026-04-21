@@ -20,26 +20,26 @@ import { ToasterService } from '../../../Services/toaster.service';
 })
 export class InternationalCalculationalComponent {
   isEdit: boolean = false;
-  personalData: Employee={ 
-     today: '',
+  personalData: Employee = {
+    today: '',
     username: '',
     employeeCode: '',
     purposePlace: '',
     companyPlant: '',
     costCenter: '',
     vendorCost: '',
-   
+
   };
   constructor(private fb: FormBuilder,
     private urlroute: ActivatedRoute,
     private api: ApiService,
-    private internationalApi:InternationalApiService,
-    private travelService: TravelEntryService, 
+    private internationalApi: InternationalApiService,
+    private travelService: TravelEntryService,
     private router: Router,
-    private toastService: ToasterService, 
+    private toastService: ToasterService,
     private service: ExpenseDataService) { }
   maxDate: string = '';
-@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   startDate: string = '';
   endDate: string = '';
   showMax: boolean = false;
@@ -65,21 +65,21 @@ export class InternationalCalculationalComponent {
   };
   claimId!: string;
   EditClaim!: string;
-   travelStart: string = '';
+  travelStart: string = '';
   travelEnd: string = '';
   internationalExpense: InternationalExpense[] = [];
   ngOnInit() {
     debugger
- this.claimId=localStorage.getItem('lastClaimId') || localStorage.getItem('EditClaim')|| '';
-this.EditClaim=localStorage.getItem('EditClaim')|| '';
-   this.travelStart = this.travelService.getTravelStart();
+    this.claimId = localStorage.getItem('lastClaimId') || localStorage.getItem('EditClaim') || '';
+    this.EditClaim = localStorage.getItem('EditClaim') || '';
+    this.travelStart = this.travelService.getTravelStart();
     this.travelEnd = this.travelService.getTravelEnd();
- this.from1()
-   if(this.EditClaim){
-    this.getInternationalExpenses();
-   }
+    this.from1()
+    if (this.EditClaim) {
+      this.getInternationalExpenses();
+    }
     this.selectedCurrency_amt = this.travelService.getselectedcurrencyType()
-   
+
 
     const today = new Date();
     this.maxDate = today.toISOString().split('T')[0];
@@ -92,7 +92,7 @@ this.EditClaim=localStorage.getItem('EditClaim')|| '';
 
     if (existingEntries && existingEntries.length > 0) {
 
-      
+
       this.service.setentries(existingEntries);
 
       // Load all entries (including allowance and user-added)
@@ -103,29 +103,29 @@ this.EditClaim=localStorage.getItem('EditClaim')|| '';
       const allowance = this.travelService.getAllowance();
       console.log("calculation", allowance);
 
-   
+
     }
     // Save to service
     this.service.setinternationalentries(this.entries);
 
 
   }
-getInternationalExpenses() {
-  this.internationalApi.getInternationalExpensesByClaimId(this.claimId).subscribe({
-    next: (res) => {
-      console.log('International expenses:', res)
-      this.service.setinternationalentries(res);
-      this.entries=res
-    },
-    error: (err) => console.error('Error fetching international expenses:', err)
-  }); 
+  getInternationalExpenses() {
+    this.internationalApi.getInternationalExpensesByClaimId(this.claimId).subscribe({
+      next: (res) => {
+        console.log('International expenses:', res)
+        this.service.setinternationalentries(res);
+        this.entries = res
+      },
+      error: (err) => console.error('Error fetching international expenses:', err)
+    });
 
-}
+  }
   expenseForm!: FormGroup;
   from1() {
 
     this.expenseForm = this.fb.group({
-      id:'',
+      id: '',
       date: ['', [Validators.required, this.maxDateValidator.bind(this)]],
       supportingNo: ['', Validators.required],
       particulars: ['', Validators.required],
@@ -133,7 +133,7 @@ getInternationalExpenses() {
       currencyType: ['', Validators.required], // Currency dropdown
       amount: ['', [Validators.required, Validators.min(1)]], // Amount input
       remarks: [''],
-       screenshot: ['',Validators.required],
+      screenshot: ['', Validators.required],
       fileName: ''
     });
 
@@ -148,6 +148,23 @@ getInternationalExpenses() {
     });
 
   }
+getFileNameFromBase64(base64: string): string {
+  if (!base64) {
+    return 'Screenshot';
+  }
+
+  // Check if name exists in base64
+  const nameMatch = base64.match(/name=([^;]+)/);
+  if (nameMatch) {
+    return nameMatch[1];
+  }
+
+  // Fallback: create name from MIME type
+  const typeMatch = base64.match(/data:image\/(.*?);base64/);
+  const ext = typeMatch ? typeMatch[1] : 'png';
+
+  return `foodbill.${ext}`;
+}
 
   maxDateValidator(control: any) {
     if (!control.value) return null;
@@ -155,138 +172,139 @@ getInternationalExpenses() {
       ? { maxDate: true }
       : null;
   }
- imagePreview: string | ArrayBuffer | null = null;
-selectedFile: File | null = null;
-showModal: boolean = false;
-onFileChange(event: any) {
-  const file = event.target.files[0];
-  if (!file) return;
+  imagePreview: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
+  Filename: string = '';
+  showModal: boolean = false;
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-  this.selectedFile = file;
+    this.selectedFile = file;
+    this.Filename = file.name;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
 
-  const reader = new FileReader();
-  reader.onload = () => {
-    this.imagePreview = reader.result;
+      // ✅ SET VALUE → REQUIRED FOR VALIDATION
+      this.expenseForm.patchValue({
+        screenshot: this.imagePreview
+      });
 
-    // ✅ SET VALUE → REQUIRED FOR VALIDATION
-    this.expenseForm.patchValue({
-      screenshot: this.imagePreview
-    });
-
-    this.expenseForm.get('screenshot')?.updateValueAndValidity();
-  };
-
-  reader.readAsDataURL(file);
-}
-openGridImage(img: string) {
-  console.log("Image clicked:", img); 
-this.toastService.bilopen(img );
-}
-removeImage() {
-  this.imagePreview = null;
-this.fileInput.nativeElement.value = '';
-  // reset form values
-  this.expenseForm.patchValue({
-    screenshot: null,
-    fileName: ''
-  });
-}
-addEntry() {
-  
-  if (this.expenseForm.valid) {
-    
-    const formValue = this.expenseForm.value;
-
-    let convertedAmount = 0;
-    const amount = Number(formValue.amount) || 0;
-    const currency = formValue.currencyType.toUpperCase();
-
-    if (currency === 'INR' || currency === 'IND') {
-      //  INR: no conversion
-      convertedAmount = amount;
-    } else {
-      //  Other currencies
-      convertedAmount = amount * this.travelService.getAvg();
-    }
-
-    const entry = {
-      ...formValue,
-      convertedAmount,   //  included for INR and others
-    screenshot: this.imagePreview ,
-        fileName: this.selectedFile?.name || ''
+      this.expenseForm.get('screenshot')?.updateValueAndValidity();
     };
 
-    if (this.editIndex != null && this.isEdit) {
-      this.entries[this.editIndex] = entry;
-      this.editIndex = null;
-      this.isEdit = false;
-    } else {
-      this.entries.push(entry);
+    reader.readAsDataURL(file);
+  }
+  openGridImage(img: string) {
+    console.log("Image clicked:", img);
+    this.toastService.open(img);
+  }
+  removeImage() {
+    this.imagePreview = null;
+    this.fileInput.nativeElement.value = '';
+    // reset form values
+    this.expenseForm.patchValue({
+      screenshot: null,
+      fileName: ''
+    });
+  }
+  addEntry() {
+
+    if (this.expenseForm.valid) {
+
+      const formValue = this.expenseForm.value;
+
+      let convertedAmount = 0;
+      const amount = Number(formValue.amount) || 0;
+      const currency = formValue.currencyType.toUpperCase();
+
+      if (currency === 'INR' || currency === 'IND') {
+        //  INR: no conversion
+        convertedAmount = amount;
+      } else {
+        //  Other currencies
+        convertedAmount = amount * this.travelService.getAvg();
+      }
+
+      const entry = {
+        ...formValue,
+        convertedAmount,   //  included for INR and others
+        screenshot: this.imagePreview,
+        fileName: this.Filename
+      };
+
+      if (this.editIndex != null && this.isEdit) {
+        this.entries[this.editIndex] = entry;
+        this.editIndex = null;
+        this.isEdit = false;
+      } else {
+        this.entries.push(entry);
+      }
+
+      this.formopen = false;
+      this.service.setinternationalentries(this.entries);
+
+      console.log('Current entries:', this.entries);
     }
-
-    this.formopen = false;
-    this.service.setinternationalentries(this.entries);
-
-    console.log('Current entries:', this.entries);
   }
-}
- deleteIndex: number | null = null;
-showDeleteModal = false;
+  deleteIndex: number | null = null;
+  showDeleteModal = false;
 
-removeEntry(index: number) {
-  this.deleteIndex = index;
-  this.showDeleteModal = true;
-}
-
-confirmDelete() {
-  if (this.deleteIndex !== null) {
-    this.entries.splice(this.deleteIndex, 1);
+  removeEntry(index: number) {
+    this.deleteIndex = index;
+    this.showDeleteModal = true;
   }
-  this.closeModal();
-}
 
-closeModal() {
-  this.showDeleteModal = false;
-  this.deleteIndex = null;
-}
-
-  
-
-
-
-resetForm() {
-  // ✅ Reset form
-  this.expenseForm.reset();
-
-  // ✅ Clear image preview
-  this.imagePreview = null;
-
-  // ✅ Clear file object
-  this.selectedFile = null;
-
-  // ✅ Clear file input (IMPORTANT)
- this.fileInput.nativeElement.value = '';
-
-  // ✅ Re-apply required validation (for ADD mode)
-  if (!this.isEdit) {
-    this.expenseForm.get('screenshot')?.setValidators(Validators.required);
-    this.expenseForm.get('screenshot')?.updateValueAndValidity();
+  confirmDelete() {
+    if (this.deleteIndex !== null) {
+      this.entries.splice(this.deleteIndex, 1);
+    }
+    this.closeModal();
   }
-}
+
+  closeModal() {
+    this.showDeleteModal = false;
+    this.deleteIndex = null;
+  }
+
+
+
+
+
+  resetForm() {
+    // ✅ Reset form
+    this.expenseForm.reset();
+
+    // ✅ Clear image preview
+    this.imagePreview = null;
+
+    // ✅ Clear file object
+    this.selectedFile = null;
+
+    // ✅ Clear file input (IMPORTANT)
+    this.fileInput.nativeElement.value = '';
+
+    // ✅ Re-apply required validation (for ADD mode)
+    if (!this.isEdit) {
+      this.expenseForm.get('screenshot')?.setValidators(Validators.required);
+      this.expenseForm.get('screenshot')?.updateValueAndValidity();
+    }
+  }
   //open clarity model
   openmodel() {
- this.expenseForm.patchValue({
-    screenshot: null,
-    fileName: ''
-  });
+    this.expenseForm.patchValue({
+      screenshot: null,
+      fileName: ''
+    });
     this.expenseForm.reset()
     this.expenseForm.patchValue({ fileName: '' });
-    this.expenseForm.patchValue({screenshot: null });
+    this.expenseForm.patchValue({ screenshot: null });
 
-this.imagePreview = ''
+    this.imagePreview = ''
     this.isEdit = false;
 
-this.fileInput.nativeElement.value = '';
+    this.fileInput.nativeElement.value = '';
     this.expenseForm.reset({
       date: '',
       supportingNo: '',
@@ -311,7 +329,7 @@ this.fileInput.nativeElement.value = '';
 
     // ✅ Patch form with entry values
     this.expenseForm.patchValue({
-      id:entry.id||'',
+      id: entry.id || '',
       date: entry.date,
       supportingNo: entry.supportingNo,
       particulars: entry.particulars,
@@ -321,13 +339,13 @@ this.fileInput.nativeElement.value = '';
       remarks: entry.remarks,
       screenshot: entry.screenshot,
       fileName: entry.fileName,
-      currencyType:entry.currencyType
-      
+      currencyType: entry.currencyType
+
     });
-this.imagePreview = entry.screenshot
+    this.imagePreview = entry.screenshot
     // ✅ Recalculate converted amount for UI if needed
- this.expenseForm.get('screenshot')?.clearValidators();
-  this.expenseForm.get('screenshot')?.updateValueAndValidity();
+    this.expenseForm.get('screenshot')?.clearValidators();
+    this.expenseForm.get('screenshot')?.updateValueAndValidity();
 
     console.log("Editing entry:", this.formData);
   }

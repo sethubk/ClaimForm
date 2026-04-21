@@ -73,3 +73,12 @@ canvas {
 .recoverable {
   color: red;
 }
+.backbtn{
+  
+position: fixed;
+  bottom: 20px;   
+  left: 20px;  
+  margin-bottom: 10px;   
+  z-index: 9999;
+
+}

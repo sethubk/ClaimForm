@@ -160,10 +160,10 @@ else{
       next: res => {
         console.log("Claim updated", res);
         this.loading = false;
-//          this.api.sendmail(this.api.User.employeeCode,this.claimId).subscribe({
-//   next: res => console.log('Email sent', res),
-//   error: err => console.error('Email ERROR:', err)
-// });
+         this.api.sendmail(this.api.User.employeeCode,this.claimId).subscribe({
+  next: res => console.log('Email sent', res),
+  error: err => console.error('Email ERROR:', err)
+});
         this.toastService.success('Expense submitted and claim updated successfully');
         this.router.navigate(['/Homepage']).then(() => {
           setTimeout(() => window.location.reload(), 50);

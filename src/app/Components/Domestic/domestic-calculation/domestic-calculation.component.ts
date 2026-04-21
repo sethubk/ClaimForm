@@ -174,7 +174,7 @@ onFileChange(event: any) {
 }
 openGridImage(img: string) {
   console.log("Image clicked:", img); 
-this.toastService.bilopen(img );
+this.toastService.open(img );
 }
 removeImage() {
   this.imagePreview = null;
@@ -340,4 +340,21 @@ this.imagePreview = entry.screenshot
   backbtn() {
     this.router.navigate(['/domestic'])
   }
+  getFileNameFromBase64(base64: string): string {
+  if (!base64) {
+    return 'Screenshot';
+  }
+
+  // Check if name exists in base64
+  const nameMatch = base64.match(/name=([^;]+)/);
+  if (nameMatch) {
+    return nameMatch[1];
+  }
+
+  // Fallback: create name from MIME type
+  const typeMatch = base64.match(/data:image\/(.*?);base64/);
+  const ext = typeMatch ? typeMatch[1] : 'png';
+
+  return `foodbill.${ext}`;
+}
 }

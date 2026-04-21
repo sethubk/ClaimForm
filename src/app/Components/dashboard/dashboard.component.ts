@@ -13,6 +13,7 @@ import { ClaimApiService } from '../../Services/Api Services/claim-api.service';
 import { ApiService } from '../../Services/Api Services/api.service';
 import { status } from '../Enum';
 import { ToasterService } from '../../Services/toaster.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +26,8 @@ export class DashboardComponent {
 
   constructor(private ClaimApi:ClaimApiService,
     private api: ApiService,
-  private toaster:ToasterService) { }
+  private toaster:ToasterService,
+private router:Router) { }
   dataSource: any[] = [];
   allClaims: Claims[] = [];
   filteredData: any[] = [];
@@ -36,7 +38,7 @@ export class DashboardComponent {
   totalAmount = 0;
   approvedCount = 0;
   pendingCount = 0;
-
+rejectedCount=0;
   selectedType = '';
   selectedStatus = '';
 
@@ -110,6 +112,7 @@ export class DashboardComponent {
     this.totalAmount = this.filteredData.reduce((a, b) => a + b.amount, 0);
     this.approvedCount = this.filteredData.filter(x => x.status === status.Approved).length;
     this.pendingCount = this.filteredData.filter(x => x.status === status.pending).length;
+    this.rejectedCount=this.filteredData.filter(x=>x.status===status.Rejected).length
   }
 
   
@@ -165,6 +168,8 @@ prepareCharts() {
       'status-Withdrawn':status==='WithDrawn'
     };
   }
-
+backbtn() {
+    this.router.navigate(['/Homepage'])
+  }
   
 }

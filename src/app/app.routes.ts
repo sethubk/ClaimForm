@@ -35,5 +35,6 @@ export const routes: Routes = [
 {path:'domesticreview',component:DomesticReviewComponent},
 {path:'Expense/:claimId',component:ExpenseComponent},
 {path:'InternationalTravels/:claimId',component:InternationalComponent},
-{path:'DomesticTravels/:claimId',component:DomesticComponent}
+{path:'DomesticTravels/:claimId',component:DomesticComponent},
+{ path: '**', redirectTo: '' }
 ];

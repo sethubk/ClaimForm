@@ -98,6 +98,7 @@ localStorage.removeItem('EditClaim')
 
 
   getclaim(): void {
+    this.toastService.showLoader()
     this.ClaimApi.getClaimByEmpCode(this.empcode)
       .subscribe({
         next: (res: Claims[]) => {
@@ -105,14 +106,15 @@ localStorage.removeItem('EditClaim')
 
           this.allClaims = res.filter(
             c => c.status !== 'Draft' 
+           
           );
 
           this.dataSource = [...this.allClaims];
-          
+           this.toastService.hideLoader()
         },
         error: (err) => {
           console.error('Error fetching claims:', err);
-         
+          this.toastService.hideLoader()
         }
       });
   }
